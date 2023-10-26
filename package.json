@@ -1,6 +1,6 @@
 {
   "name": "thmuisc-quiz",
-  "version": "0.1.0",
+  "version": "0.1.0 alpha",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -9,21 +9,29 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@headlessui/react": "^1.7.17",
+    "immer": "^10.0.3",
+    "js-md5": "^0.8.3",
     "next": "latest",
+    "ogg-opus-decoder": "^1.6.8",
     "react": "latest",
-    "react-dom": "latest"
+    "react-dom": "latest",
+    "use-immer": "^0.9.0",
+    "yaml": "^2.3.3",
+    "zustand": "^4.4.4"
   },
   "devDependencies": {
+    "@types/js-md5": "^0.7.1",
     "@types/node": "latest",
     "@types/react": "latest",
     "@types/react-dom": "latest",
-    "@unocss/eslint-config": "^0.56.4",
-    "@unocss/postcss": "^0.56.4",
+    "@unocss/eslint-config": "^0.57.1",
+    "@unocss/postcss": "^0.57.1",
     "autoprefixer": "latest",
     "eslint": "latest",
     "eslint-config-next": "latest",
     "postcss": "latest",
     "typescript": "latest",
-    "unocss": "^0.56.4"
+    "unocss": "^0.57.1"
   }
 }
