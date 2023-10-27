@@ -1,8 +1,9 @@
 import { QuizMain } from "./clientComponent";
 import { TouhouMusicQuizContainer } from "./serverComponent";
-import { getSortedDefaultMusicMap } from "./tools";
+import { checkEnv, getSortedDefaultMusicMap } from "./tools";
 
 export default async function Home() {
+    checkEnv();
     const musicMap = await getSortedDefaultMusicMap();
     return (
         <TouhouMusicQuizContainer>

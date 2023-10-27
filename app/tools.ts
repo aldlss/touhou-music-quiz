@@ -8,7 +8,7 @@ import {
     OsType,
     SimpleMusic,
 } from "./types";
-import { md5 } from "js-md5";
+import { separator } from "./constant";
 
 export const getSortedDefaultMusicMap = cache(async () => {
     const musicMap = await getMusicMap();
@@ -17,13 +17,19 @@ export const getSortedDefaultMusicMap = cache(async () => {
     return defaultMusicMap;
 });
 
-const getMusicMap = async () => {
-    const urlBase = process.env.NEXT_PUBLIC_FETCH_URL_BASE;
-    if (!urlBase)
+export function checkEnv(): void {
+    if (!process.env.NEXT_PUBLIC_FETCH_DATA_URL)
         throw new Error(
             "Please set NEXT_PUBLIC_FETCH_URL_BASE environment variables and rebuild!"
         );
-    const res = await fetch(`${urlBase}/selectedSplitMsg.yaml`, {
+    if (!process.env.NEXT_PUBLIC_FETCH_MUSIC_URL_PREFIX)
+        throw new Error(
+            "Please set NEXT_PUBLIC_FETCH_MUSIC_URL_PREFIX environment variables and rebuild!"
+        );
+}
+
+const getMusicMap = async () => {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_FETCH_DATA_URL}`, {
         next: { revalidate: 86_400, tags: ["music-map"] },
     });
     if (!res.ok) throw new Error("Failed to fetch music map");
@@ -170,7 +176,9 @@ export function flatMusicMap(
                 result.push({
                     sid: music.sid,
                     amount: music.amount,
-                    name: `${prefix}-${music.idx - 1}. ${music.name}`,
+                    name: `${prefix}${separator}${music.idx - 1}. ${
+                        music.name
+                    }`,
                 });
             }
         });
@@ -180,7 +188,7 @@ export function flatMusicMap(
                 ...flatMusicMap(
                     value.data,
                     ifSelect,
-                    `${prefix}${prefix === "" ? "" : "-"}${name}`
+                    `${prefix}${prefix === "" ? "" : separator}${name}`
                 )
             );
         });
@@ -188,8 +196,14 @@ export function flatMusicMap(
     return result;
 }
 
-export function encryptMuiscName(str: string): string {
-    return md5(str);
+export async function digestMuiscName(str: string): Promise<string> {
+    const res = await crypto.subtle.digest(
+        "SHA-1",
+        new TextEncoder().encode(str)
+    );
+    return Array.from(new Uint8Array(res))
+        .map((b) => b.toString(16).padStart(2, "0"))
+        .join("");
 }
 
 export function checkBrowserType(userAgent: string): BrowserType {

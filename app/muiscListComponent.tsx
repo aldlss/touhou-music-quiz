@@ -196,7 +196,7 @@ function AlbumArrayList({
             {albumArray.map((value: Music) => (
                 <li key={value.idx} className={`group`}>
                     <Switch
-                        className="group group-hover:text-deep-pink group-hover:data-checked:text-dark-orange w-full p-0.5 text-left transition group-even:bg-gray-3 group-odd:bg-gray-2.5 text-p hover:brightness-102.5 group-even:data-checked:bg-sky-1.5 group-odd:data-checked:bg-sky-2"
+                        className="group w-full p-0.5 text-left transition group-even:bg-gray-3 group-odd:bg-gray-2.5 text-p group-hover:text-deep-pink hover:brightness-102.5 group-even:data-checked:bg-sky-1.5 group-odd:data-checked:bg-sky-2 group-hover:data-checked:text-dark-orange"
                         checked={value.selected}
                         onClick={(e) => {
                             OnClickMusic(value.sid, e);

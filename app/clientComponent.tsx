@@ -34,7 +34,7 @@ import { Updater, useImmer } from "use-immer";
 import {
     filterMusicMap,
     flatMusicMap,
-    encryptMuiscName,
+    digestMuiscName,
     selectMusicMapBySid,
     setMusicMapSelected,
     checkBrowserType,
@@ -42,6 +42,7 @@ import {
     CheckLocalStorageAvailable,
 } from "./tools";
 import Link from "next/link";
+import { separator } from "./constant";
 
 export function QuizMain({ musicMap }: { musicMap: MusicMap }) {
     const [
@@ -146,7 +147,7 @@ export function EndPage({ setPageState }: { setPageState: Function }) {
         state.rightAnswerCount,
     ]);
     return (
-        <main className="animate-fade-in-up-fast h-full w-full flex flex-col items-center justify-center gap-1">
+        <main className="h-full w-full flex flex-col animate-fade-in-up-fast items-center justify-center gap-1">
             <h1 className="font-extrabold text-pure-red text-h1">喜报</h1>
             {editNickName ? (
                 <>
@@ -230,7 +231,7 @@ export function SelectPage({
     };
     return (
         <main className="h-full w-full">
-            <section className="animate-fade-in-up-fast h-full w-full flex flex-col gap-1">
+            <section className="h-full w-full flex flex-col animate-fade-in-up-fast gap-1">
                 <header className="relative w-full">
                     <h1 className="text-center text-h1">选择乐曲</h1>
                     <button
@@ -387,18 +388,20 @@ function RunningPage({
         const promises = [];
         for (let i = 0; i < needFetchAmount; i++) {
             promises.push(
-                fetch(
-                    `${
-                        process.env.NEXT_PUBLIC_FETCH_URL_BASE
-                    }/music/${encryptMuiscName(
-                        `${music.name}-${i + startIdx}`
-                    )}.ogg`,
-                    {
-                        headers: { Accept: "audio/ogg" },
-                        next: { tags: ["music"] },
-                    }
-                ).then((response) => {
-                    return response.arrayBuffer();
+                digestMuiscName(
+                    `${music.name}${separator}${i + startIdx}`
+                ).then(async (digest) => {
+                    const response = await fetch(
+                        `${process.env.NEXT_PUBLIC_FETCH_MUSIC_URL_PREFIX}/${digest}.ogg`.replace(
+                            /(?<=:\/\/.*)\/\//g,
+                            "/"
+                        ),
+                        {
+                            headers: { Accept: "audio/ogg" },
+                            next: { tags: ["music"] },
+                        }
+                    );
+                    return await response.arrayBuffer();
                 })
             );
         }
@@ -622,7 +625,7 @@ function RunningPage({
         [RankType.lunatic]: ["text-lunatic-mode", "Lunatic"],
     }[rank];
     return (
-        <main className="animate-fade-in-up-fast relative h-full w-full flex flex-col">
+        <main className="relative h-full w-full flex flex-col animate-fade-in-up-fast">
             <header className="relative">
                 <p className="absolute left-0 top-0 p-2 text-h3">
                     {nowQuizCount}
@@ -813,8 +816,7 @@ function ResultDialog({
     autoClose: boolean;
     autoCloseTime: number;
 }) {
-    // TODO: 这个有非常大问题（因为有曲子的曲子名含有'-'），之后不能用这个分割方式，考虑用'//'
-    const names = nowQuiz?.musicInfo.name.split("-");
+    const names = nowQuiz?.musicInfo.name.split(separator);
     const description = (
         <>
             {`正确答案${result ? "就" : ""}是`}
