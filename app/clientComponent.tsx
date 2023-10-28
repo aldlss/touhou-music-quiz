@@ -3,22 +3,20 @@ import React, {
     MutableRefObject,
     useCallback,
     useEffect,
+    useLayoutEffect,
     useMemo,
     useRef,
     useState,
 } from "react";
 import {
-    BrowserType,
     ErrorType,
     EventPromise,
     MusicMap,
-    OsType,
     PageType,
     Quiz,
     RankType,
     SimpleMusic,
 } from "./types";
-import { useStore } from "./store";
 import MusicList from "./muiscListComponent";
 import { Dialog, Transition } from "@headlessui/react";
 import { StartPage, TouhouMusicQuizContainer } from "./serverComponent";
@@ -37,60 +35,40 @@ import {
     digestMuiscName,
     selectMusicMapBySid,
     setMusicMapSelected,
-    checkBrowserType,
-    CheckOsType,
-    CheckLocalStorageAvailable,
 } from "./tools";
 import Link from "next/link";
 import { separator } from "./constant";
+import {
+    ClearLocalStorage,
+    GetLocalStorageValue,
+    SetLocalStorageValue,
+} from "./tools";
+import { InitClientConstant } from "./clientConstant";
 
 export function QuizMain({ musicMap }: { musicMap: MusicMap }) {
-    const [
-        setBrowserType,
-        setOsType,
-        setLocalStorageAvailable,
-        getLocalStorageValue,
-        setLocalStorageValue,
-        clearLocalStorage,
-        setNowQuizCount,
-        setRightAnswerCount,
-    ] = useStore((state) => [
-        state.setBrowserType,
-        state.setOsType,
-        state.setLocalStorageAvailable,
-        state.getLocalStorageValue,
-        state.setLocalStorageValue,
-        state.clearLocalStorage,
-        state.setNowQuizCount,
-        state.setRightAnswerCount,
-    ]);
-    useEffect(() => {
-        // 确定浏览器类型，操作系统类型，以及是否支持 localStorage
-        setBrowserType(checkBrowserType(navigator.userAgent));
-        setOsType(CheckOsType(navigator.userAgent));
-        setLocalStorageAvailable(CheckLocalStorageAvailable());
+    useLayoutEffect(() => {
+        // 设置客户端的一些基本信息，不知道没有更好的办法
+        InitClientConstant();
 
         // 检查是否过期，过期则清除一遍 localStorage，设置过期时间十五天
         const expireTimeDelta = 15 * 24 * 60 * 60 * 1000;
         // Number(null)为 0，大概不用担心
-        const expireTime = Number(getLocalStorageValue("expire_time"));
+        const expireTime = Number(GetLocalStorageValue("expire_time"));
         if (expireTime + expireTimeDelta < Date.now() || isNaN(expireTime)) {
-            clearLocalStorage();
-            setLocalStorageValue(
+            ClearLocalStorage();
+            SetLocalStorageValue(
                 "expire_time",
                 (Date.now() + expireTimeDelta).toString()
             );
         }
-    }, [
-        clearLocalStorage,
-        getLocalStorageValue,
-        setBrowserType,
-        setLocalStorageAvailable,
-        setLocalStorageValue,
-        setOsType,
-    ]);
-    const [musicMapState, setMusicMapState] = useImmer(musicMap);
+    }, []);
     const [pageState, setPageState] = useState(PageType.start);
+    const [musicMapState, setMusicMapState] = useImmer(musicMap);
+    const [nowQuizCount, setNowQuizCount] = useState(1);
+    const [rightAnswerCount, setRightAnswerCount] = useState(0);
+    const musicDuration = useRef(5);
+    const [rank, setRank] = useState(RankType.normal);
+
     return (
         <div className="h-full w-full overflow-hidden border-1 rounded-lg @container/main">
             {
@@ -112,6 +90,10 @@ export function QuizMain({ musicMap }: { musicMap: MusicMap }) {
                             setPageState={setPageState}
                             musicMapState={musicMapState}
                             setMusicMapState={setMusicMapState}
+                            setRank={setRank}
+                            setMusicDuration={(duration: number) => {
+                                musicDuration.current = duration;
+                            }}
                         />
                     ),
                     [PageType.running]: (
@@ -119,12 +101,20 @@ export function QuizMain({ musicMap }: { musicMap: MusicMap }) {
                             key={PageType.running}
                             setPageState={setPageState}
                             musicMapState={musicMapState}
+                            nowQuizCount={nowQuizCount}
+                            setNowQuizCount={setNowQuizCount}
+                            rightAnswerCount={rightAnswerCount}
+                            setRightAnswerCount={setRightAnswerCount}
+                            musicDuration={musicDuration}
+                            rank={rank}
                         />
                     ),
                     [PageType.end]: (
                         <EndPage
                             key={PageType.end}
                             setPageState={setPageState}
+                            nowQuizCount={nowQuizCount}
+                            rightAnswerCount={rightAnswerCount}
                         />
                     ),
                 }[pageState]
@@ -133,19 +123,19 @@ export function QuizMain({ musicMap }: { musicMap: MusicMap }) {
     );
 }
 
-export function EndPage({ setPageState }: { setPageState: Function }) {
-    const [getLocalStorageValue, setLocalStorageValue] = useStore((state) => [
-        state.getLocalStorageValue,
-        state.setLocalStorageValue,
-    ]);
+export function EndPage({
+    setPageState,
+    nowQuizCount,
+    rightAnswerCount,
+}: {
+    setPageState: Function;
+    nowQuizCount: number;
+    rightAnswerCount: number;
+}) {
     const [nickname, setNickname] = useState(() => {
-        return getLocalStorageValue("nickname", "");
+        return GetLocalStorageValue("nickname", "");
     });
     const [editNickName, setEditNickName] = useState(true);
-    const [nowQuizCount, rightAnswerCount] = useStore((state) => [
-        state.nowQuizCount,
-        state.rightAnswerCount,
-    ]);
     return (
         <main className="h-full w-full flex flex-col animate-fade-in-up-fast items-center justify-center gap-1">
             <h1 className="font-extrabold text-pure-red text-h1">喜报</h1>
@@ -168,7 +158,7 @@ export function EndPage({ setPageState }: { setPageState: Function }) {
                         className="w-30% p-2 secondary-button"
                         onClick={() => {
                             setEditNickName(false);
-                            setLocalStorageValue("nickname", nickname);
+                            SetLocalStorageValue("nickname", nickname);
                         }}>
                         确认
                     </button>
@@ -202,19 +192,19 @@ export function SelectPage({
     setPageState,
     musicMapState,
     setMusicMapState,
+    setRank,
+    setMusicDuration,
 }: {
     setPageState: Function;
     musicMapState: MusicMap;
     setMusicMapState: Updater<MusicMap>;
+    setRank: Function;
+    setMusicDuration: Function;
 }) {
-    const [getLocalStorageValue, setLocalStorageValue] = useStore((state) => [
-        state.getLocalStorageValue,
-        state.setLocalStorageValue,
-    ]);
     const [showTimeSelect, setShowTimeSelect] = useState(false);
     const [showHelpDialog, setShowHelpDialog] = useState(() => {
         const isFirstVisit = Number(
-            getLocalStorageValue("thm_first_visit", "1")
+            GetLocalStorageValue("thm_first_visit", "1")
         );
         return isFirstVisit !== 0;
     });
@@ -277,12 +267,14 @@ export function SelectPage({
                 closePage={() => {
                     setShowTimeSelect(false);
                 }}
+                setRank={setRank}
+                setMusicDuration={setMusicDuration}
             />
             <SelectHelpDialog
                 show={showHelpDialog}
                 onClose={() => {
                     setShowHelpDialog(false);
-                    setLocalStorageValue("thm_first_visit", "0");
+                    SetLocalStorageValue("thm_first_visit", "0");
                 }}
             />
         </main>
@@ -323,29 +315,22 @@ function SelectHelpDialog({
 function RunningPage({
     setPageState,
     musicMapState,
+    nowQuizCount,
+    setNowQuizCount,
+    rightAnswerCount,
+    setRightAnswerCount,
+    musicDuration,
+    rank,
 }: {
     setPageState: Function;
     musicMapState: MusicMap;
+    nowQuizCount: number;
+    setNowQuizCount: Function;
+    rightAnswerCount: number;
+    setRightAnswerCount: Function;
+    musicDuration: MutableRefObject<number>;
+    rank: RankType;
 }) {
-    const [
-        musicDuration,
-        rank,
-        nowQuizCount,
-        setNowQuizCount,
-        rightAnswerCount,
-        setRightAnswerCount,
-        browserType,
-        osType,
-    ] = useStore((state) => [
-        state.musicDuration,
-        state.rank,
-        state.nowQuizCount,
-        state.setNowQuizCount,
-        state.rightAnswerCount,
-        state.setRightAnswerCount,
-        state.browserType,
-        state.osType,
-    ]);
     const [selectSid, setSelectSid] = useState(-1);
     const [quizMusicMap, setQuizMusicMap] = useImmer(() => {
         const quizMusicMap = filterMusicMap(
@@ -549,10 +534,10 @@ function RunningPage({
                         Math.floor(Math.random() * selectedMusicList.length)
                     ];
                 // 如果选出来的音乐不够长，那么就再选一次，虽然运气不好的话会有巨大性能问题，但是应该不会吧（
-            } while (randomMusic.amount < musicDuration);
+            } while (randomMusic.amount < musicDuration.current);
             getMusicPiece(
                 randomMusic,
-                musicDuration,
+                musicDuration.current,
                 // decoder,
                 audioContext
             )
@@ -650,7 +635,9 @@ function RunningPage({
                 afterClose={afterClose}
                 nowQuiz={nowQuiz}
                 autoClose={true}
-                autoCloseTime={Math.max(3000, musicDuration * 1000)}
+                autoCloseTime={() =>
+                    Math.max(3000, musicDuration.current * 1000)
+                }
             />
             <ConfirmDialog
                 show={showEndGameDialog}
@@ -670,6 +657,7 @@ function RunningPage({
                             audioBuffer={nowQuiz.music}
                             audioContext={getAudioContext()}
                             playTheMusic={playTheMusic}
+                            musicDuration={musicDuration}
                         />
                     ) : (
                         <div className="h-full flex flex-row items-center justify-center">
@@ -738,7 +726,7 @@ function ContainerDialog({
     onClose: () => void;
     afterClose?: () => void;
     autoClose?: boolean;
-    autoCloseTime?: number;
+    autoCloseTime?: number | (() => number);
     appear?: boolean;
     children: React.ReactNode;
 }) {
@@ -746,9 +734,14 @@ function ContainerDialog({
     useEffect(() => {
         let timer: NodeJS.Timeout;
         if (autoClose) {
-            timer = setTimeout(() => {
-                onClose();
-            }, autoCloseTime);
+            timer = setTimeout(
+                () => {
+                    onClose();
+                },
+                typeof autoCloseTime === "function"
+                    ? autoCloseTime()
+                    : autoCloseTime
+            );
         }
         return () => {
             clearTimeout(timer);
@@ -814,7 +807,7 @@ function ResultDialog({
     afterClose: () => void;
     nowQuiz: Quiz | null;
     autoClose: boolean;
-    autoCloseTime: number;
+    autoCloseTime: number | (() => number);
 }) {
     const names = nowQuiz?.musicInfo.name.split(separator);
     const description = (
@@ -912,17 +905,13 @@ function MusicPlayer({
     audioBuffer,
     audioContext,
     playTheMusic,
+    musicDuration,
 }: {
     audioBuffer: AudioBuffer;
     audioContext: AudioContext;
     playTheMusic: MutableRefObject<() => void>;
+    musicDuration: MutableRefObject<number>;
 }) {
-    const [musicDuration, getLocalStorageValue, setLocalStorageValue] =
-        useStore((state) => [
-            state.musicDuration,
-            state.getLocalStorageValue,
-            state.setLocalStorageValue,
-        ]);
     const startTime = useRef(0);
     const volumeNode = useRef<GainNode | null>(null);
     // 从 localStorage 里面读取之前设置的音量，没有的话就用（可能）默认的音量
@@ -930,11 +919,11 @@ function MusicPlayer({
         if (volumeNode.current === null) {
             volumeNode.current = audioContext.createGain();
             volumeNode.current.gain.value = Number(
-                getLocalStorageValue("thm_volume", "0.5")
+                GetLocalStorageValue("thm_volume", "0.5")
             );
         }
         return volumeNode.current;
-    }, [audioContext, getLocalStorageValue]);
+    }, [audioContext]);
 
     // 用于播放音乐的
     const audioSource: MutableRefObject<AudioBufferSourceNode | null> =
@@ -952,7 +941,7 @@ function MusicPlayer({
         audioSource.current.buffer = audioBuffer;
         audioSource.current.connect(getVolumeNode());
         getVolumeNode().connect(audioContext.destination);
-        audioSource.current.start(startTime.current, 0, musicDuration);
+        audioSource.current.start(startTime.current, 0, musicDuration.current);
     }, [audioBuffer, audioContext, getVolumeNode, musicDuration]);
     // 用于在外部调用播放音乐的，没想到更好的办法
     playTheMusic.current = playMusic;
@@ -960,7 +949,7 @@ function MusicPlayer({
     useEffect(() => {
         // 既然有片段，那么在片段里面也随机一下，max 是兜底
         startTime.current = Math.max(
-            Math.random() * (audioBuffer.duration - musicDuration),
+            Math.random() * (audioBuffer.duration - musicDuration.current),
             0
         );
 
@@ -991,7 +980,7 @@ function MusicPlayer({
                 }}
                 // 考虑在设定之后再保存，感觉大概可以避免频繁的保存
                 onPointerUp={() => {
-                    setLocalStorageValue(
+                    SetLocalStorageValue(
                         "thm_volume",
                         getVolumeNode().gain.value.toString()
                     );
@@ -1005,15 +994,15 @@ function DurationSelectPage({
     show,
     setPageState,
     closePage,
+    setRank,
+    setMusicDuration,
 }: {
     show: boolean;
     setPageState: Function;
     closePage: () => void;
+    setRank: Function;
+    setMusicDuration: Function;
 }) {
-    const [setMusicDuration, setRank] = useStore((state) => [
-        state.setMusicDuration,
-        state.setRank,
-    ]);
     function makeDurationSelectDivProps(
         title: string,
         onClick: () => void,

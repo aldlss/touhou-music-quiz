@@ -9,6 +9,7 @@ import {
     SimpleMusic,
 } from "./types";
 import { separator } from "./constant";
+import { localStorageAvailable } from "./clientConstant";
 
 export const getSortedDefaultMusicMap = cache(async () => {
     const musicMap = await getMusicMap();
@@ -238,4 +239,38 @@ export function CheckLocalStorageAvailable(): boolean {
     } catch (e) {
         return false;
     }
+}
+
+export function SetLocalStorageValue(key: string, value: string) {
+    if (!localStorageAvailable) {
+        return false;
+    }
+    window.localStorage.setItem(key, value);
+    return true;
+}
+
+export function GetLocalStorageValue(key: string): string | null;
+export function GetLocalStorageValue(key: string, defaultValue: string): string;
+export function GetLocalStorageValue(key: string, defaultValue?: string) {
+    if (!localStorageAvailable) {
+        return defaultValue ?? null;
+    }
+    const value = window.localStorage.getItem(key);
+    if (defaultValue === undefined) {
+        return value ?? null;
+    } else {
+        if (value === null) {
+            SetLocalStorageValue(key, defaultValue);
+            return defaultValue;
+        } else {
+            return value;
+        }
+    }
+}
+
+export function ClearLocalStorage() {
+    if (!localStorageAvailable) {
+        return;
+    }
+    window.localStorage.clear();
 }
