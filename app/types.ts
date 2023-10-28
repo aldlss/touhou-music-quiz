@@ -69,3 +69,9 @@ export enum OsType {
     Linux = "Linux",
     Other = "Other",
 }
+
+export enum ThemeAppearanceType {
+    Light = "Light",
+    Dark = "Dark",
+    Auto = "Auto",
+}

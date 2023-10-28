@@ -1,15 +1,22 @@
-import { PageType } from "./types";
+import { PageType, ThemeAppearanceType } from "./types";
 import packageInfo from "../package.json";
+import { MoonLineSvg, SunLineSvg } from "./svg";
 
 export function StartPage({
     setPageState,
     initFunc = () => {},
+    themeAppearance,
+    setThemeAppearance,
 }: {
     setPageState: Function;
     initFunc?: Function;
+    themeAppearance: ThemeAppearanceType.Dark | ThemeAppearanceType.Light;
+    setThemeAppearance: (
+        themeAppearance: ThemeAppearanceType.Dark | ThemeAppearanceType.Light
+    ) => void;
 }) {
     return (
-        <main className="h-full w-full flex flex-col justify-between bg-white">
+        <main className="h-full w-full flex flex-col justify-between bg-container">
             <div className="p-2 text-right text-gray text-p">
                 {packageInfo.version}
             </div>
@@ -28,6 +35,22 @@ export function StartPage({
                         initFunc();
                     }}>
                     开始
+                </button>
+                <button
+                    type="button"
+                    aria-label="change theme"
+                    onClick={() =>
+                        setThemeAppearance(
+                            themeAppearance === ThemeAppearanceType.Dark
+                                ? ThemeAppearanceType.Light
+                                : ThemeAppearanceType.Dark
+                        )
+                    }>
+                    {themeAppearance === ThemeAppearanceType.Dark ? (
+                        <MoonLineSvg className="w-8" />
+                    ) : (
+                        <SunLineSvg className="w-8" />
+                    )}
                 </button>
             </div>
             <div className="p-2 text-p">

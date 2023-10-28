@@ -3,7 +3,6 @@ import React, {
     MutableRefObject,
     useCallback,
     useEffect,
-    useLayoutEffect,
     useMemo,
     useRef,
     useState,
@@ -16,13 +15,13 @@ import {
     Quiz,
     RankType,
     SimpleMusic,
+    ThemeAppearanceType,
 } from "./types";
 import MusicList from "./muiscListComponent";
 import { Dialog, Transition } from "@headlessui/react";
 import { StartPage, TouhouMusicQuizContainer } from "./serverComponent";
 import {
     ArrowLeftSSvg,
-    InformationLineSvg,
     Loader3FillSvg,
     PlayFillSvg,
     QuestionLineSvg,
@@ -46,7 +45,7 @@ import {
 import { InitClientConstant } from "./clientConstant";
 
 export function QuizMain({ musicMap }: { musicMap: MusicMap }) {
-    useLayoutEffect(() => {
+    useEffect(() => {
         // 设置客户端的一些基本信息，不知道没有更好的办法
         InitClientConstant();
 
@@ -69,8 +68,61 @@ export function QuizMain({ musicMap }: { musicMap: MusicMap }) {
     const musicDuration = useRef(5);
     const [rank, setRank] = useState(RankType.normal);
 
+    const themeMatchQuery = useRef<MediaQueryList | null>(null);
+    const GetThemeMatchQuery = () => {
+        if (themeMatchQuery.current === null) {
+            themeMatchQuery.current = matchMedia(
+                "(prefers-color-scheme: dark)"
+            );
+        }
+        return themeMatchQuery.current;
+    };
+    // 因为不显示 Auto，所以不要
+    const [showedThemeIcon, setShowedThemeIcon] = useState<
+        ThemeAppearanceType.Light | ThemeAppearanceType.Dark
+    >(ThemeAppearanceType.Light);
+    // 根据三个状态进行处理
+    const changeThemeAppearance = useCallback((target: ThemeAppearanceType) => {
+        function changeTheme(dark: boolean) {
+            if (dark) {
+                setShowedThemeIcon(ThemeAppearanceType.Dark);
+                document.documentElement.classList.add("dark");
+            } else {
+                setShowedThemeIcon(ThemeAppearanceType.Light);
+                document.documentElement.classList.remove("dark");
+            }
+        }
+        switch (target) {
+            case ThemeAppearanceType.Auto:
+                SetLocalStorageValue("theme_appearance", "auto");
+                changeTheme(GetThemeMatchQuery().matches);
+                GetThemeMatchQuery().onchange = (e) => {
+                    changeTheme(e.matches);
+                };
+                break;
+            case ThemeAppearanceType.Light:
+                SetLocalStorageValue("theme_appearance", "light");
+                GetThemeMatchQuery().onchange = null;
+                changeTheme(false);
+                break;
+            case ThemeAppearanceType.Dark:
+                SetLocalStorageValue("theme_appearance", "dark");
+                GetThemeMatchQuery().onchange = null;
+                changeTheme(true);
+                break;
+        }
+    }, []);
+    useEffect(() => {
+        const theme = GetLocalStorageValue("theme_appearance", "auto");
+        if (theme === "light") changeThemeAppearance(ThemeAppearanceType.Light);
+        else if (theme === "dark")
+            changeThemeAppearance(ThemeAppearanceType.Dark);
+        else changeThemeAppearance(ThemeAppearanceType.Auto);
+        // 虽然我感觉好像没必要加依赖(？
+    }, [changeThemeAppearance]);
+
     return (
-        <div className="h-full w-full overflow-hidden border-1 rounded-lg @container/main">
+        <div className="border-surface-color h-full w-full overflow-hidden border-1 rounded-lg @container/main">
             {
                 {
                     [PageType.start]: (
@@ -80,6 +132,19 @@ export function QuizMain({ musicMap }: { musicMap: MusicMap }) {
                             initFunc={() => {
                                 setNowQuizCount(1);
                                 setRightAnswerCount(0);
+                            }}
+                            themeAppearance={showedThemeIcon}
+                            setThemeAppearance={(target) => {
+                                if (
+                                    (target === ThemeAppearanceType.Dark) ===
+                                    GetThemeMatchQuery().matches
+                                ) {
+                                    changeThemeAppearance(
+                                        ThemeAppearanceType.Auto
+                                    );
+                                } else {
+                                    changeThemeAppearance(target);
+                                }
                             }}
                         />
                     ),
@@ -137,54 +202,59 @@ export function EndPage({
     });
     const [editNickName, setEditNickName] = useState(true);
     return (
-        <main className="h-full w-full flex flex-col animate-fade-in-up-fast items-center justify-center gap-1">
-            <h1 className="font-extrabold text-pure-red text-h1">喜报</h1>
-            {editNickName ? (
-                <>
-                    <input
-                        name="nickname"
-                        // autoFocus={true}
-                        placeholder="Player"
-                        autoComplete="off"
-                        className="max-w-90% border-2 rounded-lg bg-gray-3 p-1 text-center font-bold hover:border-blue text-h2"
-                        type="text"
-                        value={nickname}
-                        onChange={(e) => {
-                            setNickname(e.target.value);
-                        }}
-                    />
-                    <button
-                        disabled={nickname.length === 0}
-                        className="w-30% p-2 secondary-button"
-                        onClick={() => {
-                            setEditNickName(false);
-                            SetLocalStorageValue("nickname", nickname);
-                        }}>
-                        确认
-                    </button>
-                </>
-            ) : (
-                <h2 className="font-bold text-h2">{nickname}</h2>
-            )}
-            <h3 className="text-center text-h3">
-                在东方原曲认知测验无尽版
-                <br />
-                获得
-            </h3>
-            <h3 className="font-600 text-rose text-h2">{`${rightAnswerCount}/${
-                nowQuizCount - 1
-            }`}</h3>
-            <h3 className="text-h3">的好成绩</h3>
-            <h2 className="text-h2">可喜可贺，可喜可贺</h2>
-            <button
-                type="button"
-                className="p-y-2 main-button"
-                onClick={() => {
-                    setPageState(PageType.start);
-                }}>
-                重来
-            </button>
-        </main>
+        <div className="h-full bg-container">
+            <main className="h-full w-full flex flex-col animate-fade-in-up-fast items-center justify-center gap-1">
+                <h1 className="font-extrabold text-pure-red text-h1 dark:text-red">
+                    喜报
+                </h1>
+                {editNickName ? (
+                    <>
+                        <input
+                            name="nickname"
+                            // autoFocus={true}
+                            placeholder="Player"
+                            autoComplete="off"
+                            className="dark:bg-material-dark-8 border-tab-color max-w-90% border-2 rounded-lg bg-gray-3 p-1 text-center font-bold hover:border-blue text-h2 dark:hover:border-cyan"
+                            type="text"
+                            value={nickname}
+                            onChange={(e) => {
+                                setNickname(e.target.value);
+                            }}
+                        />
+                        <button
+                            type="button"
+                            disabled={nickname.length === 0}
+                            className="w-30% p-2 secondary-button"
+                            onClick={() => {
+                                setEditNickName(false);
+                                SetLocalStorageValue("nickname", nickname);
+                            }}>
+                            确认
+                        </button>
+                    </>
+                ) : (
+                    <h2 className="font-bold text-h2">{nickname}</h2>
+                )}
+                <h3 className="text-center text-h3">
+                    在东方原曲认知测验无尽版
+                    <br />
+                    获得
+                </h3>
+                <h3 className="font-600 text-rose text-h2">{`${rightAnswerCount}/${
+                    nowQuizCount - 1
+                }`}</h3>
+                <h3 className="text-h3">的好成绩</h3>
+                <h2 className="text-h2">可喜可贺，可喜可贺</h2>
+                <button
+                    type="button"
+                    className="p-y-2 main-button"
+                    onClick={() => {
+                        setPageState(PageType.start);
+                    }}>
+                    重来
+                </button>
+            </main>
+        </div>
     );
 }
 
@@ -220,11 +290,13 @@ export function SelectPage({
         });
     };
     return (
-        <main className="h-full w-full">
+        <main className="h-full w-full bg-container">
             <section className="h-full w-full flex flex-col animate-fade-in-up-fast gap-1">
                 <header className="relative w-full">
                     <h1 className="text-center text-h1">选择乐曲</h1>
                     <button
+                        type="button"
+                        aria-label="help"
                         className="absolute right-0 top-0"
                         onClick={() => {
                             setShowHelpDialog(true);
@@ -301,6 +373,7 @@ function SelectHelpDialog({
                     该类目下的所有曲子。
                 </Dialog.Description>
                 <button
+                    type="button"
                     className="w-fit self-center p-x-4 p-y-2 secondary-button"
                     onClick={() => {
                         onClose();
@@ -610,106 +683,108 @@ function RunningPage({
         [RankType.lunatic]: ["text-lunatic-mode", "Lunatic"],
     }[rank];
     return (
-        <main className="relative h-full w-full flex flex-col animate-fade-in-up-fast">
-            <header className="relative">
-                <p className="absolute left-0 top-0 p-2 text-h3">
-                    {nowQuizCount}
-                </p>
-                <h1
-                    className={`text-h2 flex-1 text-center ${difficultyTextColor}`}>
-                    {h1Text}
-                </h1>
+        <div className="h-full bg-container">
+            <main className="relative h-full w-full flex flex-col animate-fade-in-up-fast">
+                <header className="relative">
+                    <p className="absolute left-0 top-0 p-2 text-h3">
+                        {nowQuizCount}
+                    </p>
+                    <h1
+                        className={`text-h2 flex-1 text-center ${difficultyTextColor}`}>
+                        {h1Text}
+                    </h1>
+                    <button
+                        className="absolute right-0 top-0 m-1 min-w-fit w-20% p-x-2 p-y-1 secondary-button text-h3"
+                        type="button"
+                        onClick={() => {
+                            setShowEndGameDialog(true);
+                        }}>
+                        结束
+                    </button>
+                </header>
+                <ResultDialog
+                    showResult={showResultDialog}
+                    result={answerResult}
+                    onClose={() => setShowResultDialog(false)}
+                    afterClose={afterClose}
+                    nowQuiz={nowQuiz}
+                    autoClose={true}
+                    autoCloseTime={() =>
+                        Math.max(3000, musicDuration.current * 1000)
+                    }
+                />
+                <ConfirmDialog
+                    show={showEndGameDialog}
+                    operation="结束测验"
+                    onConfirm={() => {
+                        setPageState(PageType.end);
+                    }}
+                    onCancel={() => {
+                        setShowEndGameDialog(false);
+                    }}
+                />
+                <div className="h-10% w-full">
+                    {
+                        // TODO: 将这里的逻辑用 Promise 处理(?，可能需要整个消费生产流程改进
+                        nowQuiz ? (
+                            <MusicPlayer
+                                audioBuffer={nowQuiz.music}
+                                audioContext={getAudioContext()}
+                                playTheMusic={playTheMusic}
+                                musicDuration={musicDuration}
+                            />
+                        ) : (
+                            <div className="h-full flex flex-row items-center justify-center">
+                                <Loader3FillSvg className="w-8 animate-spin" />
+                                <h1 className="text-center text-h3">
+                                    少女加载中...
+                                </h1>
+                            </div>
+                        )
+                    }
+                </div>
+                <MusicList
+                    musicMap={quizMusicMap}
+                    musicListType={PageType.running}
+                    onClickTab={() => {}}
+                    onClickMusic={(sid) => {
+                        if (selectSid !== sid) {
+                            setQuizMusicMap((draft) => {
+                                if (selectSid !== -1)
+                                    selectMusicMapBySid(selectSid, draft);
+                                selectMusicMapBySid(sid, draft);
+                            });
+                            setSelectSid(sid);
+                        } else {
+                            setQuizMusicMap((draft) => {
+                                selectMusicMapBySid(sid, draft);
+                            });
+                            setSelectSid(-1);
+                        }
+                    }}
+                />
                 <button
-                    className="absolute right-0 top-0 m-1 min-w-fit w-20% p-x-2 p-y-1 secondary-button text-h3"
+                    disabled={selectSid < 0 || nowQuiz === null}
+                    className="self-center p-0.5 main-button"
                     type="button"
                     onClick={() => {
-                        setShowEndGameDialog(true);
+                        const ansSid = nowQuiz?.musicInfo.sid ?? -1;
+                        if (ansSid === -1) {
+                            return;
+                        }
+                        setShowResultDialog(true);
+                        if (selectSid === ansSid) {
+                            setRightAnswerCount(rightAnswerCount + 1);
+                            setAnswerResult(true);
+                        } else {
+                            setAnswerResult(false);
+                            playTheMusic.current();
+                        }
                     }}>
-                    结束
+                    确定
                 </button>
-            </header>
-            <ResultDialog
-                showResult={showResultDialog}
-                result={answerResult}
-                onClose={() => setShowResultDialog(false)}
-                afterClose={afterClose}
-                nowQuiz={nowQuiz}
-                autoClose={true}
-                autoCloseTime={() =>
-                    Math.max(3000, musicDuration.current * 1000)
-                }
-            />
-            <ConfirmDialog
-                show={showEndGameDialog}
-                operation="结束测验"
-                onConfirm={() => {
-                    setPageState(PageType.end);
-                }}
-                onCancel={() => {
-                    setShowEndGameDialog(false);
-                }}
-            />
-            <div className="h-10% w-full">
-                {
-                    // TODO: 将这里的逻辑用 Promise 处理(?，可能需要整个消费生产流程改进
-                    nowQuiz ? (
-                        <MusicPlayer
-                            audioBuffer={nowQuiz.music}
-                            audioContext={getAudioContext()}
-                            playTheMusic={playTheMusic}
-                            musicDuration={musicDuration}
-                        />
-                    ) : (
-                        <div className="h-full flex flex-row items-center justify-center">
-                            <Loader3FillSvg className="w-8 animate-spin" />
-                            <h1 className="text-center text-h3">
-                                少女加载中...
-                            </h1>
-                        </div>
-                    )
-                }
-            </div>
-            <MusicList
-                musicMap={quizMusicMap}
-                musicListType={PageType.running}
-                onClickTab={() => {}}
-                onClickMusic={(sid) => {
-                    if (selectSid !== sid) {
-                        setQuizMusicMap((draft) => {
-                            if (selectSid !== -1)
-                                selectMusicMapBySid(selectSid, draft);
-                            selectMusicMapBySid(sid, draft);
-                        });
-                        setSelectSid(sid);
-                    } else {
-                        setQuizMusicMap((draft) => {
-                            selectMusicMapBySid(sid, draft);
-                        });
-                        setSelectSid(-1);
-                    }
-                }}
-            />
-            <button
-                disabled={selectSid < 0 || nowQuiz === null}
-                className="self-center p-0.5 main-button"
-                type="button"
-                onClick={() => {
-                    const ansSid = nowQuiz?.musicInfo.sid ?? -1;
-                    if (ansSid === -1) {
-                        return;
-                    }
-                    setShowResultDialog(true);
-                    if (selectSid === ansSid) {
-                        setRightAnswerCount(rightAnswerCount + 1);
-                        setAnswerResult(true);
-                    } else {
-                        setAnswerResult(false);
-                        playTheMusic.current();
-                    }
-                }}>
-                确定
-            </button>
-        </main>
+            </main>
+        </div>
     );
 }
 
@@ -781,7 +856,7 @@ function ContainerDialog({
                             leave="transition transform-gpu"
                             leaveFrom="opacity-100 translate-y-0"
                             leaveTo="opacity-0 translate-y--30%">
-                            <div className="z-10 w-90% border-1 rounded-lg bg-white shadow-md dark:bg-black">
+                            <div className="bg-dialog border-surface-color z-10 w-90% border-1 rounded-lg shadow-md">
                                 {children}
                             </div>
                         </Transition.Child>
@@ -849,7 +924,12 @@ function ResultDialog({
             autoClose={autoClose}
             autoCloseTime={autoCloseTime}>
             <Dialog.Panel className="flex flex-col p-4">
-                <button className="h-0 w-0" onClick={onClose} />
+                <button
+                    type="button"
+                    aria-label="close"
+                    className="h-0 w-0"
+                    onClick={onClose}
+                />
                 <Dialog.Title className="text-center text-h2">
                     答{result ? "对" : "错"}了
                 </Dialog.Title>
@@ -886,12 +966,14 @@ function ConfirmDialog({
                 </Dialog.Description>
                 <div className="flex flex-row justify-evenly gap-2 p-x-4">
                     <button
+                        type="button"
                         className="max-w-40% flex-1 p-1 secondary-button text-h3"
                         onClick={onCancel}>
                         取消
                     </button>
                     <button
-                        className="max-w-40% flex-1 p-1 main-button text-h3"
+                        type="button"
+                        className="max-w-40% flex-1 p-1 text-h3 main-button"
                         onClick={onConfirm}>
                         确认
                     </button>
@@ -962,7 +1044,9 @@ function MusicPlayer({
     return (
         <div className="h-full w-full flex flex-row justify-evenly p-1">
             <button
-                className="aspect-square rounded-3xl bg-sky-3 common-button simple-hover-active"
+                type="button"
+                aria-label="play music"
+                className="aspect-square rounded-3xl bg-sky-3 common-button dark:bg-sky-6 simple-hover-active"
                 onClick={() => {
                     playMusic();
                 }}>
@@ -1051,7 +1135,7 @@ function DurationSelectPage({
     ];
     return (
         <Transition
-            className="h-full w-full flex flex-col translate-y--100% bg-bg transition-common"
+            className="h-full w-full flex flex-col translate-y--100% transition-common bg-container"
             as="section"
             show={show}
             enterFrom="translate-x-100%"
@@ -1060,7 +1144,9 @@ function DurationSelectPage({
             leaveTo="translate-x-100%">
             <header className="relative">
                 <button
-                    className="absolute left-0 top-0 w-fit bg-gray-2 p-1"
+                    type="button"
+                    aria-label="back"
+                    className="absolute left-0 top-0 w-fit p-1"
                     onClick={() => {
                         closePage();
                     }}>
@@ -1101,7 +1187,7 @@ function DurationSelectItem({
             <button
                 className={`text-shadow-sm text-shadow-color-gray common-button p-y-2 p-x-4 text-h2 simple-hover-active ${
                     buttonClassName ?? ""
-                }`}
+                } dark:[--un-bg-opacity:0.8]`}
                 type="button"
                 onClick={onClick}>
                 {title}

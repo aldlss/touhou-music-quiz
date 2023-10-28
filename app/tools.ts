@@ -7,6 +7,7 @@ import {
     MusicMap,
     OsType,
     SimpleMusic,
+    ThemeAppearanceType,
 } from "./types";
 import { separator } from "./constant";
 import { localStorageAvailable } from "./clientConstant";

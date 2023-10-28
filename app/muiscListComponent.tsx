@@ -61,15 +61,15 @@ function H1TabList({
     ) => void;
 }) {
     return (
-        <Tab.List className="flex flex-row overflow-x-auto border-1 border-yellow rounded-lg text-center">
-            {Object.entries(musicMap).map(([categoryName, value]) => (
+        <Tab.List className="flex flex-row overflow-x-auto border-1 rounded-lg text-center border-tab-list-color">
+            {Object.entries(musicMap).map(([categoryName, value], idx) => (
                 <Tab
                     key={categoryName}
-                    className={`text-center min-w-22.5 @xs/main:min-w-initial flex-1 text-p p-1 border-x-1 bg-bg data-selected:bg-sky-4 hover:text-deep-pink data-selected:hover:text-inherit simple-hover-active-var transition ${
+                    className={`text-center min-w-22.5 @xs/main:min-w-initial flex-1 text-p p-1 hover:text-purple bg-tab-list data-selected:bg-sky-4 dark:data-selected:bg-deep-cyan-2 data-selected:hover:text-common-color simple-hover-active-var transition ${
                         value.selected === 0
-                            ? "brightness-85 [--thm-s-h-a:0.85]"
+                            ? "brightness-85 [--thm-s-h-a:0.85] dark:bg-neutral-5.5"
                             : "brightness-100 [--thm-s-h-a:1]"
-                    }`}
+                    } ${idx === 0 ? "" : "border-l-2 border-tab-color"}`}
                     onClick={(e) => {
                         OnClickTab(value.sid, e);
                     }}>
@@ -130,15 +130,15 @@ function H2TabList({
     ) => void;
 }) {
     return (
-        <Tab.List className="w-40% flex flex-col overflow-y-auto border-1 border-yellow rounded-lg">
-            {Object.entries(classMap).map(([albumName, value]) => (
+        <Tab.List className="w-40% flex flex-col overflow-y-auto border-1 rounded-lg border-tab-list-color">
+            {Object.entries(classMap).map(([albumName, value], idx) => (
                 <Tab
                     key={albumName}
-                    className={`text-p p-0.5 border-y-1 data-selected:bg-sky-3 hover:text-deep-pink data-selected:hover:text-inherit bg-bg simple-hover-active-var transition text-left ${
+                    className={`text-p p-0.5 data-selected:bg-sky-3 dark:data-selected:bg-deep-cyan-r-2 hover:text-purple data-selected:hover:text-common-color bg-tab-list simple-hover-active-var transition text-left ${
                         value.selected === 0
-                            ? "brightness-85 [--thm-s-h-a:0.85]"
+                            ? "brightness-85 [--thm-s-h-a:0.85] dark:bg-neutral-5.5"
                             : "brightness-100 [--thm-s-h-a:1]"
-                    }`}
+                    } ${idx === 0 ? "" : "border-t-2 border-tab-color"}`}
                     onClick={(e) => {
                         OnClickTab(value.sid, e);
                     }}>
@@ -161,9 +161,9 @@ function H2TabPanels({
 }) {
     return (
         <Tab.Panels
-            className={`flex-1 overflow-y-auto border-1 border-amber rounded-lg`}>
+            className={`flex-1 overflow-y-auto border-1 border-tab-list-color rounded-lg`}>
             {Object.values(classMap).map((album, idx) => (
-                <Tab.Panel key={idx} className={``}>
+                <Tab.Panel key={idx} className="">
                     {album.data instanceof Array ? (
                         <AlbumArrayList
                             albumArray={album.data}
@@ -192,11 +192,11 @@ function AlbumArrayList({
     ) => void;
 }) {
     return (
-        <ol className="border-y-1">
+        <ol className="">
             {albumArray.map((value: Music) => (
                 <li key={value.idx} className={`group`}>
                     <Switch
-                        className="group w-full p-0.5 text-left transition group-even:bg-gray-3 group-odd:bg-gray-2.5 text-p group-hover:text-deep-pink hover:brightness-102.5 group-even:data-checked:bg-sky-1.5 group-odd:data-checked:bg-sky-2 group-hover:data-checked:text-dark-orange"
+                        className="group dark:group-even:bg-neutral-5.5 dark:group-even:data-checked:bg-deep-cyan-1 dark:group-odd:data-checked:bg-deep-cyan-r-1 w-full p-0.5 text-left transition group-even:bg-gray-3 group-odd:bg-gray-2.5 text-p group-hover:text-purple hover:brightness-102.5 dark:group-odd:bg-neutral-6 group-even:data-checked:bg-sky-1.5 group-odd:data-checked:bg-sky-2 group-hover:data-checked:text-dark-orange"
                         checked={value.selected}
                         onClick={(e) => {
                             OnClickMusic(value.sid, e);
