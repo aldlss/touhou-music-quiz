@@ -46,11 +46,6 @@ export enum ErrorType {
     UnknownError = "UnknownError",
 }
 
-export type EventPromise = {
-    active: () => void;
-    cancel: () => void;
-};
-
 export enum BrowserType {
     Chrome = "Chrome",
     FireFox = "FireFox",

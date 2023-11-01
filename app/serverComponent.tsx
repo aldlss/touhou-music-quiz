@@ -30,7 +30,6 @@ export function StartPage({
                     type="button"
                     className="p-4 main-button"
                     onClick={() => {
-                        console.log("click");
                         setPageState(PageType.selecting);
                         initFunc();
                     }}>

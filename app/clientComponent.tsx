@@ -1,6 +1,7 @@
 "use client";
 import React, {
     MutableRefObject,
+    Suspense,
     useCallback,
     useEffect,
     useMemo,
@@ -9,7 +10,6 @@ import React, {
 } from "react";
 import {
     ErrorType,
-    EventPromise,
     MusicMap,
     PageType,
     Quiz,
@@ -43,6 +43,9 @@ import {
     SetLocalStorageValue,
 } from "./tools";
 import { InitClientConstant } from "./clientConstant";
+import { ControlledPromise, SemaType } from "./class";
+import { Sema } from "@aldlss/async-sema";
+import { ErrorBoundary } from "react-error-boundary";
 
 export function QuizMain({ musicMap }: { musicMap: MusicMap }) {
     useEffect(() => {
@@ -122,7 +125,7 @@ export function QuizMain({ musicMap }: { musicMap: MusicMap }) {
     }, [changeThemeAppearance]);
 
     return (
-        <div className="border-surface-color h-full w-full overflow-hidden border-1 rounded-lg @container/main">
+        <div className="h-full w-full overflow-hidden border-1 rounded-lg @container/main border-surface-color">
             {
                 {
                     [PageType.start]: (
@@ -211,10 +214,9 @@ export function EndPage({
                     <>
                         <input
                             name="nickname"
-                            // autoFocus={true}
                             placeholder="Player"
                             autoComplete="off"
-                            className="dark:bg-material-dark-8 border-tab-color max-w-90% border-2 rounded-lg bg-gray-3 p-1 text-center font-bold hover:border-blue text-h2 dark:hover:border-cyan"
+                            className="max-w-90% border-2 rounded-lg bg-gray-3 p-1 text-center font-bold border-tab-color hover:border-blue dark:bg-material-dark-8 text-h2 dark:hover:border-cyan"
                             type="text"
                             value={nickname}
                             onChange={(e) => {
@@ -444,23 +446,28 @@ function RunningPage({
 
         // 异步并发获取段落
         const promises = [];
+        const fetchMusic = async (originName: string) => {
+            const digestName = await digestMuiscName(originName);
+            const response = await fetch(
+                `${process.env.NEXT_PUBLIC_FETCH_MUSIC_URL_PREFIX}/${digestName}.ogg`.replace(
+                    /(?<=:\/\/.*)\/\//g,
+                    "/"
+                ),
+                {
+                    headers: { Accept: "audio/ogg" },
+                    next: { tags: ["music"] },
+                }
+            );
+            if (!response.ok) {
+                throw Error(ErrorType.NetworkError, {
+                    cause: `${response.status} ${response.statusText}`,
+                });
+            }
+            return await response.arrayBuffer();
+        };
         for (let i = 0; i < needFetchAmount; i++) {
             promises.push(
-                digestMuiscName(
-                    `${music.name}${separator}${i + startIdx}`
-                ).then(async (digest) => {
-                    const response = await fetch(
-                        `${process.env.NEXT_PUBLIC_FETCH_MUSIC_URL_PREFIX}/${digest}.ogg`.replace(
-                            /(?<=:\/\/.*)\/\//g,
-                            "/"
-                        ),
-                        {
-                            headers: { Accept: "audio/ogg" },
-                            next: { tags: ["music"] },
-                        }
-                    );
-                    return await response.arrayBuffer();
-                })
+                fetchMusic(`${music.name}${separator}${i + startIdx}`)
             );
         }
 
@@ -525,62 +532,117 @@ function RunningPage({
             (sum, item) => sum + item.length,
             0
         );
-        const sumBuffer = audioContext.createBuffer(
+        const offlineAudioContext = new OfflineAudioContext(
             decodeBuffer[0].numberOfChannels,
             lenghtSum,
             decodeBuffer[0].sampleRate
         );
-        let bufferOffset = 0;
+        // 这里用这个方法，至少省去了猛拷 buffer 的时间，还转成了异步，我感觉可以
+        let startTimeOffset = 0;
         for (const buffer of decodeBuffer) {
-            for (let channel = 0; channel < buffer.numberOfChannels; channel++)
-                sumBuffer.copyToChannel(
-                    buffer.getChannelData(channel),
-                    channel,
-                    bufferOffset
-                );
-            bufferOffset += buffer.length;
+            const source = offlineAudioContext.createBufferSource();
+            source.buffer = buffer;
+            source.connect(offlineAudioContext.destination);
+            source.start(startTimeOffset);
+            startTimeOffset += buffer.duration;
         }
+        const sumBuffer = await offlineAudioContext.startRendering();
 
         return sumBuffer;
     };
 
-    const quizesLimit = 1;
-    const quizes = useRef<Quiz[]>([]);
-    const [nowQuiz, setNowQuiz] = useState<Quiz | null>(null);
-    // 仅在 addQuizes 在 wait 这个 Promise 的时候有用
-    const activeAudioEffect = useRef<EventPromise | null>(null);
-    const waitForQuiz = useRef<EventPromise | null>(null);
-
-    function createCallFuncPromise(
-        Func: Function,
-        active: MutableRefObject<EventPromise | null>
-    ) {
-        // 用 Promise 的方式来实现事件
-        new Promise<void>((resolve, reject) => {
-            active.current = {
-                active: resolve,
-                cancel: reject,
-            };
+    const quizesLimit = useMemo(() => {
+        var temp = Number(process.env.NEXT_PUBLIC_QUIZ_BUFFER_SIZE);
+        const rankValue = {
+            [RankType.easy]: 2,
+            [RankType.normal]: 2,
+            [RankType.hard]: 1,
+            [RankType.lunatic]: 1,
+        };
+        return isNaN(temp) ? rankValue[rank] : temp;
+    }, [rank]);
+    // 这个起着表示 loading 状态和作为 quiz 的功能，原谅我一变量多用 = =
+    const [nowQuiz, setNowQuizInfo] = useState<Quiz | null>(null);
+    // 用于显示 loading 界面，为什么非要这样子写，因为真想试试 suspense 和 error boundary
+    const [LoadingPromise, setLoadingPromise] = useState<Promise<void>>(
+        new Promise(() => {})
+    );
+    // 因为使用了该信号量顺便传递 Promise，因此需要更改 initFn，不然不给传，这里的 initFn 无意义
+    const quizAvailabled = useRef(
+        new SemaType(0, {
+            capacity: quizesLimit + 1,
+            initFn: () => Promise.resolve({} as Quiz),
         })
-            .then(() => {
-                active.current = null;
-                Func();
-            })
-            .catch(() => {
-                return;
-            });
-    }
+    );
+    const quizNeeded = useRef(
+        new Sema(quizesLimit, { capacity: quizesLimit + 1 })
+    );
+    // 这个变量是基于这样一个设计，在不可避免地出错后，每次重试都不必马上把后面的队列也填满
+    // 只有在本次尝试成功后才继续开始填，若失败则后面的也不用尝试了
+    // 这个变量是为了弥补看不到现有信号量数量的遗憾
+    const quizNeedMaxSize = useRef(quizesLimit);
 
     // 消费者的
     const nextQuiz = useCallback(() => {
-        if (quizes.current.length > 0) {
-            setNowQuiz(quizes.current.shift() ?? null);
-        } else {
-            createCallFuncPromise(nextQuiz, waitForQuiz);
-        }
-    }, []);
+        let stop = false;
+        quizNeeded.current.release();
+        setNowQuizInfo(null);
+        const loadingPromise = new ControlledPromise<void>();
+        setLoadingPromise(loadingPromise.promise);
+        const solve = (quiz: Quiz) => {
+            setNowQuizInfo(quiz);
+            loadingPromise.resolve();
+            for (let i = 0; i < quizesLimit - quizNeedMaxSize.current; ++i) {
+                quizNeeded.current.release();
+            }
+            quizNeedMaxSize.current = quizesLimit;
+        };
+        const getNextQuiz = async () => {
+            try {
+                // await 的是 Promise<Promise<Quiz>>，直接展平了
+                const quiz: Quiz = await quizAvailabled.current.acquire();
+                if (stop) return;
+                solve(quiz);
+            } catch (e) {
+                // 这里总体思想是出错后看看后面的有没有出错，没有的话就直接 resolve
+                // 后面都出错的话那就爆
+                let quizPromiseTry: Promise<Quiz> | undefined;
+                // 这个是为了保证最多只会尝试缓存这么多的 Promise
+                // 然后就是要把用了的资源还回去
+                let count = 0;
+                const releaseCount = () => {
+                    for (let i = 0; i < count; ++i) {
+                        quizNeeded.current.release();
+                    }
+                };
+                while ((quizPromiseTry = quizAvailabled.current.tryAcquire())) {
+                    ++count;
+                    try {
+                        const quiz = await quizPromiseTry;
+                        releaseCount();
+                        if (stop) return;
+                        solve(quiz);
+                        return;
+                    } catch (error) {
+                        e = error;
+                    }
+                }
+                quizNeedMaxSize.current -= count;
+                if (stop) return;
+                loadingPromise.reject(e);
+            }
+        };
+        getNextQuiz();
+        return () => {
+            stop = true;
+        };
+    }, [quizesLimit]);
+
     useEffect(() => {
-        nextQuiz();
+        const cancel = nextQuiz();
+        return () => {
+            cancel();
+        };
     }, [nextQuiz]);
 
     // 生产者的
@@ -593,87 +655,71 @@ function RunningPage({
         //         browserType !== BrowserType.FireFox)
         //         ? new OggOpusDecoderWebWorker()
         //         : null;
-
         // stop 用于在每个同步阶段开始时判断是否要停止
         let stop = false;
-        function addQuizes() {
-            if (stop) return;
-            const audioContext = getAudioContext();
-            let randomMusic: SimpleMusic;
-            do {
-                // 单选的话这样比水池抽样大概快很多吧
-                randomMusic =
-                    selectedMusicList[
-                        Math.floor(Math.random() * selectedMusicList.length)
-                    ];
-                // 如果选出来的音乐不够长，那么就再选一次，虽然运气不好的话会有巨大性能问题，但是应该不会吧（
-            } while (randomMusic.amount < musicDuration.current);
-            getMusicPiece(
-                randomMusic,
-                musicDuration.current,
-                // decoder,
-                audioContext
-            )
-                .then((randomAudioBuffer) => {
-                    if (stop) return;
-                    quizes.current.push({
-                        musicInfo: randomMusic,
-                        music: randomAudioBuffer,
-                    });
-                    // 表示这个 quiz 是不是已经等待被使用了
-                    let pushNow = false;
-                    // 我在想在这里处理是对的吗
-                    if (waitForQuiz.current !== null) {
-                        waitForQuiz.current.active();
-                        waitForQuiz.current = null;
-                        pushNow = true;
-                    }
-                    if (
-                        quizes.current.length - (pushNow ? 1 : 0) >=
-                        quizesLimit
-                    ) {
-                        createCallFuncPromise(addQuizes, activeAudioEffect);
-                    } else {
-                        addQuizes();
-                    }
-                })
-                .catch((e) => {
-                    if (stop) return;
-                    // TODO: 错误处理
-                    console.error(e);
-                    createCallFuncPromise(addQuizes, activeAudioEffect);
-                });
+        const audioContext = getAudioContext();
+        async function addQuizes() {
+            while (await quizNeeded.current.acquire()) {
+                if (stop) {
+                    // 拿了指标没干活的要把指标还回去...
+                    quizNeeded.current.release();
+                    return;
+                }
+                quizAvailabled.current.release(
+                    new Promise<Quiz>(async (resolve, reject) => {
+                        let randomMusic: SimpleMusic;
+                        do {
+                            // 单选的话这样比水池抽样大概快很多吧
+                            randomMusic =
+                                selectedMusicList[
+                                    Math.floor(
+                                        Math.random() * selectedMusicList.length
+                                    )
+                                ];
+                            // 如果选出来的音乐不够长，那么就再选一次，虽然运气不好的话会有巨大性能问题，但是应该不会吧（
+                        } while (randomMusic.amount < musicDuration.current);
+                        try {
+                            const randomAudioBuffer = await getMusicPiece(
+                                randomMusic,
+                                musicDuration.current,
+                                // decoder,
+                                audioContext
+                            );
+                            if (stop) return;
+                            resolve({
+                                music: randomAudioBuffer,
+                                musicInfo: randomMusic,
+                            });
+                        } catch (e) {
+                            if (stop) return;
+                            reject(e);
+                        }
+                    })
+                );
+            }
         }
         addQuizes();
+        const quizAvailabledCurrent = quizAvailabled.current;
         return () => {
             // decoder?.free();
-            quizes.current = [];
-
+            quizAvailabledCurrent.drain();
             stop = true;
-            activeAudioEffect.current?.cancel();
         };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [musicDuration, selectedMusicList]);
 
     const playTheMusic = useRef(() => {});
 
     const [showResultDialog, setShowResultDialog] = useState(false);
     const [showEndGameDialog, setShowEndGameDialog] = useState(false);
-    const [answerResult, setAnswerResult] = useState(false);
+    const [answeredSid, setAnsweredSid] = useState(-1);
 
-    const afterClose = () => {
+    const afterResultDialogClose = () => {
         setNowQuizCount(nowQuizCount + 1);
-        if (activeAudioEffect.current !== null) {
-            activeAudioEffect.current.active();
-            activeAudioEffect.current = null;
-        }
-        if (waitForQuiz.current === null) {
-            nextQuiz();
-        }
         setQuizMusicMap((draft) => {
             if (selectSid !== -1) selectMusicMapBySid(selectSid, draft);
         });
         setSelectSid(-1);
+        nextQuiz();
     };
 
     const [difficultyTextColor, h1Text] = {
@@ -702,17 +748,19 @@ function RunningPage({
                         结束
                     </button>
                 </header>
-                <ResultDialog
-                    showResult={showResultDialog}
-                    result={answerResult}
-                    onClose={() => setShowResultDialog(false)}
-                    afterClose={afterClose}
-                    nowQuiz={nowQuiz}
-                    autoClose={true}
-                    autoCloseTime={() =>
-                        Math.max(3000, musicDuration.current * 1000)
-                    }
-                />
+                {!!nowQuiz && (
+                    <ResultDialog
+                        show={showResultDialog}
+                        selectedSid={answeredSid}
+                        onClose={() => setShowResultDialog(false)}
+                        afterClose={afterResultDialogClose}
+                        nowQuizInfo={nowQuiz.musicInfo}
+                        autoClose={true}
+                        autoCloseTime={() =>
+                            Math.max(3000, musicDuration.current * 1000)
+                        }
+                    />
+                )}
                 <ConfirmDialog
                     show={showEndGameDialog}
                     operation="结束测验"
@@ -724,24 +772,22 @@ function RunningPage({
                     }}
                 />
                 <div className="h-10% w-full">
-                    {
-                        // TODO: 将这里的逻辑用 Promise 处理(?，可能需要整个消费生产流程改进
-                        nowQuiz ? (
-                            <MusicPlayer
-                                audioBuffer={nowQuiz.music}
-                                audioContext={getAudioContext()}
-                                playTheMusic={playTheMusic}
-                                musicDuration={musicDuration}
-                            />
-                        ) : (
-                            <div className="h-full flex flex-row items-center justify-center">
-                                <Loader3FillSvg className="w-8 animate-spin" />
-                                <h1 className="text-center text-h3">
-                                    少女加载中...
-                                </h1>
-                            </div>
-                        )
-                    }
+                    {!nowQuiz ? (
+                        // 不得不说的是，这样处理 error 和 loading 总感觉有点方便(？
+                        <AsyncBoundary onRetry={nextQuiz}>
+                            {(async () => {
+                                await LoadingPromise;
+                                return <></>;
+                            })()}
+                        </AsyncBoundary>
+                    ) : (
+                        <MusicPlayer
+                            audioBuffer={nowQuiz.music}
+                            audioContext={getAudioContext()}
+                            playTheMusic={playTheMusic}
+                            musicDuration={musicDuration}
+                        />
+                    )}
                 </div>
                 <MusicList
                     musicMap={quizMusicMap}
@@ -768,16 +814,16 @@ function RunningPage({
                     className="self-center p-0.5 main-button"
                     type="button"
                     onClick={() => {
-                        const ansSid = nowQuiz?.musicInfo.sid ?? -1;
-                        if (ansSid === -1) {
+                        const correctSid = nowQuiz?.musicInfo.sid ?? -1;
+                        if (correctSid === -1) {
                             return;
                         }
                         setShowResultDialog(true);
-                        if (selectSid === ansSid) {
+                        setAnsweredSid(selectSid);
+                        if (selectSid === correctSid) {
                             setRightAnswerCount(rightAnswerCount + 1);
-                            setAnswerResult(true);
                         } else {
-                            setAnswerResult(false);
+                            // 意思是错了要多听（
                             playTheMusic.current();
                         }
                     }}>
@@ -788,7 +834,51 @@ function RunningPage({
     );
 }
 
-function ContainerDialog({
+export function AsyncBoundary({
+    children,
+    onRetry,
+    resetKeys,
+}: {
+    children: React.ReactNode;
+    onRetry?: () => void;
+    resetKeys?: any[];
+}) {
+    return (
+        <Suspense
+            fallback={
+                <div className="h-full flex flex-row items-center justify-center">
+                    <Loader3FillSvg className="w-8 animate-spin" />
+                    <h1 className="text-center text-h3">少女加载中...</h1>
+                </div>
+            }>
+            <ErrorBoundary
+                resetKeys={resetKeys}
+                onReset={onRetry}
+                fallbackRender={({ error, resetErrorBoundary }) => {
+                    return (
+                        <div className="h-full flex flex-col items-center justify-center">
+                            <div className="text-center">
+                                <h1 className="inline text-p">少女出错了！</h1>
+                                <pre className="inline">{error.message}</pre>
+                            </div>
+                            <button
+                                className="p-2 secondary-button"
+                                type="button"
+                                onClick={() => {
+                                    resetErrorBoundary();
+                                }}>
+                                重试
+                            </button>
+                        </div>
+                    );
+                }}>
+                {children}
+            </ErrorBoundary>
+        </Suspense>
+    );
+}
+
+export function ContainerDialog({
     show,
     onClose,
     afterClose = () => {},
@@ -856,7 +946,7 @@ function ContainerDialog({
                             leave="transition transform-gpu"
                             leaveFrom="opacity-100 translate-y-0"
                             leaveTo="opacity-0 translate-y--30%">
-                            <div className="bg-dialog border-surface-color z-10 w-90% border-1 rounded-lg shadow-md">
+                            <div className="z-10 w-90% border-1 rounded-lg shadow-md border-surface-color bg-dialog">
                                 {children}
                             </div>
                         </Transition.Child>
@@ -868,57 +958,62 @@ function ContainerDialog({
 }
 
 function ResultDialog({
-    showResult,
-    result,
+    show,
     onClose,
     afterClose,
-    nowQuiz,
+    nowQuizInfo,
+    selectedSid,
     autoClose,
     autoCloseTime,
 }: {
-    showResult: boolean;
-    result: boolean;
+    show: boolean;
     onClose: () => void;
     afterClose: () => void;
-    nowQuiz: Quiz | null;
+    nowQuizInfo: SimpleMusic;
+    selectedSid: number;
     autoClose: boolean;
     autoCloseTime: number | (() => number);
 }) {
-    const names = nowQuiz?.musicInfo.name.split(separator);
-    const description = (
-        <>
-            {`正确答案${result ? "就" : ""}是`}
-            {names?.map((name, idx) => {
-                if (idx === 0) {
-                    return <React.Fragment key={name}></React.Fragment>;
-                } else if (idx === names.length - 1) {
-                    const nameWithoutIdx = name.replace(/\d{1,2}\. /g, "");
-                    return (
-                        <Link
-                            href={`https://thwiki.cc/${nameWithoutIdx}`}
-                            target="_blank"
-                            key={name}>
-                            <span className="text-sky-4 underline active:text-sky-3 focus:text-sky-5 hover:text-sky-5">
-                                {nameWithoutIdx}
+    const result = selectedSid === nowQuizInfo.sid;
+    const description1 = <>{`正确答案${result ? "就" : ""}是`}</>;
+    const description2 = useMemo(() => {
+        const names = nowQuizInfo.name.split(separator);
+        return (
+            <>
+                {names?.map((name, idx) => {
+                    if (idx === 0) {
+                        return <React.Fragment key={name}></React.Fragment>;
+                    } else if (idx === names.length - 1) {
+                        const nameWithoutIdx = name.replace(/\d{1,2}\. /g, "");
+                        return (
+                            <Link
+                                href={`https://thwiki.cc/${nameWithoutIdx}`}
+                                target="_blank"
+                                key={name}>
+                                <span className="text-sky-4 underline active:text-sky-3 focus:text-sky-5 hover:text-sky-5">
+                                    {nameWithoutIdx}
+                                </span>
+                            </Link>
+                        );
+                    } else if (idx === 1 || idx === 2) {
+                        return (
+                            <span key={name}>
+                                {/* 最后一个才加 “的” */}
+                                {`${name}中${
+                                    names.length - idx === 2 ? "的" : ""
+                                }`}
                             </span>
-                        </Link>
-                    );
-                } else if (idx === 1 || idx === 2) {
-                    return (
-                        <span key={name}>
-                            {/* 最后一个才加 “的” */}
-                            {`${name}中${names.length - idx === 2 ? "的" : ""}`}
-                        </span>
-                    );
-                } else {
-                    return <React.Fragment key={name}></React.Fragment>;
-                }
-            })}
-        </>
-    );
+                        );
+                    } else {
+                        return <React.Fragment key={name}></React.Fragment>;
+                    }
+                })}
+            </>
+        );
+    }, [nowQuizInfo.name]);
     return (
         <ContainerDialog
-            show={showResult && nowQuiz !== null}
+            show={show}
             onClose={onClose}
             afterClose={afterClose}
             autoClose={autoClose}
@@ -934,7 +1029,8 @@ function ResultDialog({
                     答{result ? "对" : "错"}了
                 </Dialog.Title>
                 <Dialog.Description className="text-p">
-                    {description}
+                    {description1}
+                    {description2}
                 </Dialog.Description>
                 <p className="self-center text-gray text-p">点击框外立即关闭</p>
             </Dialog.Panel>
