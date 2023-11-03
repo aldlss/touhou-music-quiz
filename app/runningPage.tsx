@@ -10,6 +10,7 @@ import React, {
     useRef,
     useCallback,
     useEffect,
+    memo,
 } from "react";
 import { useImmer } from "use-immer";
 import { SemaType, ControlledPromise } from "./class";
@@ -18,7 +19,7 @@ import {
     AsyncBoundary,
     ContainerDialog,
 } from "./clientComponent";
-import { separator } from "./constant";
+import { separator, voidFunc } from "./constant";
 import MusicList from "./muiscListComponent";
 import { PlayFillSvg } from "./svg";
 import {
@@ -72,6 +73,23 @@ export default function RunningPage({
         // 这个依赖就是这个，因为对于 quizMusicMap 这个数据，只需要提取出来里面的 Music 就可以了
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [musicMapState]);
+    const musicListOnClickMusic = useCallback(
+        (sid: number) => {
+            if (selectSid !== sid) {
+                setQuizMusicMap((draft) => {
+                    if (selectSid !== -1) selectMusicMapBySid(selectSid, draft);
+                    selectMusicMapBySid(sid, draft);
+                });
+                setSelectSid(sid);
+            } else {
+                setQuizMusicMap((draft) => {
+                    selectMusicMapBySid(sid, draft);
+                });
+                setSelectSid(-1);
+            }
+        },
+        [selectSid, setQuizMusicMap]
+    );
 
     const audioContext = useRef<AudioContext | null>(null);
     function getAudioContext() {
@@ -217,7 +235,7 @@ export default function RunningPage({
     const [nowQuiz, setNowQuizInfo] = useState<Quiz | null>(null);
     // 用于显示 loading 界面，为什么非要这样子写，因为真想试试 suspense 和 error boundary
     const [LoadingPromise, setLoadingPromise] = useState<Promise<void>>(
-        new Promise(() => {})
+        new Promise(voidFunc)
     );
     // 因为使用了该信号量顺便传递 Promise，因此需要更改 initFn，不然不给传，这里的 initFn 无意义
     const quizAvailabled = useRef(
@@ -359,20 +377,34 @@ export default function RunningPage({
         };
     }, [musicDuration, selectedMusicList]);
 
-    const playTheMusic = useRef(() => {});
+    const playTheMusic = useRef(voidFunc);
 
     const [showResultDialog, setShowResultDialog] = useState(false);
     const [showEndGameDialog, setShowEndGameDialog] = useState(false);
     const [answeredSid, setAnsweredSid] = useState(-1);
 
-    const afterResultDialogClose = () => {
+    const afterResultDialogClose = useCallback(() => {
         setNowQuizCount(nowQuizCount + 1);
         setQuizMusicMap((draft) => {
-            if (selectSid !== -1) selectMusicMapBySid(selectSid, draft);
+            if (answeredSid !== -1) selectMusicMapBySid(answeredSid, draft);
         });
         setSelectSid(-1);
         nextQuiz();
-    };
+    }, [answeredSid, nextQuiz, nowQuizCount, setNowQuizCount, setQuizMusicMap]);
+    const resultDialogOnClose = useCallback(() => {
+        setShowResultDialog(false);
+    }, []);
+    const resultDialogAutoCloseTime = useCallback(
+        () => Math.max(3000, musicDuration.current * 1000),
+        [musicDuration]
+    );
+
+    const confirmDialogOnConfirm = useCallback(() => {
+        setPageState(PageType.end);
+    }, [setPageState]);
+    const confirmDialogOnCancel = useCallback(() => {
+        setShowEndGameDialog(false);
+    }, []);
 
     const [difficultyTextColor, h1Text] = {
         [RankType.easy]: ["text-easy-mode", "Easy"],
@@ -404,24 +436,18 @@ export default function RunningPage({
                     <ResultDialog
                         show={showResultDialog}
                         selectedSid={answeredSid}
-                        onClose={() => setShowResultDialog(false)}
+                        onClose={resultDialogOnClose}
                         afterClose={afterResultDialogClose}
                         nowQuizInfo={nowQuiz.musicInfo}
                         autoClose={true}
-                        autoCloseTime={() =>
-                            Math.max(3000, musicDuration.current * 1000)
-                        }
+                        autoCloseTime={resultDialogAutoCloseTime}
                     />
                 )}
                 <ConfirmDialog
                     show={showEndGameDialog}
                     operation="结束测验"
-                    onConfirm={() => {
-                        setPageState(PageType.end);
-                    }}
-                    onCancel={() => {
-                        setShowEndGameDialog(false);
-                    }}
+                    onConfirm={confirmDialogOnConfirm}
+                    onCancel={confirmDialogOnCancel}
                 />
                 <div className="h-10% w-full">
                     {!nowQuiz ? (
@@ -443,23 +469,8 @@ export default function RunningPage({
                 </div>
                 <MusicList
                     musicMap={quizMusicMap}
-                    musicListType={PageType.running}
-                    onClickTab={() => {}}
-                    onClickMusic={(sid) => {
-                        if (selectSid !== sid) {
-                            setQuizMusicMap((draft) => {
-                                if (selectSid !== -1)
-                                    selectMusicMapBySid(selectSid, draft);
-                                selectMusicMapBySid(sid, draft);
-                            });
-                            setSelectSid(sid);
-                        } else {
-                            setQuizMusicMap((draft) => {
-                                selectMusicMapBySid(sid, draft);
-                            });
-                            setSelectSid(-1);
-                        }
-                    }}
+                    onClickTab={voidFunc}
+                    onClickMusic={musicListOnClickMusic}
                 />
                 <button
                     disabled={selectSid < 0 || nowQuiz === null}
@@ -486,7 +497,7 @@ export default function RunningPage({
     );
 }
 
-function ResultDialog({
+const ResultDialog = memo(function ResultDialog({
     show,
     onClose,
     afterClose,
@@ -565,9 +576,9 @@ function ResultDialog({
             </Dialog.Panel>
         </ContainerDialog>
     );
-}
+});
 
-function MusicPlayer({
+const MusicPlayer = memo(function MusicPlayer({
     audioBuffer,
     audioContext,
     playTheMusic,
@@ -656,4 +667,4 @@ function MusicPlayer({
             />
         </div>
     );
-}
+});

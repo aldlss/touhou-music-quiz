@@ -11,6 +11,8 @@ export default defineConfig({
             "border-yellow dark:border-gray-6 transition-border-color",
         "border-tab-color":
             "border-gray-2 dark:border-[#7b8691] transition-border-color",
+        "bg-tab-child-checked":
+            "group-data-not-child-checked:brightness-85 group-data-not-child-checked:[--thm-s-h-a:0.85] dark:group-data-not-child-checked:bg-neutral-5.5 group-data-child-checked:brightness-100 group-data-child-checked:[--thm-s-h-a:1]",
         "text-h1": "text-8 @md/main:text-10 @lg/main:text-12",
         "text-h2": "text-6 @md/main:text-8 @lg/main:text-10",
         "text-h3": "text-5 @md/main:text-6 @lg/main:text-7",
@@ -43,6 +45,8 @@ export default defineConfig({
         data: {
             selected: "headlessui-state~=selected",
             checked: "headlessui-state~=checked",
+            "child-checked": "thmquiz-state~=child-checked",
+            "not-child-checked": "thmquiz-state~=not-child-checked",
         },
         colors: {
             "pure-yellow": "#ffff00",

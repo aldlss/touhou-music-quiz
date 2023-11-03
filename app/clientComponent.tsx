@@ -1,6 +1,7 @@
 "use client";
 import React, {
     Suspense,
+    memo,
     useCallback,
     useEffect,
     useRef,
@@ -21,6 +22,7 @@ import {
 import { InitClientConstant } from "./clientConstant";
 import { ErrorBoundary } from "react-error-boundary";
 import RunningPage from "./runningPage";
+import { voidFunc } from "./constant";
 
 export function QuizMain({ musicMap }: { musicMap: MusicMap }) {
     useEffect(() => {
@@ -99,6 +101,9 @@ export function QuizMain({ musicMap }: { musicMap: MusicMap }) {
         // 虽然我感觉好像没必要加依赖(？
     }, [changeThemeAppearance]);
 
+    const SelectPageSetMusicDuration = useCallback((duration: number) => {
+        musicDuration.current = duration;
+    }, []);
     return (
         <div className="h-full w-full overflow-hidden border-1 rounded-lg @container/main border-surface-color">
             {
@@ -134,9 +139,7 @@ export function QuizMain({ musicMap }: { musicMap: MusicMap }) {
                             musicMapState={musicMapState}
                             setMusicMapState={setMusicMapState}
                             setRank={setRank}
-                            setMusicDuration={(duration: number) => {
-                                musicDuration.current = duration;
-                            }}
+                            setMusicDuration={SelectPageSetMusicDuration}
                         />
                     ),
                     [PageType.running]: (
@@ -261,11 +264,47 @@ export function SelectPage({
             (sum, item) => sum + item.selected,
             0
         ) > 0;
-    const onclickCallback = (sid: number) => {
-        setMusicMapState((draft) => {
-            selectMusicMapBySid(sid, draft);
-        });
-    };
+    const onclickCallback = useCallback(
+        (sid: number) => {
+            setMusicMapState((draft) => {
+                selectMusicMapBySid(sid, draft);
+            });
+        },
+        [setMusicMapState]
+    );
+    const onClickTab = useCallback(
+        (
+            sid: number,
+            e: React.SyntheticEvent<HTMLButtonElement, MouseEvent>
+        ) => {
+            if (e.target !== e.currentTarget) return;
+            if (e.target instanceof HTMLButtonElement) {
+                if (
+                    e.target.hasAttribute("aria-selected") &&
+                    e.target.getAttribute("aria-selected") === "true"
+                ) {
+                    onclickCallback(sid);
+                }
+            }
+        },
+        [onclickCallback]
+    );
+    const onClickMusic = useCallback(
+        (
+            sid: number,
+            e: React.SyntheticEvent<HTMLButtonElement, MouseEvent>
+        ) => {
+            onclickCallback(sid);
+        },
+        [onclickCallback]
+    );
+    const durationSelectPageOnClose = useCallback(() => {
+        setShowTimeSelect(false);
+    }, []);
+    const SelectHelpDialogOnClose = useCallback(() => {
+        setShowHelpDialog(false);
+        SetLocalStorageValue("thm_first_visit", "0");
+    }, []);
     return (
         <main className="h-full w-full bg-container">
             <section className="h-full w-full flex flex-col animate-fade-in-up-fast gap-1">
@@ -283,22 +322,8 @@ export function SelectPage({
                 </header>
                 <MusicList
                     musicMap={musicMapState}
-                    musicListType={PageType.selecting}
-                    onClickTab={(sid, e) => {
-                        if (e.target !== e.currentTarget) return;
-                        if (e.target instanceof HTMLButtonElement) {
-                            if (
-                                e.target.hasAttribute("aria-selected") &&
-                                e.target.getAttribute("aria-selected") ===
-                                    "true"
-                            ) {
-                                onclickCallback(sid);
-                            }
-                        }
-                    }}
-                    onClickMusic={(sid) => {
-                        onclickCallback(sid);
-                    }}
+                    onClickTab={onClickTab}
+                    onClickMusic={onClickMusic}
                 />
                 <button
                     disabled={!nextButtonEnable}
@@ -313,24 +338,19 @@ export function SelectPage({
             <DurationSelectPage
                 show={showTimeSelect}
                 setPageState={setPageState}
-                closePage={() => {
-                    setShowTimeSelect(false);
-                }}
+                closePage={durationSelectPageOnClose}
                 setRank={setRank}
                 setMusicDuration={setMusicDuration}
             />
             <SelectHelpDialog
                 show={showHelpDialog}
-                onClose={() => {
-                    setShowHelpDialog(false);
-                    SetLocalStorageValue("thm_first_visit", "0");
-                }}
+                onClose={SelectHelpDialogOnClose}
             />
         </main>
     );
 }
 
-function SelectHelpDialog({
+const SelectHelpDialog = memo(function SelectHelpDialog({
     show,
     onClose,
 }: {
@@ -360,7 +380,16 @@ function SelectHelpDialog({
             </Dialog.Panel>
         </ContainerDialog>
     );
-}
+});
+
+export const LoadingPage = memo(function LoadingPage() {
+    return (
+        <div className="h-full flex flex-row items-center justify-center">
+            <Loader3FillSvg className="w-8 animate-spin" />
+            <h1 className="text-center text-h3">少女加载中...</h1>
+        </div>
+    );
+});
 
 export function AsyncBoundary({
     children,
@@ -372,13 +401,7 @@ export function AsyncBoundary({
     resetKeys?: any[];
 }) {
     return (
-        <Suspense
-            fallback={
-                <div className="h-full flex flex-row items-center justify-center">
-                    <Loader3FillSvg className="w-8 animate-spin" />
-                    <h1 className="text-center text-h3">少女加载中...</h1>
-                </div>
-            }>
+        <Suspense fallback={<LoadingPage />}>
             <ErrorBoundary
                 resetKeys={resetKeys}
                 onReset={onRetry}
@@ -409,7 +432,7 @@ export function AsyncBoundary({
 export function ContainerDialog({
     show,
     onClose,
-    afterClose = () => {},
+    afterClose = voidFunc,
     autoClose = false,
     autoCloseTime = 2000,
     appear = false,
@@ -485,7 +508,7 @@ export function ContainerDialog({
     );
 }
 
-export function ConfirmDialog({
+export const ConfirmDialog = memo(function ConfirmDialog({
     show,
     onCancel,
     onConfirm,
@@ -524,9 +547,9 @@ export function ConfirmDialog({
             </Dialog.Panel>
         </ContainerDialog>
     );
-}
+});
 
-function DurationSelectPage({
+const DurationSelectPage = memo(function DurationSelectPage({
     show,
     setPageState,
     closePage,
@@ -621,7 +644,7 @@ function DurationSelectPage({
             </div>
         </Transition>
     );
-}
+});
 
 function DurationSelectItem({
     title,

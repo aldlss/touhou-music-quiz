@@ -1,10 +1,11 @@
 import { PageType, ThemeAppearanceType } from "./types";
 import packageInfo from "../package.json";
 import { MoonLineSvg, SunLineSvg } from "./svg";
+import { voidFunc } from "./constant";
 
 export function StartPage({
     setPageState,
-    initFunc = () => {},
+    initFunc = voidFunc,
     themeAppearance,
     setThemeAppearance,
 }: {
