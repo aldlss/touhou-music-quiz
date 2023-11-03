@@ -449,7 +449,7 @@ export function ContainerDialog({
     // 用于自动关闭界面
     useEffect(() => {
         let timer: NodeJS.Timeout;
-        if (autoClose) {
+        if (autoClose && show) {
             timer = setTimeout(
                 () => {
                     onClose();
@@ -462,7 +462,7 @@ export function ContainerDialog({
         return () => {
             clearTimeout(timer);
         };
-    }, [autoClose, autoCloseTime, onClose]);
+    }, [autoClose, autoCloseTime, onClose, show]);
     return (
         <Transition
             show={show}
