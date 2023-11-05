@@ -24,13 +24,13 @@
     "@types/node": "latest",
     "@types/react": "latest",
     "@types/react-dom": "latest",
-    "@unocss/eslint-config": "^0.57.1",
-    "@unocss/postcss": "^0.57.1",
+    "@unocss/eslint-config": "^0.57.2",
+    "@unocss/postcss": "^0.57.2",
     "autoprefixer": "latest",
     "eslint": "latest",
     "eslint-config-next": "latest",
     "postcss": "latest",
     "typescript": "latest",
-    "unocss": "^0.57.1"
+    "unocss": "^0.57.2"
   }
 }

@@ -81,7 +81,7 @@ export function TouhouMusicQuizContainer({
     children: React.JSX.Element;
 }) {
     return (
-        <main className="h-screen min-h-408px min-w-272px w-full flex flex-col items-center justify-center">
+        <main className="h-screen min-h-408px min-w-272px w-full flex items-center justify-center">
             <AdaptiveMainContain>{children}</AdaptiveMainContain>
         </main>
     );

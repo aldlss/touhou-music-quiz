@@ -10,23 +10,23 @@ export default defineConfig({
         "border-tab-list-color":
             "border-yellow dark:border-gray-6 transition-border-color",
         "border-tab-color":
-            "border-gray-2 dark:border-[#7b8691] transition-border-color",
-        "bg-tab-child-checked":
-            "group-data-not-child-checked:brightness-85 group-data-not-child-checked:[--thm-s-h-a:0.85] dark:group-data-not-child-checked:bg-neutral-5.5 group-data-child-checked:brightness-100 group-data-child-checked:[--thm-s-h-a:1]",
+            "border-gray-2 dark:border-gray-4.5 transition-border-color",
+        "bg-tab-h1":
+            "bg-tab-list dark:data-selected:bg-deep-cyan-2 dark:group-data-not-child-checked:data-selected:bg-[#008384]  data-selected:bg-sky-4 group-data-not-child-checked:data-selected:bg-[#30a1d3]",
+        "bg-tab-h2":
+            "bg-tab-list data-selected:bg-sky-3 group-data-not-child-checked:data-selected:bg-[#6ab3d6] dark:data-selected:bg-deep-cyan-r-2 dark:group-data-not-child-checked:data-selected:bg-[#309596]",
         "text-h1": "text-8 @md/main:text-10 @lg/main:text-12",
         "text-h2": "text-6 @md/main:text-8 @lg/main:text-10",
         "text-h3": "text-5 @md/main:text-6 @lg/main:text-7",
         "text-p": "text-4 @md/main:text-5 @lg/main:text-6",
         "transition-common": "transition ease-in-out duration-300",
         "simple-hover-active": "active:brightness-95 hover:brightness-105",
-        "simple-hover-active-var":
-            "active:brightness-[calc(var(--thm-s-h-a)-0.05)] hover:brightness-[calc(var(--thm-s-h-a)+0.05)]",
         "bg-bg":
             "bg-gray-1  dark:bg-material-dark-1 transition-background-color",
         "bg-container":
             "bg-white dark:bg-material-dark-2 transition-background-color",
         "bg-tab-list":
-            "bg-white dark:bg-material-dark-5 transition-background-color",
+            "bg-white group-data-not-child-checked:bg-neutral-3 dark:bg-material-dark-5 dark:group-data-not-child-checked:bg-neutral-5.5 transition-background-color",
         "bg-dialog":
             "bg-white dark:bg-material-dark-6 transition-background-color",
         "common-button":
@@ -49,17 +49,16 @@ export default defineConfig({
             "not-child-checked": "thmquiz-state~=not-child-checked",
         },
         colors: {
-            "pure-yellow": "#ffff00",
-            "pure-red": "#ff0000",
             "sky-1.5": "#cdecfe",
             "gray-2.5": "#dbdee3",
+            "gray-4.5": "#7b8691",
+            "gray-6.5": "#5c6b82",
             "easy-mode": "#5df44c",
             "normal-mode": "#51ace7",
             "hard-mode": "#1974fc",
             "lunatic-mode": "#bf00bd",
             "deep-pink": "#ff1493",
             "dark-orange": "#ff8c00",
-            "gray-6.5": "#5c6b82",
             "neutral-5.5": "#606060",
             "material-dark-1": "#121212",
             "material-dark-2": "#1e1e1e",
@@ -89,6 +88,5 @@ export default defineConfig({
             xs: "(min-width: 22rem)",
             "2xs": "(min-width: 20rem)",
         },
-        animation: {},
     },
 });

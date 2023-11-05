@@ -107,8 +107,7 @@ const H1TabListInner = memo(function H1TabListInner({
 }) {
     return (
         <Tab
-            // 感觉这个样式快要写爆了，已经要加 important 了
-            className="bg-tab-child-checked h-full w-full p-1 text-center transition bg-tab-list data-selected:bg-sky-4 text-p data-selected:hover:text-common-color hover:text-purple !simple-hover-active-var !dark:data-selected:bg-deep-cyan-2"
+            className="bg-tab-h1 h-full w-full p-1 text-center transition text-p data-selected:hover:text-common-color hover:text-purple simple-hover-active"
             onClick={(e) => {
                 onClickTab(itemSid, e);
             }}>
@@ -201,7 +200,7 @@ function H2TabList({
     ) => void;
 }) {
     return (
-        <Tab.List className="w-40% flex flex-col overflow-y-auto border-1 rounded-lg border-tab-list-color">
+        <Tab.List className="w-40% overflow-y-auto border-1 rounded-lg border-tab-list-color">
             {Object.entries(classMap).map(([albumName, value], idx) => (
                 <H2TabListItem
                     key={albumName}
@@ -278,7 +277,7 @@ const H2TabListInner = memo(function H2TabListInner({
 }) {
     return (
         <Tab
-            className="bg-tab-child-checked h-full w-full p-0.5 text-left transition bg-tab-list data-selected:bg-sky-3 text-p data-selected:hover:text-common-color hover:text-purple !simple-hover-active-var !dark:data-selected:bg-deep-cyan-r-2"
+            className="bg-tab-h2 h-full w-full p-0.5 text-left transition text-p data-selected:hover:text-common-color hover:text-purple simple-hover-active"
             onClick={(e) => {
                 onClickTab(itemSid, e);
             }}>
