@@ -19,6 +19,7 @@ export default defineConfig({
         "text-h2": "text-6 @md/main:text-8 @lg/main:text-10",
         "text-h3": "text-5 @md/main:text-6 @lg/main:text-7",
         "text-p": "text-4 @md/main:text-5 @lg/main:text-6",
+        "text-small": "text-3 @md/main:text-4 @lg/main:text-5",
         "transition-common": "transition ease-in-out duration-300",
         "simple-hover-active": "active:brightness-95 hover:brightness-105",
         "bg-bg":

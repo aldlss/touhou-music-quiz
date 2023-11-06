@@ -368,6 +368,8 @@ const SelectHelpDialog = memo(function SelectHelpDialog({
                     <br />
                     对于某一类目，在选取状态后再次点击可以 全选/全不选
                     该类目下的所有曲子。
+                    <br />
+                    默认已选取 Windows 作品 下的所有曲子。
                 </Dialog.Description>
                 <button
                     type="button"
