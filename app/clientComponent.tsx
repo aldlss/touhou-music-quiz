@@ -22,7 +22,7 @@ import {
 import { InitClientConstant } from "./clientConstant";
 import { ErrorBoundary } from "react-error-boundary";
 import RunningPage from "./runningPage";
-import { voidFunc } from "./constant";
+import { difficultyColorAndText, voidFunc } from "./constant";
 
 export function QuizMain({ musicMap }: { musicMap: MusicMap }) {
     useEffect(() => {
@@ -161,6 +161,7 @@ export function QuizMain({ musicMap }: { musicMap: MusicMap }) {
                             setPageState={setPageState}
                             nowQuizCount={nowQuizCount}
                             rightAnswerCount={rightAnswerCount}
+                            rank={rank}
                         />
                     ),
                 }[pageState]
@@ -173,15 +174,18 @@ export function EndPage({
     setPageState,
     nowQuizCount,
     rightAnswerCount,
+    rank,
 }: {
     setPageState: Function;
     nowQuizCount: number;
     rightAnswerCount: number;
+    rank: RankType;
 }) {
     const [nickname, setNickname] = useState(() => {
         return GetLocalStorageValue("nickname", "");
     });
     const [editNickName, setEditNickName] = useState(true);
+    const [difficultyColor, difficultyText] = difficultyColorAndText[rank];
     return (
         <div className="h-full bg-container">
             <main className="h-full w-full flex flex-col animate-fade-in-up-fast items-center justify-center gap-1">
@@ -218,7 +222,8 @@ export function EndPage({
                 <h3 className="text-center text-h3">
                     在东方原曲认知测验无尽版
                     <br />
-                    获得
+                    <span className={difficultyColor}>{difficultyText}</span>
+                    &nbsp;难度获得
                 </h3>
                 <h3 className="font-600 text-rose text-h2">{`${rightAnswerCount}/${
                     nowQuizCount - 1

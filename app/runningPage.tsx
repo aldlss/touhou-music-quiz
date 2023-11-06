@@ -19,7 +19,7 @@ import {
     AsyncBoundary,
     ContainerDialog,
 } from "./clientComponent";
-import { separator, voidFunc } from "./constant";
+import { difficultyColorAndText, separator, voidFunc } from "./constant";
 import MusicList from "./muiscListComponent";
 import { PlayFillSvg } from "./svg";
 import {
@@ -406,12 +406,7 @@ export default function RunningPage({
         setShowEndGameDialog(false);
     }, []);
 
-    const [difficultyTextColor, h1Text] = {
-        [RankType.easy]: ["text-easy-mode", "Easy"],
-        [RankType.normal]: ["text-normal-mode", "Normal"],
-        [RankType.hard]: ["text-hard-mode", "Hard"],
-        [RankType.lunatic]: ["text-lunatic-mode", "Lunatic"],
-    }[rank];
+    const [difficultyTextColor, h1Text] = difficultyColorAndText[rank];
     return (
         <div className="h-full bg-container">
             <main className="relative h-full w-full flex flex-col animate-fade-in-up-fast">
