@@ -39,8 +39,16 @@ export default defineConfig({
         "flex-3": "flex-[3_3_0%]",
         "animate-fade-in-up-fast":
             "animate-fade-in-up animate-duration-800 animate-ease-out",
+        "transition-opacity-delay":
+            "transition-property-opacity transition-delay-100 transition-duration-300 transition-ease-out",
     },
-    rules: [["justify-center-safe", { "justify-content": "safe center" }]],
+    rules: [
+        ["justify-center-safe", { "justify-content": "safe center" }],
+        [
+            "will-change-scroll-opacity",
+            { "will-change": "scroll-position, opacity" },
+        ],
+    ],
     theme: {
         data: {
             selected: "headlessui-state~=selected",
@@ -49,6 +57,7 @@ export default defineConfig({
             "not-child-checked": "thmquiz-state~=not-child-checked",
         },
         colors: {
+            "pure-red": "#ff0000",
             "sky-1.5": "#cdecfe",
             "gray-2.5": "#dbdee3",
             "gray-4.5": "#7b8691",
