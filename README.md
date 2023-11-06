@@ -1,4 +1,4 @@
-# 东方原曲认知测试（无尽版）
+# 东方原曲认知测验（无尽版）
 
 ## 环境变量
 `API_CLEAN_PASSWORD`: 清除 nextjs 数据缓存时的密码，如 `awpgijseopighjewsihougblns`
