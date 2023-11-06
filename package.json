@@ -1,6 +1,6 @@
 {
   "name": "thmuisc-quiz",
-  "version": "0.1.0 alpha4",
+  "version": "0.1.0 beta1",
   "private": true,
   "scripts": {
     "dev": "next dev",

@@ -7,7 +7,6 @@ import {
     MusicMap,
     OsType,
     SimpleMusic,
-    ThemeAppearanceType,
 } from "./types";
 import { separator } from "./constant";
 import { localStorageAvailable } from "./clientConstant";
@@ -123,6 +122,9 @@ export const selectMusicMapBySid = (
                     !value.selected
                 );
                 return value.selected - oldSelected;
+            } else if (sid > value.sid) {
+                // 因为父类的 sid 是大于所有子项的，所以如果 sid 大于当前项，那么就不用继续往里找了
+                continue;
             } else {
                 // 预期返回差值
                 const delta = selectMusicMapBySid(sid, value.data);
