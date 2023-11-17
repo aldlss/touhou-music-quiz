@@ -1,7 +1,7 @@
 "use client";
 import { Sema } from "@aldlss/async-sema";
 import { Dialog } from "@headlessui/react";
-// import { OggOpusDecoderWebWorker, OpusDecodedAudio } from "ogg-opus-decoder";
+import type { OggOpusDecoderWebWorker } from "@aldlss/ogg-opus-decoder";
 import Link from "next/link";
 import React, {
     MutableRefObject,
@@ -44,6 +44,7 @@ import {
     Quiz,
     PageType,
 } from "./types";
+import { isSupportOggOpus } from "./clientConstant";
 
 export default function RunningPage({
     setPageState,
@@ -104,10 +105,23 @@ export default function RunningPage({
         return audioContext.current;
     }
 
+    const decoderRef = useRef<OggOpusDecoderWebWorker | null>(null);
+    useEffect(() => {
+        if (!isSupportOggOpus) {
+            import("@aldlss/ogg-opus-decoder").then((module) => {
+                decoderRef.current =
+                    decoderRef.current ?? new module.OggOpusDecoderWebWorker();
+            });
+        }
+        return () => {
+            decoderRef.current?.free();
+            decoderRef.current = null;
+        };
+    }, []);
+
     const getMusicPiece = async (
         music: SimpleMusic,
         duration: number,
-        // decoder: OggOpusDecoderWebWorker | null,
         audioContext: AudioContext
     ) => {
         // 选出要获取的段落
@@ -153,39 +167,42 @@ export default function RunningPage({
         }
 
         let decodeBuffer: AudioBuffer[] = [];
-        // 苹果的或者非主流浏览器的就用 webworker
-        // if (decoder) {
-        //     // web worker 解码
-        //     const opusDecodedAudios: OpusDecodedAudio[] = [];
-        //     await decoder.ready;
-        //     try {
-        //         for (const buffer of responses) {
-        //             await decoder
-        //                 .decode(new Uint8Array(buffer))
-        //                 .then((data) => {
-        //                     const temp = audioContext.createBuffer(
-        //                         data.channelData.length,
-        //                         data.samplesDecoded,
-        //                         data.sampleRate
-        //                     );
-        //                     for (let i = 0; i < 2; i++) {
-        //                         temp.getChannelData(i).set(data.channelData[i]);
-        //                     }
-        //                     decodeBuffer.push(temp);
-        //                 });
-        //             await decoder.reset();
-        //         }
-        //         // return opusDecodedAudios;
-        //         if (opusDecodedAudios.length === 0) {
-        //             throw Error(ErrorType.UnknownError, {
-        //                 cause: "解码结果为空",
-        //             });
-        //         }
-        //     } catch (e) {
-        //         throw Error(ErrorType.DecodeError, { cause: e });
-        //     }
-        // } else {
-        {
+        async function decodeAudioDataWithOggOpus() {
+            if (decoderRef.current === null) {
+                const { OggOpusDecoderWebWorker } = await import(
+                    "@aldlss/ogg-opus-decoder"
+                );
+                decoderRef.current = new OggOpusDecoderWebWorker();
+            }
+            const decoder = decoderRef.current;
+            await decoder.ready;
+            try {
+                for (const buffer of responses) {
+                    // TODO: 按照文档说应该是可以不用直接在这里 await 的，但是不这样会出问题
+                    await decoder
+                        .decode(new Uint8Array(buffer))
+                        .then((data) => {
+                            const temp = audioContext.createBuffer(
+                                data.channelData.length,
+                                data.samplesDecoded,
+                                data.sampleRate
+                            );
+                            for (let i = 0; i < 2; i++) {
+                                temp.getChannelData(i).set(data.channelData[i]);
+                            }
+                            decodeBuffer.push(temp);
+                        });
+                    decoder.reset();
+                }
+            } catch (e) {
+                throw Error(ErrorType.DecodeError, { cause: e });
+            }
+        }
+        // 不能浏览器解码的就用 ogg opus web worker 解码
+        if (decoderRef.current) {
+            // web worker 解码
+            await decodeAudioDataWithOggOpus();
+        } else {
             // 用浏览器 API 解码
             try {
                 const res = await Promise.all(
@@ -195,8 +212,14 @@ export default function RunningPage({
                 );
                 decodeBuffer = res;
             } catch (e) {
-                throw Error(ErrorType.DecodeError, { cause: e });
+                // 算是一个 fallback 吧？
+                await decodeAudioDataWithOggOpus();
             }
+        }
+        if (decodeBuffer.length !== needFetchAmount) {
+            throw Error(ErrorType.UnknownError, {
+                cause: "解码结果缺失",
+            });
         }
 
         // 合并音频
@@ -319,14 +342,6 @@ export default function RunningPage({
 
     // 生产者的
     useEffect(() => {
-        // const decoder =
-        //     osType === OsType.Mac ||
-        //     osType === OsType.Other ||
-        //     (browserType !== BrowserType.Chrome &&
-        //         browserType !== BrowserType.Edge &&
-        //         browserType !== BrowserType.FireFox)
-        //         ? new OggOpusDecoderWebWorker()
-        //         : null;
         // stop 用于在每个同步阶段开始时判断是否要停止
         let stop = false;
         const audioContext = getAudioContext();
@@ -360,7 +375,6 @@ export default function RunningPage({
                     const randomAudioBuffer = await getMusicPiece(
                         randomMusic,
                         musicDuration.current,
-                        // decoder,
                         audioContext
                     );
                     if (stop) return;
@@ -377,7 +391,6 @@ export default function RunningPage({
         addQuizes();
         const quizAvailabledCurrent = quizAvailabled.current;
         return () => {
-            // decoder?.free();
             quizAvailabledCurrent.drain();
             stop = true;
         };

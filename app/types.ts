@@ -46,25 +46,6 @@ export enum ErrorType {
     UnknownError = "UnknownError",
 }
 
-export enum BrowserType {
-    Chrome = "Chrome",
-    FireFox = "FireFox",
-    Safari = "Safari",
-    Edge = "Edge",
-    IE = "IE",
-    Opera = "Opera",
-    Other = "Other",
-}
-
-// 不太关心具体是手机还是电脑了
-// 主要是为了把苹果的专门拿出来适配一下
-export enum OsType {
-    Windows = "Windows",
-    Mac = "Mac",
-    Linux = "Linux",
-    Other = "Other",
-}
-
 export enum ThemeAppearanceType {
     Light = "Light",
     Dark = "Dark",

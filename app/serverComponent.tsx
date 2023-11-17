@@ -53,7 +53,7 @@ export function StartPage({
                     )}
                 </button>
             </div>
-            <div className="text-small p-2">
+            <div className="p-2 text-small">
                 测验片段为随机选取，结果不具有参考价值，仅供娱乐。详细介绍可参看
                 Bilibili 视频，若有问题可在评论区或者 Github
                 页面进行反馈（目前都没有）

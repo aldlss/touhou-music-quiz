@@ -1,13 +1,6 @@
 import { cache } from "react";
 import { parse } from "yaml";
-import {
-    BrowserType,
-    Music,
-    MusicCollection,
-    MusicMap,
-    OsType,
-    SimpleMusic,
-} from "./types";
+import { Music, MusicCollection, MusicMap, SimpleMusic } from "./types";
 import { separator } from "./constant";
 import { localStorageAvailable } from "./clientConstant";
 
@@ -210,28 +203,6 @@ export async function digestMuiscName(str: string): Promise<string> {
         .join("");
 }
 
-export function checkBrowserType(userAgent: string): BrowserType {
-    if (userAgent.indexOf("MSIE") >= 0) {
-        return BrowserType.IE; //判断是否为IE浏览器
-    } else if (userAgent.indexOf("Firefox") >= 0) {
-        return BrowserType.FireFox; //是否为Firefox浏览器
-    } else if (userAgent.indexOf("Edg") >= 0) {
-        return BrowserType.Edge; //是否为Edge浏览器(就是Edg)
-    } else if (userAgent.indexOf("Chrome") >= 0) {
-        return BrowserType.Chrome; //是否为Chrome浏览器
-    } else if (userAgent.indexOf("Safari") >= 0) {
-        return BrowserType.Safari; //是否为Safari浏览器
-    }
-    return BrowserType.Other;
-}
-
-export function CheckOsType(userAgent: string): OsType {
-    if (userAgent.indexOf("Win") != -1) return OsType.Windows;
-    if (userAgent.indexOf("Mac") != -1) return OsType.Mac;
-    if (userAgent.indexOf("Linux") != -1) return OsType.Linux;
-    return OsType.Other;
-}
-
 export function CheckLocalStorageAvailable(): boolean {
     try {
         const storage = window.localStorage;
@@ -276,4 +247,9 @@ export function ClearLocalStorage() {
         return;
     }
     window.localStorage.clear();
+}
+
+export function checkIsSupportOggOpus() {
+    const audio = document.createElement("audio");
+    return audio.canPlayType("audio/ogg; codecs=opus") !== "";
 }
