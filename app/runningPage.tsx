@@ -19,7 +19,12 @@ import {
     AsyncBoundary,
     ContainerDialog,
 } from "./clientComponent";
-import { difficultyColorAndText, separator, voidFunc } from "./constant";
+import {
+    difficultyColorAndText,
+    fetchMusicUrlPrefix,
+    separator,
+    voidFunc,
+} from "./constant";
 import MusicList from "./muiscListComponent";
 import { PlayFillSvg } from "./svg";
 import {
@@ -119,10 +124,7 @@ export default function RunningPage({
         const fetchMusic = async (originName: string) => {
             const digestName = await digestMuiscName(originName);
             const response = await fetch(
-                `${process.env.NEXT_PUBLIC_FETCH_MUSIC_URL_PREFIX}/${digestName}.ogg`.replace(
-                    /(?<=:\/\/.*)\/\//g,
-                    "/"
-                ),
+                `${fetchMusicUrlPrefix}${digestName}.ogg`,
                 {
                     headers: { Accept: "audio/ogg" },
                     next: { tags: ["music"] },

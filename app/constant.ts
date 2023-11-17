@@ -8,3 +8,8 @@ export const difficultyColorAndText = {
     [RankType.hard]: ["text-hard-mode", "Hard"],
     [RankType.lunatic]: ["text-lunatic-mode", "Lunatic"],
 };
+// 如果结尾没有 / 则加上 /
+export const fetchMusicUrlPrefix: string =
+    `${process.env.NEXT_PUBLIC_FETCH_MUSIC_URL_PREFIX}`.endsWith("/")
+        ? `${process.env.NEXT_PUBLIC_FETCH_MUSIC_URL_PREFIX}`
+        : `${process.env.NEXT_PUBLIC_FETCH_MUSIC_URL_PREFIX}/`;
