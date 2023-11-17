@@ -335,37 +335,41 @@ export default function RunningPage({
                     quizNeeded.current.release();
                     return;
                 }
+                let randomMusic: SimpleMusic;
+                do {
+                    // 单选的话这样比水池抽样大概快很多吧
+                    randomMusic =
+                        selectedMusicList[
+                            Math.floor(Math.random() * selectedMusicList.length)
+                        ];
+                    // 如果选出来的音乐不够长，那么就再选一次，虽然运气不好的话会有巨大性能问题，但是应该不会吧（
+                } while (randomMusic.amount < musicDuration.current);
+                let resolve!: (value: Quiz | PromiseLike<Quiz>) => void,
+                    reject!: (reason?: any) => void;
+                // 多套一层的原因大概是 Promise 比较方便传递异常
+                // 非要这样的流程是为了保持串行的同时也要让消费端等待该次生产
                 quizAvailabled.current.release(
-                    new Promise<Quiz>(async (resolve, reject) => {
-                        let randomMusic: SimpleMusic;
-                        do {
-                            // 单选的话这样比水池抽样大概快很多吧
-                            randomMusic =
-                                selectedMusicList[
-                                    Math.floor(
-                                        Math.random() * selectedMusicList.length
-                                    )
-                                ];
-                            // 如果选出来的音乐不够长，那么就再选一次，虽然运气不好的话会有巨大性能问题，但是应该不会吧（
-                        } while (randomMusic.amount < musicDuration.current);
-                        try {
-                            const randomAudioBuffer = await getMusicPiece(
-                                randomMusic,
-                                musicDuration.current,
-                                // decoder,
-                                audioContext
-                            );
-                            if (stop) return;
-                            resolve({
-                                music: randomAudioBuffer,
-                                musicInfo: randomMusic,
-                            });
-                        } catch (e) {
-                            if (stop) return;
-                            reject(e);
-                        }
+                    new Promise<Quiz>((res, rej) => {
+                        resolve = res;
+                        reject = rej;
                     })
                 );
+                try {
+                    const randomAudioBuffer = await getMusicPiece(
+                        randomMusic,
+                        musicDuration.current,
+                        // decoder,
+                        audioContext
+                    );
+                    if (stop) return;
+                    resolve({
+                        music: randomAudioBuffer,
+                        musicInfo: randomMusic,
+                    });
+                } catch (e) {
+                    if (stop) return;
+                    reject(e);
+                }
             }
         }
         addQuizes();
