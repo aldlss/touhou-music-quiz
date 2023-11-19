@@ -21,6 +21,15 @@ export function StartPage({
             <div className="p-2 text-right text-gray text-p">
                 {packageInfo.version}
             </div>
+            <p className="absolute m-t-20 aspect-[9999/1] overflow-y-hidden">
+                如果你看到了这行字
+                <br />
+                而且界面显得很扁的话
+                <br />
+                那么为了保证体验
+                <br />
+                很可能您需要升级浏览器版本了
+            </p>
             <div className="flex flex-col items-center gap-6">
                 <h1 className="text-center text-h1">
                     东方原曲认知测验
@@ -69,7 +78,7 @@ export function AdaptiveMainContain({
 }) {
     return (
         <div className="aspect-[2/3] h-auto max-h-95% w-95%">
-            <div className="m-x-auto aspect-[2/3] h-100% max-w-100% w-auto">
+            <div className="m-x-auto aspect-[2/3] h-100% max-w-100% w-auto overflow-x-hidden">
                 {children}
             </div>
         </div>
