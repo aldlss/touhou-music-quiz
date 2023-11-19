@@ -655,11 +655,11 @@ const MusicPlayer = memo(function MusicPlayer({
             <button
                 type="button"
                 aria-label="play music"
-                className="aspect-square rounded-3xl bg-sky-3 common-button dark:bg-sky-6 simple-hover-active"
+                className="rounded-3xl bg-sky-3 common-button dark:bg-sky-6 simple-hover-active"
                 onClick={() => {
                     playMusic();
                 }}>
-                <PlayFillSvg className="h-full w-full fill-white p-2" />
+                <PlayFillSvg className="aspect-square h-full fill-white p-2" />
             </button>
             <input
                 className="max-w-50% min-w-30%"
