@@ -1,7 +1,7 @@
 "use client";
 import { Sema } from "@aldlss/async-sema";
 import { Dialog } from "@headlessui/react";
-import type { OggOpusDecoderWebWorker } from "@aldlss/ogg-opus-decoder";
+import type { OggOpusDecoderWebWorker } from "ogg-opus-decoder";
 import Link from "next/link";
 import React, {
     MutableRefObject,
@@ -108,7 +108,7 @@ export default function RunningPage({
     const decoderRef = useRef<OggOpusDecoderWebWorker | null>(null);
     useEffect(() => {
         if (!isSupportOggOpus) {
-            import("@aldlss/ogg-opus-decoder").then((module) => {
+            import("ogg-opus-decoder").then((module) => {
                 decoderRef.current =
                     decoderRef.current ?? new module.OggOpusDecoderWebWorker();
             });
@@ -170,7 +170,7 @@ export default function RunningPage({
         async function decodeAudioDataWithOggOpus() {
             if (decoderRef.current === null) {
                 const { OggOpusDecoderWebWorker } = await import(
-                    "@aldlss/ogg-opus-decoder"
+                    "ogg-opus-decoder"
                 );
                 decoderRef.current = new OggOpusDecoderWebWorker();
             }
