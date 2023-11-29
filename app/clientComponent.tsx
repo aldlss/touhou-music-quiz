@@ -11,7 +11,7 @@ import { MusicMap, PageType, RankType, ThemeAppearanceType } from "./types";
 import MusicList from "./muiscListComponent";
 import { Dialog, Transition } from "@headlessui/react";
 import { StartPage, TouhouMusicQuizContainer } from "./serverComponent";
-import { ArrowLeftSSvg, Loader3FillSvg, QuestionLineSvg } from "./svg";
+import { ArrowRightSSvg, Loader3FillSvg, QuestionLineSvg } from "./svg";
 import { Updater, useImmer } from "use-immer";
 import { selectMusicMapBySid } from "./tools";
 import {
@@ -632,7 +632,7 @@ const DurationSelectPage = memo(function DurationSelectPage({
                     onClick={() => {
                         closePage();
                     }}>
-                    <ArrowLeftSSvg className="h-8 w-8" />
+                    <ArrowRightSSvg className="h-8 w-8" />
                 </button>
                 <h1 className="m-x-auto w-fit text-h1">难度选择</h1>
             </header>
