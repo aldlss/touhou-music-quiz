@@ -28,6 +28,11 @@ export function QuizMain({ musicMap }: { musicMap: MusicMap }) {
     useEffect(() => {
         // 设置客户端的一些基本信息，不知道没有更好的办法
         InitClientConstant();
+        window.AudioContext =
+            window.AudioContext || (window as any).webkitAudioContext;
+        window.OfflineAudioContext =
+            window.OfflineAudioContext ||
+            (window as any).webkitOfflineAudioContext;
 
         // 检查是否过期，过期则清除一遍 localStorage，设置过期时间十五天
         const expireTimeDelta = 15 * 24 * 60 * 60 * 1000;

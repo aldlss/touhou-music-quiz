@@ -21,14 +21,14 @@ export function StartPage({
             <div className="p-2 text-right text-gray text-p">
                 {packageInfo.version}
             </div>
-            <p className="absolute m-t-20 aspect-[9999/1] overflow-y-hidden">
+            <p className="absolute m-t-20 aspect-[9999/1] min-h-0 overflow-y-hidden">
                 如果你看到了这行字
                 <br />
                 而且界面显得很扁的话
                 <br />
                 那么为了保证体验
                 <br />
-                很可能您需要升级浏览器版本了
+                很可能您需要升级或更换浏览器
             </p>
             <div className="flex flex-col items-center gap-6">
                 <h1 className="text-center text-h1">
@@ -77,8 +77,8 @@ export function AdaptiveMainContain({
     children: React.JSX.Element;
 }) {
     return (
-        <div className="aspect-[2/3] h-auto max-h-95% w-95%">
-            <div className="m-x-auto aspect-[2/3] h-100% max-w-100% w-auto overflow-x-hidden">
+        <div className="m-x-auto aspect-[2/3] h-95% max-w-95% w-auto flex items-center">
+            <div className="aspect-[2/3] h-auto max-h-full w-full">
                 {children}
             </div>
         </div>
@@ -91,7 +91,7 @@ export function TouhouMusicQuizContainer({
     children: React.JSX.Element;
 }) {
     return (
-        <main className="h-screen min-h-408px min-w-272px w-full flex items-center justify-center">
+        <main className="h-screen max-h-screen min-h-408px min-w-272px w-full flex items-center justify-center">
             <AdaptiveMainContain>{children}</AdaptiveMainContain>
         </main>
     );
