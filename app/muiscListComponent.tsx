@@ -10,7 +10,7 @@ import React, {
 } from "react";
 import { voidFunc } from "./constant";
 
-export default function MusicList({
+export const MusicList = memo(function MusicList({
     musicMap,
     onClickTab,
     onClickMusic,
@@ -50,7 +50,7 @@ export default function MusicList({
             </div>
         )
     );
-}
+});
 
 const H1TabList = memo(function H1TabList({
     musicMap,

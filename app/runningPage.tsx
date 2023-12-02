@@ -25,7 +25,7 @@ import {
     separator,
     voidFunc,
 } from "./constant";
-import MusicList from "./muiscListComponent";
+import { MusicList } from "./muiscListComponent";
 import { PlayFillSvg } from "./svg";
 import {
     filterMusicMap,

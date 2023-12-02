@@ -8,7 +8,7 @@ import React, {
     useState,
 } from "react";
 import { MusicMap, PageType, RankType, ThemeAppearanceType } from "./types";
-import MusicList from "./muiscListComponent";
+import { MusicList } from "./muiscListComponent";
 import { Dialog, Transition } from "@headlessui/react";
 import { StartPage, TouhouMusicQuizContainer } from "./serverComponent";
 import { ArrowRightSSvg, Loader3FillSvg, QuestionLineSvg } from "./svg";
