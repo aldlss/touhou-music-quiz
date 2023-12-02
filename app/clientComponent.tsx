@@ -262,6 +262,7 @@ export function SelectPage({
     setMusicDuration: Function;
 }) {
     const [showTimeSelect, setShowTimeSelect] = useState(false);
+    const [showMusicSelect, setShowMusicSelect] = useState(true);
     const [showHelpDialog, setShowHelpDialog] = useState(() => {
         const isFirstVisit = Number(
             GetLocalStorageValue("thm_first_visit", "1")
@@ -315,9 +316,19 @@ export function SelectPage({
         setShowHelpDialog(false);
         SetLocalStorageValue("thm_first_visit", "0");
     }, []);
+    const durationSelectPageBeforeLeave = useCallback(() => {
+        setShowMusicSelect(true);
+    }, []);
+    const durationSelectPageAfterEnter = useCallback(() => {
+        setShowMusicSelect(false);
+    }, []);
     return (
-        <main className="h-full w-full bg-container">
-            <section className="h-full w-full flex flex-col animate-fade-in-up-fast gap-1">
+        <main className="relative h-full w-full bg-container">
+            <section
+                className={`h-full w-full flex flex-col animate-fade-in-up-fast gap-1 ${
+                    showMusicSelect ? "" : "invisible"
+                }`}
+                aria-hidden={!showMusicSelect}>
                 <header className="relative w-full">
                     <h1 className="text-center text-h1">选择乐曲</h1>
                     <button
@@ -351,6 +362,8 @@ export function SelectPage({
                 closePage={durationSelectPageOnClose}
                 setRank={setRank}
                 setMusicDuration={setMusicDuration}
+                afterEnter={durationSelectPageAfterEnter}
+                beforeLeave={durationSelectPageBeforeLeave}
             />
             <SelectHelpDialog
                 show={showHelpDialog}
@@ -567,12 +580,16 @@ const DurationSelectPage = memo(function DurationSelectPage({
     closePage,
     setRank,
     setMusicDuration,
+    afterEnter,
+    beforeLeave,
 }: {
     show: boolean;
     setPageState: Function;
     closePage: () => void;
     setRank: Function;
     setMusicDuration: Function;
+    afterEnter?: () => void;
+    beforeLeave?: () => void;
 }) {
     function makeDurationSelectDivProps(
         title: string,
@@ -622,11 +639,13 @@ const DurationSelectPage = memo(function DurationSelectPage({
     ];
     return (
         <Transition
-            className="h-full w-full flex flex-col translate-y--100% transition-common bg-container"
+            className="absolute h-full w-full flex flex-col translate-y--100% transition-common bg-container"
             as="section"
             show={show}
             enterFrom="translate-x-100%"
             enterTo="translate-x-0"
+            afterEnter={afterEnter}
+            beforeLeave={beforeLeave}
             leaveFrom="translate-x-0"
             leaveTo="translate-x-100%">
             <header className="relative">
