@@ -22,6 +22,7 @@ import {
 import {
     difficultyColorAndText,
     fetchMusicUrlPrefix,
+    previousQuizSetCapacity,
     separator,
     voidFunc,
 } from "./constant";
@@ -345,6 +346,13 @@ export default function RunningPage({
         // stop 用于在每个同步阶段开始时判断是否要停止
         let stop = false;
         const audioContext = getAudioContext();
+        const previouseQuizSids: number[] = [];
+        const previouseQuizSidSet = new Set<number>();
+        // 这个是考虑到如果选的曲子太少，那么重复是不可避免的
+        const localPreviousQuizSetCapacity = Math.min(
+            previousQuizSetCapacity,
+            Math.max(0, selectedMusicList.length - 3)
+        );
         async function addQuizes() {
             while (await quizNeeded.current.acquire()) {
                 if (stop) {
@@ -359,8 +367,17 @@ export default function RunningPage({
                         selectedMusicList[
                             Math.floor(Math.random() * selectedMusicList.length)
                         ];
-                    // 如果选出来的音乐不够长，那么就再选一次，虽然运气不好的话会有巨大性能问题，但是应该不会吧（
-                } while (randomMusic.amount < musicDuration.current);
+                    // 如果选出来的音乐不够长或者和之前几个重复，那么就再选一次，虽然运气不好的话会有巨大性能问题，但是应该不会吧（
+                } while (
+                    randomMusic.amount < musicDuration.current ||
+                    previouseQuizSidSet.has(randomMusic.sid)
+                );
+                // 更新 previouseQuizSid 队列和 set
+                previouseQuizSidSet.add(randomMusic.sid);
+                previouseQuizSids.push(randomMusic.sid);
+                if (previouseQuizSids.length > localPreviousQuizSetCapacity) {
+                    previouseQuizSidSet.delete(previouseQuizSids.shift()!);
+                }
                 let resolve!: (value: Quiz | PromiseLike<Quiz>) => void,
                     reject!: (reason?: any) => void;
                 // 多套一层的原因大概是 Promise 比较方便传递异常

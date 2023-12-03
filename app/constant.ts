@@ -13,3 +13,8 @@ export const fetchMusicUrlPrefix: string =
     `${process.env.NEXT_PUBLIC_FETCH_MUSIC_URL_PREFIX}`.endsWith("/")
         ? `${process.env.NEXT_PUBLIC_FETCH_MUSIC_URL_PREFIX}`
         : `${process.env.NEXT_PUBLIC_FETCH_MUSIC_URL_PREFIX}/`;
+
+export const previousQuizSetCapacity: number = (() => {
+    const temp = Number(process.env.NEXT_PUBLIC_PREVIOUS_QUIZ_SET_CAPACITY);
+    return isNaN(temp) ? 10 : temp >= 0 ? temp : 10;
+})();
