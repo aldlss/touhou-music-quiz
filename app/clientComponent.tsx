@@ -118,7 +118,7 @@ export function QuizMain({ musicMap }: { musicMap: MusicMap }) {
                             key={PageType.start}
                             setPageState={setPageState}
                             initFunc={() => {
-                                setNowQuizCount(1);
+                                setNowQuizCount(0);
                                 setRightAnswerCount(0);
                             }}
                             themeAppearance={showedThemeIcon}
@@ -230,9 +230,7 @@ export function EndPage({
                     <span className={difficultyColor}>{difficultyText}</span>
                     &nbsp;难度获得
                 </h3>
-                <h3 className="font-600 text-rose text-h2">{`${rightAnswerCount}/${
-                    nowQuizCount - 1
-                }`}</h3>
+                <h3 className="font-600 text-rose text-h2">{`${rightAnswerCount}/${nowQuizCount}`}</h3>
                 <h3 className="text-h3">的好成绩</h3>
                 <h2 className="text-h2">可喜可贺，可喜可贺</h2>
                 <button

@@ -403,13 +403,12 @@ export default function RunningPage({
     const [answeredSid, setAnsweredSid] = useState(-1);
 
     const afterResultDialogClose = useCallback(() => {
-        setNowQuizCount(nowQuizCount + 1);
         setQuizMusicMap((draft) => {
             if (answeredSid !== -1) selectMusicMapBySid(answeredSid, draft);
         });
         setSelectSid(-1);
         nextQuiz();
-    }, [answeredSid, nextQuiz, nowQuizCount, setNowQuizCount, setQuizMusicMap]);
+    }, [answeredSid, nextQuiz, setQuizMusicMap]);
     const resultDialogOnClose = useCallback(() => {
         setShowResultDialog(false);
     }, []);
@@ -431,7 +430,8 @@ export default function RunningPage({
             <main className="relative h-full w-full flex flex-col animate-fade-in-up-fast">
                 <header className="relative">
                     <p className="absolute left-0 top-0 p-2 text-h3">
-                        {nowQuizCount}
+                        <span className="text-emerald">{rightAnswerCount}</span>
+                        {`/${nowQuizCount}`}
                     </p>
                     <h1
                         className={`text-h2 flex-1 text-center ${difficultyTextColor}`}>
@@ -497,6 +497,7 @@ export default function RunningPage({
                         }
                         setShowResultDialog(true);
                         setAnsweredSid(selectSid);
+                        setNowQuizCount(nowQuizCount + 1);
                         if (selectSid === correctSid) {
                             setRightAnswerCount(rightAnswerCount + 1);
                         } else {
