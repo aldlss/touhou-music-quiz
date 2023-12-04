@@ -13,21 +13,21 @@ import React, {
     memo,
 } from "react";
 import { useImmer } from "use-immer";
-import { SemaType, ControlledPromise } from "./class";
+import { SemaType, ControlledPromise } from "../class";
 import {
     ConfirmDialog,
     AsyncBoundary,
     ContainerDialog,
-} from "./clientComponent";
+} from "../clientComponent";
 import {
     difficultyColorAndText,
     fetchMusicUrlPrefix,
     previousQuizSetCapacity,
     separator,
     voidFunc,
-} from "./constant";
-import { MusicList } from "./muiscListComponent";
-import { PlayFillSvg } from "./svg";
+} from "../constant";
+import { MusicList } from "../muiscListComponent";
+import { PlayFillSvg } from "../svg";
 import {
     filterMusicMap,
     setMusicMapSelected,
@@ -36,7 +36,7 @@ import {
     selectMusicMapBySid,
     GetLocalStorageValue,
     SetLocalStorageValue,
-} from "./tools";
+} from "../tools";
 import {
     MusicMap,
     RankType,
@@ -44,10 +44,10 @@ import {
     ErrorType,
     Quiz,
     PageType,
-} from "./types";
-import { isSupportOggOpus } from "./clientConstant";
+} from "../types";
+import { isSupportOggOpus } from "../clientConstant";
 
-export default function RunningPage({
+export function RunningPage({
     setPageState,
     musicMapState,
     nowQuizCount,
