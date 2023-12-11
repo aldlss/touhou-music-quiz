@@ -16,13 +16,10 @@ export type Quiz = { musicInfo: SimpleMusic; music: AudioBuffer };
 
 export type MusicCollection = {
     idx: number;
+    name: string;
     sid: number;
-    data: MusicMap | Music[];
+    data: MusicCollection[] | Music[];
     selected: number;
-};
-
-export type MusicMap = {
-    [name: string]: MusicCollection;
 };
 
 export enum PageType {

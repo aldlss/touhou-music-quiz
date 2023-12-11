@@ -6,21 +6,21 @@ import { MusicList } from "../muiscListComponent";
 import { ArrowRightSSvg, QuestionLineSvg } from "../svg";
 import {
     GetLocalStorageValue,
-    selectMusicMapBySid,
+    selectMusicCollectionBySid,
     SetLocalStorageValue,
 } from "../tools";
-import { MusicMap, PageType, RankType } from "../types";
+import { MusicCollection, PageType, RankType } from "../types";
 
 export function SelectPage({
     setPageState,
-    musicMapState,
-    setMusicMapState,
+    musicCollectionState,
+    setMusicCollectionState,
     setRank,
     setMusicDuration,
 }: {
     setPageState: Function;
-    musicMapState: MusicMap;
-    setMusicMapState: Updater<MusicMap>;
+    musicCollectionState: MusicCollection;
+    setMusicCollectionState: Updater<MusicCollection>;
     setRank: Function;
     setMusicDuration: Function;
 }) {
@@ -33,18 +33,14 @@ export function SelectPage({
         return isFirstVisit !== 0;
     });
     // 可能并不是最好的办法
-    const nextButtonEnable =
-        Object.values(musicMapState).reduce(
-            (sum, item) => sum + item.selected,
-            0
-        ) > 0;
+    const nextButtonEnable = musicCollectionState.selected > 0;
     const onclickCallback = useCallback(
         (sid: number) => {
-            setMusicMapState((draft) => {
-                selectMusicMapBySid(sid, draft);
+            setMusicCollectionState((draft) => {
+                selectMusicCollectionBySid(sid, draft);
             });
         },
-        [setMusicMapState]
+        [setMusicCollectionState]
     );
     const onClickTab = useCallback(
         (
@@ -105,7 +101,7 @@ export function SelectPage({
                     </button>
                 </header>
                 <MusicList
-                    musicMap={musicMapState}
+                    musicCollection={musicCollectionState}
                     onClickTab={onClickTab}
                     onClickMusic={onClickMusic}
                 />

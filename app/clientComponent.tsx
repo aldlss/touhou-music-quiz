@@ -7,7 +7,12 @@ import React, {
     useRef,
     useState,
 } from "react";
-import { MusicMap, PageType, RankType, ThemeAppearanceType } from "./types";
+import {
+    MusicCollection,
+    PageType,
+    RankType,
+    ThemeAppearanceType,
+} from "./types";
 import { Dialog, Transition } from "@headlessui/react";
 import { TouhouMusicQuizContainer } from "./serverComponent";
 import { Loader3FillSvg } from "./svg";
@@ -25,7 +30,11 @@ import { SelectPage } from "./_page/selectPage";
 import { RunningPage } from "./_page/runningPage";
 import { EndPage } from "./_page/endPage";
 
-export function QuizMain({ musicMap }: { musicMap: MusicMap }) {
+export function QuizMain({
+    musicCollection,
+}: {
+    musicCollection: MusicCollection;
+}) {
     useEffect(() => {
         // 设置客户端的一些基本信息，不知道没有更好的办法
         InitClientConstant();
@@ -48,7 +57,8 @@ export function QuizMain({ musicMap }: { musicMap: MusicMap }) {
         }
     }, []);
     const [pageState, setPageState] = useState(PageType.start);
-    const [musicMapState, setMusicMapState] = useImmer(musicMap);
+    const [musicCollectionState, setMusicCollectionState] =
+        useImmer(musicCollection);
     const [nowQuizCount, setNowQuizCount] = useState(1);
     const [rightAnswerCount, setRightAnswerCount] = useState(0);
     const musicDuration = useRef(5);
@@ -142,8 +152,8 @@ export function QuizMain({ musicMap }: { musicMap: MusicMap }) {
                         <SelectPage
                             key={PageType.selecting}
                             setPageState={setPageState}
-                            musicMapState={musicMapState}
-                            setMusicMapState={setMusicMapState}
+                            musicCollectionState={musicCollectionState}
+                            setMusicCollectionState={setMusicCollectionState}
                             setRank={setRank}
                             setMusicDuration={SelectPageSetMusicDuration}
                         />
@@ -152,7 +162,7 @@ export function QuizMain({ musicMap }: { musicMap: MusicMap }) {
                         <RunningPage
                             key={PageType.running}
                             setPageState={setPageState}
-                            musicMapState={musicMapState}
+                            musicCollectionState={musicCollectionState}
                             nowQuizCount={nowQuizCount}
                             setNowQuizCount={setNowQuizCount}
                             rightAnswerCount={rightAnswerCount}
