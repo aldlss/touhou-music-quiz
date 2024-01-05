@@ -1,6 +1,6 @@
 "use client";
 import { Switch, Tab } from "@headlessui/react";
-import { Music, MusicCollection, MusicMap } from "./types";
+import { Music, MusicCollection } from "./types";
 import React, {
     SyntheticEvent,
     memo,
@@ -9,13 +9,14 @@ import React, {
     useTransition,
 } from "react";
 import { voidFunc } from "./constant";
+import { isMusicList } from "./tools";
 
 export const MusicList = memo(function MusicList({
-    musicMap,
+    musicCollection,
     onClickTab,
     onClickMusic,
 }: {
-    musicMap: MusicMap;
+    musicCollection: MusicCollection;
     onClickTab: (
         sid: number,
         e: SyntheticEvent<HTMLButtonElement, MouseEvent>
@@ -33,15 +34,18 @@ export const MusicList = memo(function MusicList({
         });
     }, []);
     return (
-        musicMap && (
+        musicCollection && (
             <div className="flex flex-1 flex-col gap-1 overflow-auto p-0.5">
                 <Tab.Group
                     selectedIndex={selectedH1Tab}
                     onChange={onChangeH1Tab}>
-                    <H1TabList musicMap={musicMap} onClickTab={onClickTab} />
+                    <H1TabList
+                        categoryCollection={musicCollection}
+                        onClickTab={onClickTab}
+                    />
                     <H1TabPanels
                         selectedH1Tab={selectedH1Tab}
-                        musicMap={musicMap}
+                        categoryCollection={musicCollection}
                         isH1Pending={isH1Pending}
                         onClickTab={onClickTab}
                         onClickMusic={onClickMusic}
@@ -53,10 +57,10 @@ export const MusicList = memo(function MusicList({
 });
 
 const H1TabList = memo(function H1TabList({
-    musicMap,
+    categoryCollection,
     onClickTab,
 }: {
-    musicMap: MusicMap;
+    categoryCollection: MusicCollection;
     onClickTab: (
         sid: number,
         e: SyntheticEvent<HTMLButtonElement, MouseEvent>
@@ -64,12 +68,12 @@ const H1TabList = memo(function H1TabList({
 }) {
     return (
         <Tab.List className="flex flex-row overflow-x-auto border-1 rounded-lg text-center border-tab-list-color">
-            {Object.entries(musicMap).map(([categoryName, value]) => (
+            {categoryCollection.data.map((category) => (
                 <H1TabListItem
-                    key={categoryName}
-                    categoryName={categoryName}
-                    itemSid={value.sid}
-                    slectedChild={value.selected !== 0}
+                    key={category.name}
+                    categoryName={category.name}
+                    itemSid={category.sid}
+                    slectedChild={category.selected !== 0}
                     onClickTab={onClickTab}
                 />
             ))}
@@ -130,13 +134,13 @@ const H1TabListInner = memo(function H1TabListInner({
 });
 
 function H1TabPanels({
-    musicMap,
+    categoryCollection,
     selectedH1Tab,
     isH1Pending,
     onClickTab,
     onClickMusic,
 }: {
-    musicMap: MusicMap;
+    categoryCollection: MusicCollection;
     selectedH1Tab: number;
     isH1Pending: boolean;
     onClickTab: (
@@ -154,13 +158,13 @@ function H1TabPanels({
             className={`flex-1 overflow-hidden will-change-opacity transition-opacity-delay ${
                 isH1Pending ? "opacity-80" : ""
             }`}>
-            {Object.entries(musicMap).map(
-                ([categoryName, classMap], idx) =>
+            {categoryCollection.data.map(
+                (category, idx) =>
                     idx === selectedH1Tab && (
                         // 将下方空间化为左右两份的
                         <H1TabPanelsItem
-                            key={categoryName}
-                            classMap={classMap}
+                            key={category.name}
+                            albumCollection={category as MusicCollection}
                             onClickTab={onClickTab}
                             onClickMusic={onClickMusic}
                         />
@@ -171,11 +175,11 @@ function H1TabPanels({
 }
 
 const H1TabPanelsItem = memo(function H1TabPanelsItem({
-    classMap,
+    albumCollection,
     onClickMusic,
     onClickTab,
 }: {
-    classMap: MusicCollection;
+    albumCollection: MusicCollection;
     onClickMusic: (
         sid: number,
         e: SyntheticEvent<HTMLButtonElement, MouseEvent>
@@ -198,12 +202,12 @@ const H1TabPanelsItem = memo(function H1TabPanelsItem({
             static>
             <Tab.Group selectedIndex={selectedH2Tab} onChange={onChangeH2Tab}>
                 <H2TabList
-                    classMap={classMap.data as MusicMap}
+                    albumCollection={albumCollection}
                     onClickTab={onClickTab}
                 />
                 <H2TabPanels
                     selectedH2Tab={selectedH2Tab}
-                    classMap={classMap.data as MusicMap}
+                    albumCollection={albumCollection}
                     isH2Pending={isH2Pending}
                     onClickMusic={onClickMusic}
                 />
@@ -213,10 +217,10 @@ const H1TabPanelsItem = memo(function H1TabPanelsItem({
 });
 
 const H2TabList = memo(function H2TabList({
-    classMap,
+    albumCollection,
     onClickTab,
 }: {
-    classMap: MusicMap;
+    albumCollection: MusicCollection;
     onClickTab: (
         sid: number,
         e: SyntheticEvent<HTMLButtonElement, MouseEvent>
@@ -224,12 +228,12 @@ const H2TabList = memo(function H2TabList({
 }) {
     return (
         <Tab.List className="w-40% overflow-y-auto border-1 rounded-lg will-change-scroll border-tab-list-color">
-            {Object.entries(classMap).map(([albumName, value], idx) => (
+            {albumCollection.data.map((album) => (
                 <H2TabListItem
-                    key={albumName}
-                    albumName={albumName}
-                    slectedChild={value.selected !== 0}
-                    itemSid={value.sid}
+                    key={album.name}
+                    albumName={album.name}
+                    slectedChild={album.selected !== 0}
+                    itemSid={album.sid}
                     onClickTab={onClickTab}
                 />
             ))}
@@ -310,12 +314,12 @@ const H2TabListInner = memo(function H2TabListInner({
 });
 
 function H2TabPanels({
-    classMap,
+    albumCollection,
     selectedH2Tab,
     isH2Pending,
     onClickMusic,
 }: {
-    classMap: MusicMap;
+    albumCollection: MusicCollection;
     selectedH2Tab: number;
     isH2Pending: boolean;
     onClickMusic: (
@@ -328,12 +332,12 @@ function H2TabPanels({
             className={`flex-1 overflow-y-auto border-1 rounded-lg will-change-scroll-opacity border-tab-list-color transition-opacity-delay ${
                 isH2Pending ? "opacity-80" : ""
             }`}>
-            {Object.entries(classMap).map(
-                ([albumName, album], idx) =>
+            {albumCollection.data.map(
+                (album, idx) =>
                     selectedH2Tab === idx && (
                         <H2TabPanelsItem
-                            key={albumName}
-                            album={album}
+                            key={album.name}
+                            album={album as MusicCollection}
                             onClickMusic={onClickMusic}
                         />
                     )
@@ -368,14 +372,14 @@ const H2TabPanelsItem = memo(function H2TabPanelsItem({
     return (
         <Tab.Panel className="" static={true}>
             <div onClick={musicOnClick}>
-                {album.data instanceof Array ? (
-                    <AlbumArrayList
-                        albumArray={album.data}
+                {isMusicList(album.data) ? (
+                    <AlbumMusicList
+                        musicList={album.data}
                         onClickMusic={voidFunc}
                     />
                 ) : (
-                    <AlbumMapList
-                        albumMap={album.data}
+                    <SubAlbumCollectionList
+                        subAlbumList={album.data}
                         onClickMusic={voidFunc}
                     />
                 )}
@@ -384,11 +388,11 @@ const H2TabPanelsItem = memo(function H2TabPanelsItem({
     );
 });
 
-function AlbumArrayList({
-    albumArray,
+function AlbumMusicList({
+    musicList,
     onClickMusic,
 }: {
-    albumArray: Music[];
+    musicList: Music[];
     onClickMusic: (
         sid: number,
         e: SyntheticEvent<HTMLButtonElement, MouseEvent>
@@ -396,8 +400,8 @@ function AlbumArrayList({
 }) {
     return (
         <ol className="">
-            {albumArray.map((value: Music) => (
-                <AlbumArrayListItem
+            {musicList.map((value: Music) => (
+                <AlbumMusicListItem
                     key={`${value.idx}.${value.name}`}
                     music={value}
                     onClickMusic={onClickMusic}
@@ -407,7 +411,7 @@ function AlbumArrayList({
     );
 }
 
-const AlbumArrayListItem = memo(function AlbumArrayListItem({
+const AlbumMusicListItem = memo(function AlbumMusicListItem({
     music,
     onClickMusic,
 }: {
@@ -432,24 +436,24 @@ const AlbumArrayListItem = memo(function AlbumArrayListItem({
     );
 });
 
-function AlbumMapList({
-    albumMap,
+function SubAlbumCollectionList({
+    subAlbumList,
     onClickMusic,
 }: {
-    albumMap: MusicMap;
+    subAlbumList: MusicCollection[];
     onClickMusic: (
         sid: number,
         e: SyntheticEvent<HTMLButtonElement, MouseEvent>
     ) => void;
 }) {
-    return Object.entries(albumMap).map(([key, albumArray]) => (
+    return subAlbumList.map((subAlbum) => (
         <>
-            <div key={key} className="p-1 text-p">
-                {key}
+            <div key={subAlbum.name} className="p-1 text-p">
+                {subAlbum.name}
             </div>
-            {albumArray.data instanceof Array ? (
-                <AlbumArrayList
-                    albumArray={albumArray.data}
+            {isMusicList(subAlbum.data) ? (
+                <AlbumMusicList
+                    musicList={subAlbum.data}
                     onClickMusic={onClickMusic}
                 />
             ) : (

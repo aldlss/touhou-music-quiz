@@ -1,14 +1,14 @@
 import { cache } from "react";
 import { parse } from "yaml";
-import { Music, MusicCollection, MusicMap, SimpleMusic } from "./types";
+import { Music, MusicCollection, SimpleMusic } from "./types";
 import { separator } from "./constant";
 import { localStorageAvailable } from "./clientConstant";
 
-export const getSortedDefaultMusicMap = cache(async () => {
-    const musicMap = await getMusicMap();
-    const sortedMusicMap = sortMusicMap(musicMap);
-    const defaultMusicMap = setDefalutSetting(sortedMusicMap);
-    return defaultMusicMap;
+export const getSortedDefaultMusicCollection = cache(async () => {
+    const musicCollection = await getMusicCollection();
+    const sortedMusicCollection = sortMusicCollection(musicCollection);
+    const defaultMusicCollection = setDefalutSetting(sortedMusicCollection);
+    return defaultMusicCollection;
 });
 
 export function checkEnv(): void {
@@ -22,153 +22,168 @@ export function checkEnv(): void {
         );
 }
 
-const getMusicMap = async () => {
+export function isMusicCollection(
+    item: Music | MusicCollection
+): item is MusicCollection {
+    return (item as MusicCollection).data !== undefined;
+}
+
+export function isMusicCollectionList(
+    items: Music[] | MusicCollection[]
+): items is MusicCollection[] {
+    return items.length === 0 || isMusicCollection(items[0]);
+}
+
+export function isMusicList(
+    items: Music[] | MusicCollection[]
+): items is Music[] {
+    return items.length === 0 || !isMusicCollection(items[0]);
+}
+
+const getMusicCollection = async () => {
     const res = await fetch(`${process.env.NEXT_PUBLIC_FETCH_DATA_URL}`, {
-        next: { revalidate: 86_400, tags: ["music-map"] },
+        next: { revalidate: 86_400, tags: ["music-collection"] },
     });
-    if (!res.ok) throw new Error("Failed to fetch music map");
+    if (!res.ok) throw new Error("Failed to fetch music collection");
     const text = await res.text();
-    const data: MusicMap = parse(text);
+    const data: MusicCollection = parse(text);
     return data;
 };
 
-const sortMusicMap = (musicMap: MusicMap): MusicMap => {
-    let temp = Object.fromEntries(
-        Object.entries(musicMap).sort((a, b) => a[1].idx - b[1].idx)
-    );
-    Object.values(temp).forEach((value) => {
-        if (value.data instanceof Array) {
-            value.data.sort((a, b) => a.idx - b.idx);
+const sortMusicCollection = (
+    musicCollection: MusicCollection
+): MusicCollection => {
+    musicCollection.data.sort((a, b) => a.idx - b.idx);
+    for (const item of musicCollection.data) {
+        if (isMusicCollection(item)) {
+            sortMusicCollection(item);
         } else {
-            value.data = sortMusicMap(value.data);
+            break;
         }
-    });
-    return temp;
+    }
+    return musicCollection;
 };
 
-const setDefalutSetting = (musicMap: MusicMap): MusicMap => {
-    setMusicMapSelected(musicMap, false);
-    generateSid(musicMap);
-    selectMusicMapBySid(musicMap["Windows作品"].sid, musicMap);
-    return musicMap;
+const setDefalutSetting = (
+    musicCollection: MusicCollection
+): MusicCollection => {
+    setMusicCollectionSelected(musicCollection, false);
+    generateSid(musicCollection);
+    selectMusicCollectionBySid(
+        musicCollection.data.find((value) => value.name === "Windows作品")!.sid,
+        musicCollection
+    );
+    return musicCollection;
 };
 
 // 这样较为刻意地构造后，sid 可用于从上至下查找某一 sid 的位置
-const generateSid = (musicMap: MusicMap) => {
+const generateSid = (musicCollection: MusicCollection) => {
     let sidCount = 0;
-    const dfs = (musicMap: MusicMap) => {
-        Object.values(musicMap).forEach((value) => {
-            if (value.data instanceof Array) {
-                value.data.forEach((music) => {
-                    music.sid = sidCount++;
-                });
+    const dfs = (musicCollection: MusicCollection) => {
+        for (const item of musicCollection.data) {
+            if (isMusicCollection(item)) {
+                dfs(item);
             } else {
-                dfs(value.data);
+                item.sid = sidCount++;
             }
-            value.sid = sidCount++;
-        });
+        }
+        musicCollection.sid = sidCount++;
     };
-    dfs(musicMap);
+    dfs(musicCollection);
 };
 
-export const setMusicMapSelected = (
-    musicMap: MusicMap | Music[],
+export const setMusicCollectionSelected = (
+    musicCollection: MusicCollection,
     selected: boolean
 ): number => {
     let sum = 0;
 
-    if (musicMap instanceof Array) {
-        musicMap.forEach((music) => {
-            music.selected = selected;
+    for (const item of musicCollection.data) {
+        if (isMusicCollection(item)) {
+            let count = setMusicCollectionSelected(item, selected);
+            sum += count;
+        } else {
+            item.selected = selected;
             sum += selected ? 1 : 0;
-        });
-        return sum;
+        }
     }
-
-    Object.entries(musicMap).forEach(([name, value]) => {
-        let count = 0;
-        count += setMusicMapSelected(value.data, selected);
-        value.selected = count;
-        sum += count;
-    });
+    musicCollection.selected = sum;
     return sum;
 };
 
-export const selectMusicMapBySid = (
+export const selectMusicCollectionBySid = (
     sid: number,
-    musicMap: MusicMap | Music[]
+    musicCollection: MusicCollection
 ): number => {
-    if (musicMap instanceof Array) {
-        for (const music of musicMap) {
-            if (music.sid === sid) {
-                music.selected = !music.selected;
-                return music.selected ? 1 : -1;
-            }
-        }
-    } else {
-        for (const value of Object.values(musicMap)) {
-            if (value.sid === sid) {
-                // 保存旧值，手动计算差值
-                const oldSelected = value.selected;
-                value.selected = setMusicMapSelected(
-                    value.data,
-                    !value.selected
-                );
-                return value.selected - oldSelected;
-            } else if (sid > value.sid) {
+    if (sid === musicCollection.sid) {
+        // 保存旧值，手动计算差值
+        const oldSelected = musicCollection.selected;
+        musicCollection.selected = setMusicCollectionSelected(
+            musicCollection,
+            !musicCollection.selected
+        );
+        return musicCollection.selected - oldSelected;
+    }
+
+    let delta = 0;
+    for (const item of musicCollection.data) {
+        if (isMusicCollection(item)) {
+            if (sid > item.sid) {
                 // 因为父类的 sid 是大于所有子项的，所以如果 sid 大于当前项，那么就不用继续往里找了
                 continue;
-            } else {
-                // 预期返回差值
-                const delta = selectMusicMapBySid(sid, value.data);
-                // 保险一点
-                if (delta !== 0) {
-                    value.selected += delta;
-                    return delta;
-                }
             }
+            // 预期返回差值
+            delta = selectMusicCollectionBySid(sid, item);
+            // 保险一点
+            if (delta !== 0) {
+                break;
+            }
+        } else if (item.sid === sid) {
+            item.selected = !item.selected;
+            delta = item.selected ? 1 : -1;
+            break;
         }
     }
-    return 0;
+    musicCollection.selected += delta;
+    return delta;
 };
 
 // 返回的是 filter 后的深拷贝
-export function filterMusicMap(
-    musicMap: MusicMap,
+export function filterMusicCollection(
+    musicCollection: MusicCollection,
     ifFilter: (item: Music | MusicCollection) => boolean
-): MusicMap {
-    const temp: MusicMap = Object.fromEntries(
-        Object.entries(musicMap).filter(([_, item]) => {
-            return ifFilter(item);
-        })
-    );
-    Object.keys(temp).forEach((name) => {
-        const value = temp[name];
-        let newValue = { ...value };
-        if (value.data instanceof Array) {
-            const data: Music[] = [];
-            for (const music of value.data) {
-                if (ifFilter(music)) {
-                    data.push({ ...music });
-                }
+): MusicCollection {
+    const temp: MusicCollection = {
+        ...musicCollection,
+        data: [],
+    };
+    if (musicCollection.data.length === 0) return temp;
+    if (isMusicCollectionList(musicCollection.data)) {
+        for (const item of musicCollection.data) {
+            if (ifFilter(item)) {
+                (temp.data as MusicCollection[]).push(
+                    filterMusicCollection(item, ifFilter)
+                );
             }
-            newValue.data = data;
-        } else {
-            newValue.data = filterMusicMap(value.data, ifFilter);
         }
-        temp[name] = newValue;
-    });
+    } else {
+        for (const item of musicCollection.data) {
+            if (ifFilter(item)) {
+                (temp.data as Music[]).push({ ...item });
+            }
+        }
+    }
     return temp;
 }
 
-export function flatMusicMap(
-    musicMap: MusicMap | Music[],
+export function flatMusicColletion(
+    musicColletion: MusicCollection,
     ifSelect: (music: Music) => boolean,
     prefix: string = ""
 ): SimpleMusic[] {
     const result: SimpleMusic[] = [];
-    if (musicMap instanceof Array) {
-        musicMap.forEach((music) => {
+    if (isMusicList(musicColletion.data)) {
+        musicColletion.data.forEach((music) => {
             if (ifSelect(music)) {
                 result.push({
                     sid: music.sid,
@@ -180,15 +195,18 @@ export function flatMusicMap(
             }
         });
     } else {
-        Object.entries(musicMap).forEach(([name, value]) => {
+        // 这样做会造成顶层 musicColletion 的 name 是写不进去的，但是正符合要求
+        for (let collection of musicColletion.data) {
             result.push(
-                ...flatMusicMap(
-                    value.data,
+                ...flatMusicColletion(
+                    collection,
                     ifSelect,
-                    `${prefix}${prefix === "" ? "" : separator}${name}`
+                    `${prefix}${prefix === "" ? "" : separator}${
+                        collection.name
+                    }`
                 )
             );
-        });
+        }
     }
     return result;
 }

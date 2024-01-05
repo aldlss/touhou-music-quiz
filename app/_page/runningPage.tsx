@@ -29,27 +29,27 @@ import {
 import { MusicList } from "../muiscListComponent";
 import { PlayFillSvg } from "../svg";
 import {
-    filterMusicMap,
-    setMusicMapSelected,
-    flatMusicMap,
+    filterMusicCollection,
+    setMusicCollectionSelected,
+    flatMusicColletion,
     digestMuiscName,
-    selectMusicMapBySid,
+    selectMusicCollectionBySid,
     GetLocalStorageValue,
     SetLocalStorageValue,
 } from "../tools";
 import {
-    MusicMap,
     RankType,
     SimpleMusic,
     ErrorType,
     Quiz,
     PageType,
+    MusicCollection,
 } from "../types";
 import { isSupportOggOpus } from "../clientConstant";
 
 export function RunningPage({
     setPageState,
-    musicMapState,
+    musicCollectionState,
     nowQuizCount,
     setNowQuizCount,
     rightAnswerCount,
@@ -58,7 +58,7 @@ export function RunningPage({
     rank,
 }: {
     setPageState: Function;
-    musicMapState: MusicMap;
+    musicCollectionState: MusicCollection;
     nowQuizCount: number;
     setNowQuizCount: Function;
     rightAnswerCount: number;
@@ -67,35 +67,36 @@ export function RunningPage({
     rank: RankType;
 }) {
     const [selectSid, setSelectSid] = useState(-1);
-    const [quizMusicMap, setQuizMusicMap] = useImmer(() => {
-        const quizMusicMap = filterMusicMap(
-            musicMapState,
+    const [quizMusicCollection, setQuizMusicCollection] = useImmer(() => {
+        const quizMusicCollection = filterMusicCollection(
+            musicCollectionState,
             (item) => Number(item.selected) > 0
         );
-        setMusicMapSelected(quizMusicMap, false);
-        return quizMusicMap;
+        setMusicCollectionSelected(quizMusicCollection, false);
+        return quizMusicCollection;
     });
     const selectedMusicList = useMemo(() => {
-        return flatMusicMap(quizMusicMap, () => true);
-        // 这个依赖就是这个，因为对于 quizMusicMap 这个数据，只需要提取出来里面的 Music 就可以了
+        return flatMusicColletion(quizMusicCollection, () => true);
+        // 这个依赖就是这个，因为对于 quizMusicCollection 这个数据，只需要提取出来里面的 Music 就可以了
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [musicMapState]);
+    }, [musicCollectionState]);
     const musicListOnClickMusic = useCallback(
         (sid: number) => {
             if (selectSid !== sid) {
-                setQuizMusicMap((draft) => {
-                    if (selectSid !== -1) selectMusicMapBySid(selectSid, draft);
-                    selectMusicMapBySid(sid, draft);
+                setQuizMusicCollection((draft) => {
+                    if (selectSid !== -1)
+                        selectMusicCollectionBySid(selectSid, draft);
+                    selectMusicCollectionBySid(sid, draft);
                 });
                 setSelectSid(sid);
             } else {
-                setQuizMusicMap((draft) => {
-                    selectMusicMapBySid(sid, draft);
+                setQuizMusicCollection((draft) => {
+                    selectMusicCollectionBySid(sid, draft);
                 });
                 setSelectSid(-1);
             }
         },
-        [selectSid, setQuizMusicMap]
+        [selectSid, setQuizMusicCollection]
     );
 
     const audioContext = useRef<AudioContext | null>(null);
@@ -420,12 +421,13 @@ export function RunningPage({
     const [answeredSid, setAnsweredSid] = useState(-1);
 
     const afterResultDialogClose = useCallback(() => {
-        setQuizMusicMap((draft) => {
-            if (answeredSid !== -1) selectMusicMapBySid(answeredSid, draft);
+        setQuizMusicCollection((draft) => {
+            if (answeredSid !== -1)
+                selectMusicCollectionBySid(answeredSid, draft);
         });
         setSelectSid(-1);
         nextQuiz();
-    }, [answeredSid, nextQuiz, setQuizMusicMap]);
+    }, [answeredSid, nextQuiz, setQuizMusicCollection]);
     const resultDialogOnClose = useCallback(() => {
         setShowResultDialog(false);
     }, []);
@@ -499,7 +501,7 @@ export function RunningPage({
                     )}
                 </div>
                 <MusicList
-                    musicMap={quizMusicMap}
+                    musicCollection={quizMusicCollection}
                     onClickTab={voidFunc}
                     onClickMusic={musicListOnClickMusic}
                 />
