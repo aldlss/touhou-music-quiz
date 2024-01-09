@@ -3,19 +3,23 @@ import packageInfo from "../../package.json";
 import { MoonLineSvg, SunLineSvg } from "../svg";
 import { voidFunc } from "../constant";
 
-export function StartPage({
-    setPageState,
-    initFunc = voidFunc,
-    themeAppearance,
-    setThemeAppearance,
-}: {
+export interface IStartPageProps {
     setPageState: Function;
     initFunc?: Function;
     themeAppearance: ThemeAppearanceType.Dark | ThemeAppearanceType.Light;
     setThemeAppearance: (
         themeAppearance: ThemeAppearanceType.Dark | ThemeAppearanceType.Light
     ) => void;
-}) {
+}
+
+export function StartPage(props: IStartPageProps) {
+    const {
+        setPageState,
+        initFunc = voidFunc,
+        themeAppearance,
+        setThemeAppearance,
+    } = props;
+
     return (
         <main className="h-full w-full flex flex-col justify-between bg-container">
             <div className="p-2 text-right text-gray text-p">

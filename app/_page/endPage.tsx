@@ -3,17 +3,16 @@ import { difficultyColorAndText } from "../constant";
 import { GetLocalStorageValue, SetLocalStorageValue } from "../tools";
 import { RankType, PageType } from "../types";
 
-export function EndPage({
-    setPageState,
-    nowQuizCount,
-    rightAnswerCount,
-    rank,
-}: {
+export interface IEndPageProps {
     setPageState: Function;
     nowQuizCount: number;
     rightAnswerCount: number;
     rank: RankType;
-}) {
+}
+
+export function EndPage(props: IEndPageProps) {
+    const { setPageState, nowQuizCount, rightAnswerCount, rank } = props;
+
     const [nickname, setNickname] = useState(() => {
         return GetLocalStorageValue("nickname", "");
     });

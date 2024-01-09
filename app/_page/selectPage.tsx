@@ -11,19 +11,23 @@ import {
 } from "../tools";
 import { MusicCollection, PageType, RankType } from "../types";
 
-export function SelectPage({
-    setPageState,
-    musicCollectionState,
-    setMusicCollectionState,
-    setRank,
-    setMusicDuration,
-}: {
+export interface ISelectPageProps {
     setPageState: Function;
     musicCollectionState: MusicCollection;
     setMusicCollectionState: Updater<MusicCollection>;
     setRank: Function;
     setMusicDuration: Function;
-}) {
+}
+
+export function SelectPage(props: ISelectPageProps) {
+    const {
+        setPageState,
+        musicCollectionState,
+        setMusicCollectionState,
+        setRank,
+        setMusicDuration,
+    } = props;
+
     const [showTimeSelect, setShowTimeSelect] = useState(false);
     const [showMusicSelect, setShowMusicSelect] = useState(true);
     const [showHelpDialog, setShowHelpDialog] = useState(() => {

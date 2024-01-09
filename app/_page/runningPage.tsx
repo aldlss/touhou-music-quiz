@@ -14,11 +14,8 @@ import React, {
 } from "react";
 import { useImmer } from "use-immer";
 import { SemaType, ControlledPromise } from "../class";
-import {
-    ConfirmDialog,
-    AsyncBoundary,
-    ContainerDialog,
-} from "../clientComponent";
+import { ConfirmDialog, ContainerDialog } from "../clientComponent";
+import { AsyncBoundary } from "../serverComponent";
 import {
     difficultyColorAndText,
     fetchMusicUrlPrefix,
@@ -47,16 +44,7 @@ import {
 } from "../types";
 import { isSupportOggOpus } from "../clientConstant";
 
-export function RunningPage({
-    setPageState,
-    musicCollectionState,
-    nowQuizCount,
-    setNowQuizCount,
-    rightAnswerCount,
-    setRightAnswerCount,
-    musicDuration,
-    rank,
-}: {
+export interface IRunningPageProps {
     setPageState: Function;
     musicCollectionState: MusicCollection;
     nowQuizCount: number;
@@ -65,7 +53,20 @@ export function RunningPage({
     setRightAnswerCount: Function;
     musicDuration: MutableRefObject<number>;
     rank: RankType;
-}) {
+}
+
+export function RunningPage(props: IRunningPageProps) {
+    const {
+        setPageState,
+        musicCollectionState,
+        nowQuizCount,
+        setNowQuizCount,
+        rightAnswerCount,
+        setRightAnswerCount,
+        musicDuration,
+        rank,
+    } = props;
+
     const [selectSid, setSelectSid] = useState(-1);
     const [quizMusicCollection, setQuizMusicCollection] = useImmer(() => {
         const quizMusicCollection = filterMusicCollection(
@@ -110,7 +111,7 @@ export function RunningPage({
     const decoderRef = useRef<OggOpusDecoderWebWorker | null>(null);
     useEffect(() => {
         if (!isSupportOggOpus) {
-            import("ogg-opus-decoder").then((module) => {
+            importOggOpusDecoder().then((module) => {
                 decoderRef.current =
                     decoderRef.current ?? new module.OggOpusDecoderWebWorker();
             });
@@ -171,9 +172,8 @@ export function RunningPage({
         let decodeBuffer: AudioBuffer[] = [];
         async function decodeAudioDataWithOggOpus() {
             if (decoderRef.current === null) {
-                const { OggOpusDecoderWebWorker } = await import(
-                    "ogg-opus-decoder"
-                );
+                const { OggOpusDecoderWebWorker } =
+                    await importOggOpusDecoder();
                 decoderRef.current = new OggOpusDecoderWebWorker();
             }
             const decoder = decoderRef.current;
