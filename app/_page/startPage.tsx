@@ -6,19 +6,11 @@ import { voidFunc } from "../constant";
 export interface IStartPageProps {
     setPageState: Function;
     initFunc?: Function;
-    themeAppearance: ThemeAppearanceType.Dark | ThemeAppearanceType.Light;
-    setThemeAppearance: (
-        themeAppearance: ThemeAppearanceType.Dark | ThemeAppearanceType.Light
-    ) => void;
+    switchThemeAppearance: () => void;
 }
 
 export function StartPage(props: IStartPageProps) {
-    const {
-        setPageState,
-        initFunc = voidFunc,
-        themeAppearance,
-        setThemeAppearance,
-    } = props;
+    const { setPageState, initFunc = voidFunc, switchThemeAppearance } = props;
 
     return (
         <main className="h-full w-full flex flex-col justify-between bg-container">
@@ -52,18 +44,9 @@ export function StartPage(props: IStartPageProps) {
                 <button
                     type="button"
                     aria-label="change theme"
-                    onClick={() =>
-                        setThemeAppearance(
-                            themeAppearance === ThemeAppearanceType.Dark
-                                ? ThemeAppearanceType.Light
-                                : ThemeAppearanceType.Dark
-                        )
-                    }>
-                    {themeAppearance === ThemeAppearanceType.Dark ? (
-                        <MoonLineSvg className="w-8" />
-                    ) : (
-                        <SunLineSvg className="w-8" />
-                    )}
+                    onClick={switchThemeAppearance}>
+                    <SunLineSvg className="block w-8 dark:hidden" />
+                    <MoonLineSvg className="hidden w-8 dark:block" />
                 </button>
             </div>
             <div className="p-2 text-small">

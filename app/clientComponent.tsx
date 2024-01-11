@@ -65,17 +65,17 @@ export function QuizMain({
         return themeMatchQuery.current;
     };
     // 因为不显示 Auto，所以不要
-    const [showedThemeIcon, setShowedThemeIcon] = useState<
+    const [showedTheme, setShowedTheme] = useState<
         ThemeAppearanceType.Light | ThemeAppearanceType.Dark
     >(ThemeAppearanceType.Light);
     // 根据三个状态进行处理
     const changeThemeAppearance = useCallback((target: ThemeAppearanceType) => {
         function changeTheme(dark: boolean) {
             if (dark) {
-                setShowedThemeIcon(ThemeAppearanceType.Dark);
+                setShowedTheme(ThemeAppearanceType.Dark);
                 document.documentElement.classList.add("dark");
             } else {
-                setShowedThemeIcon(ThemeAppearanceType.Light);
+                setShowedTheme(ThemeAppearanceType.Light);
                 document.documentElement.classList.remove("dark");
             }
         }
@@ -99,6 +99,27 @@ export function QuizMain({
                 break;
         }
     }, []);
+    const generateSwitchThemeAppearance = useCallback(
+        (
+            nowShowedTheme: ThemeAppearanceType.Light | ThemeAppearanceType.Dark
+        ) => {
+            return () => {
+                if (
+                    (nowShowedTheme === ThemeAppearanceType.Light) ===
+                    GetThemeMatchQuery().matches
+                ) {
+                    changeThemeAppearance(ThemeAppearanceType.Auto);
+                } else {
+                    changeThemeAppearance(
+                        nowShowedTheme === ThemeAppearanceType.Dark
+                            ? ThemeAppearanceType.Light
+                            : ThemeAppearanceType.Dark
+                    );
+                }
+            };
+        },
+        [changeThemeAppearance]
+    );
     useEffect(() => {
         const theme = GetLocalStorageValue("theme_appearance", "auto");
         if (theme === "light") changeThemeAppearance(ThemeAppearanceType.Light);
@@ -123,19 +144,9 @@ export function QuizMain({
                                 setNowQuizCount(0);
                                 setRightAnswerCount(0);
                             }}
-                            themeAppearance={showedThemeIcon}
-                            setThemeAppearance={(target) => {
-                                if (
-                                    (target === ThemeAppearanceType.Dark) ===
-                                    GetThemeMatchQuery().matches
-                                ) {
-                                    changeThemeAppearance(
-                                        ThemeAppearanceType.Auto
-                                    );
-                                } else {
-                                    changeThemeAppearance(target);
-                                }
-                            }}
+                            switchThemeAppearance={generateSwitchThemeAppearance(
+                                showedTheme
+                            )}
                         />
                     ),
                     [PageType.loading]: <div>loading</div>,

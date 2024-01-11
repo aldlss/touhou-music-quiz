@@ -16,7 +16,31 @@ export default function RootLayout({
 }) {
     return (
         <html lang="zh">
-            <body className={`${inter.className} bg-bg`}>{children}</body>
+            <body className={`${inter.className} bg-bg`}>
+                <script
+                    dangerouslySetInnerHTML={{
+                        __html: `
+                        (function () {
+                            var preferredTheme;
+                            try {
+                                preferredTheme = localStorage.getItem('theme_appearance');
+                            } catch (err) { }
+
+                            var initialTheme = preferredTheme;
+                            var darkQuery = window.matchMedia('(prefers-color-scheme: dark)');
+
+                            if (!initialTheme || (initialTheme !== 'dark' && initialTheme !== 'light')) {
+                                initialTheme = darkQuery.matches ? 'dark' : 'light';
+                            }
+
+                            if (initialTheme === 'dark') {
+                                document.documentElement.classList.add('dark');
+                            }
+                        })();`,
+                    }}
+                />
+                {children}
+            </body>
         </html>
     );
 }
