@@ -10,10 +10,10 @@
   },
   "dependencies": {
     "@aldlss/async-sema": "^3.1.1",
-    "@headlessui/react": "^1.7.17",
+    "@headlessui/react": "^1.7.18",
     "immer": "^10.0.3",
     "next": "latest",
-    "ogg-opus-decoder": "^1.6.10",
+    "ogg-opus-decoder": "^1.6.12",
     "react": "latest",
     "react-dom": "latest",
     "react-error-boundary": "^4.0.12",
@@ -24,13 +24,13 @@
     "@types/node": "latest",
     "@types/react": "latest",
     "@types/react-dom": "latest",
-    "@unocss/eslint-config": "^0.58.3",
-    "@unocss/postcss": "^0.58.3",
+    "@unocss/eslint-config": "^0.58.4",
+    "@unocss/postcss": "^0.58.4",
     "autoprefixer": "latest",
     "eslint": "latest",
     "eslint-config-next": "latest",
     "postcss": "latest",
     "typescript": "latest",
-    "unocss": "^0.58.3"
+    "unocss": "^0.58.4"
   }
 }
