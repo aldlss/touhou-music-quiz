@@ -2,6 +2,8 @@ import { PageType, ThemeAppearanceType } from "../types";
 import packageInfo from "../../package.json";
 import { MoonLineSvg, SunLineSvg } from "../svg";
 import { voidFunc } from "../constant";
+import { InfoDialog } from "./startPageClient";
+import Link from "next/link";
 
 export interface IStartPageProps {
     setPageState: Function;
@@ -14,8 +16,11 @@ export function StartPage(props: IStartPageProps) {
 
     return (
         <main className="h-full w-full flex flex-col justify-between bg-container">
-            <div className="p-2 text-right text-gray text-p">
-                {packageInfo.version}
+            <div className="flex flex-row justify-between">
+                <div className="p-2 text-right text-gray text-p">
+                    {packageInfo.version}
+                </div>
+                <InfoDialog />
             </div>
             <p className="absolute m-t-20 aspect-[9999/1] min-h-0 overflow-y-hidden">
                 如果你看到了这行字
@@ -51,8 +56,14 @@ export function StartPage(props: IStartPageProps) {
             </div>
             <div className="p-2 text-small">
                 测验片段为随机选取，结果不具有参考价值，仅供娱乐。详细介绍可参看
-                Bilibili 视频，若有问题可在评论区或者 Github
-                页面进行反馈（目前都没有）
+                Bilibili 视频，若有问题可在评论区或者{" "}
+                <Link
+                    href="https://github.com/aldlss/touhou-music-quiz"
+                    target="_blank"
+                    className="text-link">
+                    Github
+                </Link>{" "}
+                页面进行反馈。
             </div>
         </main>
     );

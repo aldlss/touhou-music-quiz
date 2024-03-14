@@ -20,8 +20,12 @@ export default defineConfig({
         "text-h3": "text-5 @md/main:text-6 @lg/main:text-7",
         "text-p": "text-4 @md/main:text-5 @lg/main:text-6",
         "text-small": "text-3 @md/main:text-4 @lg/main:text-5",
+        "text-link":
+            "text-sky-4 underline active:text-sky-3 focus:text-sky-5 hover:text-sky-5",
         "transition-common": "transition ease-in-out duration-300",
         "simple-hover-active": "active:brightness-95 hover:brightness-105",
+        "tips-icon":
+            "w-10 fill-lightblue p-1 transition-common simple-hover-active",
         "bg-bg":
             "bg-gray-1  dark:bg-material-dark-1 transition-background-color",
         "bg-container":

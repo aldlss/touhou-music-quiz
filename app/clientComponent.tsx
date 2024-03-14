@@ -256,7 +256,7 @@ export function ContainerDialog({
                             leave="transition transform-gpu"
                             leaveFrom="opacity-100 translate-y-0"
                             leaveTo="opacity-0 translate-y--30%">
-                            <div className="z-10 w-90% border-1 rounded-lg shadow-md border-surface-color bg-dialog">
+                            <div className="z-10 max-h-90% w-90% overflow-y-auto border-1 rounded-lg shadow-md border-surface-color bg-dialog">
                                 {children}
                             </div>
                         </Transition.Child>

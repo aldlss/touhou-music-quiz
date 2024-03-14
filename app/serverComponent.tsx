@@ -74,3 +74,20 @@ export function AsyncBoundary({
         </Suspense>
     );
 }
+
+interface ICommonSecondaryButtonProps {
+    children: React.ReactNode;
+    onClick: () => void;
+}
+
+export function CommonSecondaryButton(props: ICommonSecondaryButtonProps) {
+    const { children, onClick } = props;
+    return (
+        <button
+            type="button"
+            className="w-fit self-center p-x-4 p-y-2 secondary-button"
+            onClick={onClick}>
+            {children}
+        </button>
+    );
+}

@@ -10,6 +10,7 @@ import {
     SetLocalStorageValue,
 } from "../tools";
 import { MusicCollection, PageType, RankType } from "../types";
+import { CommonSecondaryButton } from "../serverComponent";
 
 export interface ISelectPageProps {
     setPageState: Function;
@@ -101,7 +102,7 @@ export function SelectPage(props: ISelectPageProps) {
                         onClick={() => {
                             setShowHelpDialog(true);
                         }}>
-                        <QuestionLineSvg className="w-10 fill-lightblue p-1 transition-common simple-hover-active" />
+                        <QuestionLineSvg className="tips-icon" />
                     </button>
                 </header>
                 <MusicList
@@ -157,14 +158,9 @@ const SelectHelpDialog = memo(function SelectHelpDialog({
                     <br />
                     默认已选取 Windows 作品 下的所有曲子。
                 </Dialog.Description>
-                <button
-                    type="button"
-                    className="w-fit self-center p-x-4 p-y-2 secondary-button"
-                    onClick={() => {
-                        onClose();
-                    }}>
+                <CommonSecondaryButton onClick={onClose}>
                     我知道了
-                </button>
+                </CommonSecondaryButton>
             </Dialog.Panel>
         </ContainerDialog>
     );

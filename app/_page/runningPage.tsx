@@ -565,7 +565,7 @@ const ResultDialog = memo(function ResultDialog({
                                 href={`https://thwiki.cc/${nameWithoutIdx}`}
                                 target="_blank"
                                 key={name}>
-                                <span className="text-sky-4 underline active:text-sky-3 focus:text-sky-5 hover:text-sky-5">
+                                <span className="text-link">
                                     {nameWithoutIdx}
                                 </span>
                             </Link>
