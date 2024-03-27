@@ -43,6 +43,7 @@ import {
     MusicCollection,
 } from "../types";
 import { isSupportOggOpus } from "../clientConstant";
+import { importOggOpusDecoder } from "../dynamicImport";
 
 export interface IRunningPageProps {
     setPageState: Function;
