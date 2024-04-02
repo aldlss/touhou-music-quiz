@@ -1,0 +1,977 @@
+data:
+- data:
+  - data:
+    - {amount: 52, idx: 1, name: 比赤色更红的梦}
+    - {amount: 154, idx: 2, name: 如鬼灯般的红色之魂}
+    - {amount: 110, idx: 3, name: 妖魔夜行}
+    - {amount: 169, idx: 4, name: Lunate Elf}
+    - {amount: 175, idx: 5, name: 活泼的纯情小姑娘}
+    - {amount: 236, idx: 6, name: 上海红茶馆　～ Chinese Tea}
+    - {amount: 189, idx: 7, name: 明治十七年的上海爱丽丝}
+    - {amount: 229, idx: 8, name: 伏瓦鲁魔法图书馆}
+    - {amount: 221, idx: 9, name: Locked Girl　～ 少女密室}
+    - {amount: 325, idx: 10, name: 女仆与血之怀表}
+    - {amount: 173, idx: 11, name: 月时计　～ Luna Dial}
+    - {amount: 115, idx: 12, name: 特佩斯的年幼末裔}
+    - {amount: 273, idx: 13, name: 献给已逝公主的七重奏}
+    - {amount: 276, idx: 14, name: 魔法少女们的百年祭}
+    - {amount: 244, idx: 15, name: U.N.OWEN就是她吗？}
+    - {amount: 105, idx: 16, name: 比红色更虚无的永远}
+    - {amount: 210, idx: 17, name: 红楼　～ Eastern Dream...}
+    idx: 1
+    name: "TH06 \t东方红魔乡"
+  - data:
+    - {amount: 182, idx: 1, name: 妖妖梦　～ Snow or Cherry Petal}
+    - {amount: 161, idx: 2, name: 无何有之乡　～ Deep Mountain}
+    - {amount: 131, idx: 3, name: Crystallize Silver}
+    - {amount: 256, idx: 4, name: 远野幻想物语}
+    - {amount: 110, idx: 5, name: 凋叶棕（withered leaf）}
+    - {amount: 243, idx: 6, name: 布加勒斯特的人偶师}
+    - {amount: 332, idx: 7, name: 人偶裁判　～ 玩弄人形的少女}
+    - {amount: 483, idx: 8, name: 天空的花都}
+    - {amount: 279, idx: 9, name: 幽灵乐团　～ Phantom Ensemble}
+    - {amount: 289, idx: 10, name: 东方妖妖梦　～ Ancient Temple}
+    - {amount: 218, idx: 11, name: 广有射怪鸟事　～ Till When?}
+    - {amount: 114, idx: 12, name: Ultimate Truth}
+    - {amount: 272, idx: 13, name: 幽雅地绽放吧，墨染的樱花　～ Border of Life}
+    - {amount: 118, idx: 14, name: Border of Life}
+    - {amount: 281, idx: 15, name: 妖妖跋扈}
+    - {amount: 427, idx: 16, name: 少女幻葬　～ Necro-Fantasy}
+    - {amount: 281, idx: 17, name: 妖妖跋扈　～ Who done it!}
+    - {amount: 334, idx: 18, name: Necro-Fantasia}
+    - {amount: 125, idx: 19, name: 春风之梦}
+    - {amount: 166, idx: 20, name: 樱花樱花　～ Japanize Dream...}
+    idx: 2
+    name: "TH07 \t东方妖妖梦"
+  - data:
+    - {amount: 139, idx: 1, name: 永夜抄　～ Eastern Night.}
+    - {amount: 260, idx: 2, name: 幻视之夜　～ Ghostly Eyes}
+    - {amount: 142, idx: 3, name: 蠢蠢的秋月　～ Mooned Insect}
+    - {amount: 298, idx: 4, name: 夜雀的歌声　～ Night Bird}
+    - {amount: 168, idx: 5, name: 已经只能听见歌声了}
+    - {amount: 171, idx: 6, name: 令人怀念的东方之血　～ Old World}
+    - {amount: 204, idx: 7, name: Plain Asia}
+    - {amount: 183, idx: 8, name: 永夜的报应　～ Imperishable Night}
+    - {amount: 316, idx: 9, name: 少女绮想曲　～ Dream Battle}
+    - {amount: 244, idx: 10, name: 恋色Master spark}
+    - {amount: 343, idx: 11, name: 灰姑娘的笼子　～ Kagome-Kagome}
+    - {amount: 240, idx: 12, name: 狂气之瞳　～ Invisible Full Moon}
+    - {amount: 165, idx: 13, name: Voyage1969}
+    - {amount: 350, idx: 14, name: 千年幻想乡　～ History of the Moon}
+    - {amount: 324, idx: 15, name: 竹取飞翔　～ Lunatic Princess}
+    - {amount: 95, idx: 16, name: Voyage1970}
+    - {amount: 314, idx: 17, name: Extend Ash　～ 蓬莱人}
+    - {amount: 347, idx: 18, name: 飘上月球，不死之烟}
+    - {amount: 163, idx: 19, name: 月见草}
+    - {amount: 192, idx: 20, name: Eternal Dream　～ 幽玄的枫树}
+    - {amount: 153, idx: 21, name: 东方妖怪小町}
+    idx: 3
+    name: "TH08 \t东方永夜抄"
+  - data:
+    - {amount: 138, idx: 1, name: 花映塚　～ Higan Retour}
+    - {amount: 312, idx: 2, name: 春色小径　～ Colorful Path}
+    - {amount: 260, idx: 3, name: Oriental Dark Flight}
+    - {amount: 257, idx: 4, name: Flowering Night}
+    - {amount: 305, idx: 5, name: 东方妖妖梦　～ Ancient Temple}
+    - {amount: 287, idx: 7, name: 活泼纯情小姑娘的冒险}
+    - {amount: 279, idx: 8, name: 幽灵乐团　～ Phantom Ensemble}
+    - {amount: 323, idx: 9, name: 已经只能听见歌声了　～ Flower Mix}
+    - {amount: 215, idx: 10, name: 宇佐大人的白旗}
+    - {amount: 343, idx: 11, name: 风神少女(Short Version)}
+    - {amount: 230, idx: 12, name: 剧毒身体　～ Forsaken Doll}
+    - {amount: 311, idx: 13, name: 今昔幻想乡　～ Flower Land}
+    - {amount: 327, idx: 14, name: 彼岸归航　～ Riverside View}
+    - {amount: 504, idx: 15, name: 第六十年的东方审判　～ Fate of Sixty Years}
+    - {amount: 139, idx: 16, name: 映花之塚}
+    - {amount: 59, idx: 17, name: 此岸之塚}
+    - {amount: 99, idx: 18, name: 花如幻想一般}
+    - {amount: 221, idx: 19, name: 魂之花　～ Another Dream...}
+    idx: 4
+    name: "TH09 \t东方花映塚"
+  - data:
+    - {amount: 188, idx: 1, name: 天狗的笔记　～　Mysterious Note}
+    - {amount: 158, idx: 2, name: 风的循环　～　Wind Tour}
+    - {amount: 249, idx: 3, name: 天狗正凝视着　～　Black Eyes}
+    - {amount: 261, idx: 4, name: 东之国的不眠夜}
+    - {amount: 195, idx: 5, name: 回忆京都}
+    idx: 5
+    name: TH09.5  东方文花帖
+  - data:
+    - {amount: 149, idx: 1, name: 被封印的众神}
+    - {amount: 259, idx: 2, name: 眷爱众生之神　～ Romantic Fall}
+    - {amount: 90, idx: 3, name: 会受稻田姬的斥责啦}
+    - {amount: 241, idx: 4, name: 厄神降临之路　～ Dark Road}
+    - {amount: 211, idx: 5, name: 命运的阴暗面}
+    - {amount: 349, idx: 6, name: 众神眷恋的幻想乡}
+    - {amount: 285, idx: 7, name: 芥川龙之介的河童　～ Candid Friend}
+    - {amount: 401, idx: 8, name: Fall of Fall　～ 秋意渐浓之瀑}
+    - {amount: 160, idx: 9, name: 妖怪之山　～ Mysterious Mountain}
+    - {amount: 365, idx: 10, name: 少女曾见的日本原风景}
+    - {amount: 344, idx: 11, name: 信仰是为了虚幻之人}
+    - {amount: 125, idx: 12, name: 御柱的墓场　～ Grave of Being}
+    - {amount: 299, idx: 13, name: 神圣庄严的古战场　～ Suwa Foughten Field}
+    - {amount: 401, idx: 14, name: 明日之盛，昨日之俗}
+    - {amount: 342, idx: 15, name: Native Faith}
+    - {amount: 131, idx: 16, name: 山脚的神社}
+    - {amount: 120, idx: 17, name: 神明降下恩惠之雨　～ Sylphid Dream}
+    - {amount: 61, idx: 18, name: Player's Score}
+    idx: 6
+    name: "TH10 \t东方风神录"
+  - data:
+    - {amount: 156, idx: 1, name: 地灵们的起床}
+    - {amount: 198, idx: 2, name: 昏暗的风穴}
+    - {amount: 109, idx: 3, name: 被封印的妖怪 ～ Lost Place}
+    - {amount: 222, idx: 4, name: 阻绝人迹之桥}
+    - {amount: 221, idx: 5, name: 绿眼的嫉妒}
+    - {amount: 232, idx: 6, name: 漫游旧地狱街道}
+    - {amount: 213, idx: 7, name: 大江山的花之酒宴}
+    - {amount: 274, idx: 8, name: Heartfelt Fancy}
+    - {amount: 248, idx: 9, name: 少女觉 ～ 3rd eye}
+    - {amount: 359, idx: 10, name: 废狱摇篮曲}
+    - {amount: 202, idx: 11, name: 尸体旅行　～ Be of good cheer!}
+    - {amount: 233, idx: 12, name: 业火地幔}
+    - {amount: 338, idx: 13, name: 灵知的太阳信仰　～ Nuclear Fusion}
+    - {amount: 378, idx: 14, name: Last Remote}
+    - {amount: 288, idx: 15, name: 哈德曼的妖怪少女}
+    - {amount: 143, idx: 16, name: 地灵们的归家}
+    - {amount: 141, idx: 17, name: 能源黎明 ～ Future Dream...}
+    idx: 7
+    name: "TH11 \t东方地灵殿"
+  - data:
+    - {amount: 115, idx: 1, name: 青空之影}
+    - {amount: 190, idx: 2, name: 春之港湾}
+    - {amount: 177, idx: 3, name: 小小的贤将}
+    - {amount: 225, idx: 4, name: 封闭的云中通路}
+    - {amount: 265, idx: 5, name: 请注意万年备用伞}
+    - {amount: 263, idx: 6, name: Sky Ruin}
+    - {amount: 213, idx: 7, name: 守旧老爹与前卫少女}
+    - {amount: 286, idx: 8, name: 幽灵客船的穿越时空之旅}
+    - {amount: 251, idx: 9, name: Captain Murasa}
+    - {amount: 337, idx: 10, name: 魔界地方都市秘境}
+    - {amount: 392, idx: 11, name: 虎纹的毘沙门天}
+    - {amount: 203, idx: 12, name: 法界之火}
+    - {amount: 446, idx: 13, name: 感情的摩天楼　～ Cosmic Mind}
+    - {amount: 365, idx: 14, name: 夜空中的UFO恋曲}
+    - {amount: 367, idx: 15, name: 平安时代的外星人}
+    - {amount: 104, idx: 16, name: 妖怪寺}
+    - {amount: 225, idx: 17, name: 空中的归路　～　Sky Dream}
+    idx: 8
+    name: "TH12 \t东方星莲船"
+  - data:
+    - {amount: 155, idx: 1, name: Newshound}
+    - {amount: 209, idx: 2, name: 你所在之城的怪事}
+    - {amount: 197, idx: 3, name: 现代妖怪殖民地}
+    - {amount: 176, idx: 4, name: 复仇女神的要塞}
+    - {amount: 324, idx: 5, name: 无间之钟　～ Infinite Nightmare}
+    - {amount: 75, idx: 7, name: 曲名不详}
+    idx: 9
+    name: TH12.5  DS东方文花帖
+  - data:
+    - {amount: 167, idx: 1, name: 春之冰精}
+    - {amount: 201, idx: 2, name: 可爱的大战争叠奏曲}
+    - {amount: 149, idx: 3, name: 赌上性命去恶作剧}
+    - {amount: 158, idx: 4, name: 时刻旺盛的好奇心}
+    - {amount: 235, idx: 5, name: 午夜的妖精舞会}
+    - {amount: 205, idx: 6, name: 妖精大战争　～ Fairy Wars}
+    - {amount: 313, idx: 7, name: Loose Rain}
+    - {amount: 260, idx: 8, name: Magus Night}
+    - {amount: 132, idx: 9, name: 春之冰精　- 静 -}
+    - {amount: 68, idx: 10, name: Player's Score}
+    idx: 10
+    name: TH12.8  妖精大战争
+  - data:
+    - {amount: 103, idx: 1, name: 欲望深重的灵魂}
+    - {amount: 203, idx: 2, name: 死灵的夜樱}
+    - {amount: 167, idx: 3, name: Ghost Lead}
+    - {amount: 214, idx: 4, name: 欢迎来到妖怪寺}
+    - {amount: 145, idx: 5, name: 门前的妖怪小姑娘}
+    - {amount: 266, idx: 6, name: 在美妙的墓地里住下吧}
+    - {amount: 153, idx: 7, name: Rigid Paradise}
+    - {amount: 306, idx: 8, name: Desire Drive}
+    - {amount: 201, idx: 9, name: 古老的元神}
+    - {amount: 235, idx: 10, name: 梦殿大祀庙}
+    - {amount: 302, idx: 11, name: 大神神话传}
+    - {amount: 211, idx: 12, name: 小小欲望的星空}
+    - {amount: 357, idx: 13, name: 圣德传说 ～ True Administrator}
+    - {amount: 267, idx: 14, name: 后院的妖怪参拜道}
+    - {amount: 278, idx: 15, name: 佐渡的二岩}
+    - {amount: 177, idx: 16, name: 神社的新风}
+    - {amount: 166, idx: 17, name: Desire Dream}
+    idx: 11
+    name: "TH13 \t东方神灵庙"
+  - data:
+    - {amount: 217, idx: 1, name: 不可思议的驱魔棒}
+    - {amount: 175, idx: 2, name: Mist Lake}
+    - {amount: 174, idx: 3, name: 秘境的人鱼}
+    - {amount: 186, idx: 4, name: 往来于运河的人与妖}
+    - {amount: 212, idx: 5, name: 柳树下的杜拉罕}
+    - {amount: 282, idx: 6, name: 满月的竹林}
+    - {amount: 196, idx: 7, name: 孤独的狼人}
+    - {amount: 326, idx: 8, name: Magical Storm}
+    - {amount: 255, idx: 9, name: 幻想净琉璃}
+    - {amount: 271, idx: 10, name: 沉向空中的辉针城}
+    - {amount: 255, idx: 11, name: Reverse Ideology}
+    - {amount: 183, idx: 12, name: 针小棒大的天守阁}
+    - {amount: 449, idx: 13, name: 辉光之针的小人族　～ Little Princess}
+    - {amount: 281, idx: 14, name: 魔力的雷云}
+    - {amount: 401, idx: 15, name: 原初的节拍　～ Pristine Beat}
+    - {amount: 164, idx: 16, name: 小槌的魔力}
+    - {amount: 134, idx: 17, name: 非常非常神奇的道具们}
+    idx: 12
+    name: "TH14 \t东方辉针城"
+  - data:
+    - {amount: 217, idx: 1, name: 燃起犯规的狼烟}
+    - {amount: 235, idx: 2, name: 以犯规对不可能的弹幕}
+    - {amount: 171, idx: 3, name: Midnight Spell Card}
+    - {amount: 237, idx: 4, name: 浪漫逃飞行}
+    - {amount: 389, idx: 5, name: 永远的三日天下}
+    idx: 13
+    name: "TH14.3 \t弹幕天邪鬼"
+  - data:
+    - {amount: 286, idx: 1, name: 宇宙巫女现身}
+    - {amount: 215, idx: 2, name: 忘不了，那曾依藉的绿意}
+    - {amount: 191, idx: 3, name: 兔已着陆}
+    - {amount: 228, idx: 4, name: 湖上倒映着洁净的月光}
+    - {amount: 224, idx: 5, name: 九月的南瓜}
+    - {amount: 306, idx: 6, name: 飞翔于宇宙的不可思议巫女}
+    - {amount: 322, idx: 7, name: 永远的春梦}
+    - {amount: 336, idx: 8, name: 冻结的永远之都}
+    - {amount: 169, idx: 9, name: 逆转的命运之轮}
+    - {amount: 205, idx: 10, name: 遥遥38万公里的航程}
+    - {amount: 235, idx: 11, name: 星条旗的小丑}
+    - {amount: 149, idx: 12, name: 故乡之星倒映之海}
+    - {amount: 280, idx: 13, name: Pure Furies　～ 心之所在}
+    - {amount: 209, idx: 14, name: 前所未见的噩梦世界}
+    - {amount: 220, idx: 15, name: Pandemonic Planet}
+    - {amount: 46, idx: 16, name: 从神社所见之月}
+    - {amount: 82, idx: 17, name: 宇宙巫女归还}
+    idx: 14
+    name: "TH15 \t东方绀珠传"
+  - data:
+    - {amount: 165, idx: 1, name: 樱花舞落的天空}
+    - {amount: 206, idx: 2, name: 希望之星直升青霄}
+    - {amount: 207, idx: 3, name: 仲夏的妖精梦}
+    - {amount: 224, idx: 4, name: 妖怪山间无色风}
+    - {amount: 188, idx: 5, name: 深山的遭遇}
+    - {amount: 251, idx: 6, name: 徜徉于樱色之海}
+    - {amount: 218, idx: 7, name: 成对的神兽}
+    - {amount: 323, idx: 8, name: 幻想的白色旅人}
+    - {amount: 198, idx: 9, name: 魔法的笠地藏}
+    - {amount: 340, idx: 10, name: 禁断之门对面，是此世还是彼世}
+    - {amount: 252, idx: 11, name: Crazy Back Dancers}
+    - {amount: 193, idx: 12, name: Into Backdoor}
+    - {amount: 370, idx: 13, name: 被秘匿的四个季节}
+    - {amount: 349, idx: 14, name: 门再也进不去了}
+    - {amount: 352, idx: 15, name: 秘神摩多罗　～ Hidden Star in All Seasons.}
+    - {amount: 82, idx: 16, name: 不自然的自然}
+    - {amount: 100, idx: 17, name: 白色旅人}
+    idx: 15
+    name: "TH16 \t东方天空璋"
+  - data:
+    - {amount: 168, idx: 1, name: 噩梦日记}
+    - {amount: 204, idx: 2, name: Lucid Dreamer}
+    - {amount: 220, idx: 3, name: Lunatic Dreamer}
+    - {amount: 267, idx: 4, name: Nightmare Diary}
+    idx: 16
+    name: "TH16.5 \t秘封噩梦日记"
+  - data:
+    - {amount: 148, idx: 1, name: 沉默的兽灵}
+    - {amount: 248, idx: 2, name: 只有地藏知晓的哀叹}
+    - {amount: 162, idx: 3, name: Jelly Stone}
+    - {amount: 271, idx: 4, name: Lost River}
+    - {amount: 228, idx: 5, name: 石之婴儿与水中牛}
+    - {amount: 324, idx: 6, name: 不朽的曼珠沙华}
+    - {amount: 277, idx: 7, name: Seraphic Chicken}
+    - {amount: 360, idx: 8, name: Unlocated Hell}
+    - {amount: 331, idx: 9, name: Tortoise Dragon　～ 幸运与不幸}
+    - {amount: 301, idx: 10, name: Beast Metropolis}
+    - {amount: 251, idx: 11, name: 陶瓷的杖刀人}
+    - {amount: 195, idx: 12, name: Electric Heritage}
+    - {amount: 433, idx: 13, name: 寄世界于偶像　～ Idoratrize World}
+    - {amount: 337, idx: 14, name: 闪耀的弱肉强食法则}
+    - {amount: 428, idx: 15, name: 圣德太子的天马　～ Dark Pegasus}
+    - {amount: 81, idx: 16, name: 畜生们的休息}
+    - {amount: 137, idx: 17, name: 从地下的归还}
+    idx: 17
+    name: "TH17 \t东方鬼形兽"
+  - data:
+    - {amount: 213, idx: 1, name: 架起虹桥的幻想乡}
+    - {amount: 205, idx: 2, name: 妖异们的骤雨}
+    - {amount: 184, idx: 3, name: 大吉猫咪}
+    - {amount: 186, idx: 4, name: 深绿掩映的断崖}
+    - {amount: 213, idx: 5, name: Banditry Technology}
+    - {amount: 335, idx: 6, name: 驹草盛开的万年积雪}
+    - {amount: 253, idx: 7, name: Smoking Dragon}
+    - {amount: 385, idx: 8, name: 日渐荒废的工业遗址}
+    - {amount: 286, idx: 9, name: 神代矿石}
+    - {amount: 340, idx: 10, name: 渴盼已久的逢魔之刻}
+    - {amount: 282, idx: 11, name: 天魔之山漫天星}
+    - {amount: 321, idx: 12, name: Lunar Rainbow}
+    - {amount: 468, idx: 13, name: 熙攘市场今何在　～ Immemorial Marketeers}
+    - {amount: 333, idx: 14, name: 幻想地下大轨道网}
+    - {amount: 306, idx: 15, name: 灭杀龙王的公主}
+    - {amount: 91, idx: 16, name: 风暴过后的星期日}
+    - {amount: 94, idx: 17, name: 虹色的世界}
+    idx: 18
+    name: "TH18 \t东方虹龙洞"
+  - data:
+    - {amount: 235, idx: 1, name: 收藏家的忧郁午后}
+    - {amount: 366, idx: 2, name: 令人心跳的司空见惯幻想乡}
+    - {amount: 145, idx: 3, name: 妖怪上钩}
+    - {amount: 330, idx: 4, name: 黑市无处不在}
+    - {amount: 217, idx: 5, name: 拿起弹幕吧，弹幕狂们}
+    - {amount: 306, idx: 6, name: 第100次黑市}
+    idx: 19
+    name: "TH18.5 \t弹幕狂们的黑市"
+  - data:
+    - {amount: 297, idx: 1, name: 兽之智慧}
+    - {amount: 366, idx: 2, name: 世间万物皆可爱}
+    - {amount: 252, idx: 3, name: 魔兽紧急升空}
+    - {amount: 302, idx: 4, name: 悠久山上鬼}
+    - {amount: 325, idx: 5, name: Tiny Shangri-La}
+    - {amount: 327, idx: 6, name: 勇敢又慵懒的妖兽}
+    - {amount: 270, idx: 7, name: 吸血怪兽卓柏卡布拉}
+    - {amount: 306, idx: 8, name: 不回首的黄泉路}
+    - {amount: 421, idx: 9, name: 越轨者们的无碍光　～ Kingdam of Nothingness.}
+    - {amount: 337, idx: 10, name: 信仰是为了虚幻之人}
+    - {amount: 241, idx: 11, name: 妖妖跋扈　～ Who done it!}
+    - {amount: 216, idx: 14, name: 忘不了，那曾依藉的绿意}
+    - {amount: 53, idx: 21, name: 兽王们的小憩}
+    - {amount: 99, idx: 22, name: 野兽有智慧吗}
+    - {amount: 48, idx: 23, name: 兽王园对话用曲1}
+    - {amount: 45, idx: 24, name: 兽王园对话用曲2}
+    idx: 20
+    name: "TH19 \t东方兽王园"
+  idx: 1
+  name: Windows作品
+- data:
+  - data:
+    - {amount: 216, idx: 1, name: 蓬莱传说}
+    - {amount: 224, idx: 2, name: 二色莲花蝶　～ Red and White}
+    - {amount: 256, idx: 3, name: 樱花之恋塚　～ Japanese Flower}
+    - {amount: 280, idx: 4, name: 明治十七年的上海爱丽丝}
+    - {amount: 251, idx: 5, name: 东方怪奇谈}
+    - {amount: 271, idx: 6, name: 神秘的人偶}
+    - {amount: 261, idx: 7, name: Circus Reverie}
+    - {amount: 235, idx: 8, name: 人偶之森}
+    - {amount: 258, idx: 9, name: Witch of Love Potion}
+    - {amount: 258, idx: 10, name: 重生}
+    - {amount: 253, idx: 12, name: 永远之巫女}
+    - {amount: 268, idx: 13, name: 空中飞翔的巫女不可思议的每天}
+    idx: 1
+    name: 蓬莱人形
+  - data:
+    - {amount: 282, idx: 1, name: 走在夜晚的莲台野}
+    - {amount: 282, idx: 2, name: 少女秘封俱乐部}
+    - {amount: 349, idx: 3, name: 东方妖妖梦　～ Ancient Temple}
+    - {amount: 241, idx: 4, name: 古老的冥界寺}
+    - {amount: 185, idx: 6, name: 魔术师梅莉}
+    - {amount: 329, idx: 7, name: 月之妖鸟、化猫之幻}
+    - {amount: 289, idx: 8, name: 过去的花　～ Fairy of Flower}
+    - {amount: 275, idx: 9, name: 魔法少女十字军}
+    - {amount: 318, idx: 11, name: 幻想的永远祭}
+    idx: 2
+    name: 莲台野夜行
+  - data:
+    - {amount: 302, idx: 1, name: 童祭　～ Innocent Treasures}
+    - {amount: 324, idx: 2, name: 华胥之梦}
+    - {amount: 310, idx: 3, name: 上海红茶馆　～ Chinese Tea}
+    - {amount: 232, idx: 4, name: Voyage1969}
+    - {amount: 197, idx: 5, name: 科学世纪的少年少女}
+    - {amount: 348, idx: 8, name: 人偶裁判　～ 玩弄人形的少女}
+    - {amount: 276, idx: 9, name: 梦境与现实的境界}
+    - {amount: 233, idx: 10, name: 幻想机械　～ Phantom Factory}
+    - {amount: 174, idx: 11, name: 幽玄的枫树　～ Eternal Dream}
+    idx: 3
+    name: 梦违科学世纪
+  - data:
+    - {amount: 221, idx: 1, name: 广重36号　～ Neo Super-Express}
+    - {amount: 274, idx: 2, name: 53分钟的蓝色大海}
+    - {amount: 318, idx: 3, name: 竹取飞翔　～ Lunatic Princess}
+    - {amount: 289, idx: 5, name: 青木原的传说}
+    - {amount: 254, idx: 7, name: 飘上月球不死之烟}
+    - {amount: 247, idx: 9, name: Locked Girl　～ 少女密室}
+    - {amount: 347, idx: 10, name: 千年幻想乡　～ History of the Moon}
+    - {amount: 338, idx: 11, name: 最澄澈的空与海}
+    idx: 4
+    name: 卯酉东海道
+  - data:
+    - {amount: 293, idx: 1, name: 欢迎来到月面旅行团}
+    - {amount: 218, idx: 2, name: 天空的格林尼治}
+    - {amount: 301, idx: 4, name: 轮椅上的未来宇宙}
+    - {amount: 247, idx: 6, name: 卫星露天咖啡座}
+    - {amount: 244, idx: 7, name: G Free}
+    - {amount: 263, idx: 8, name: 大空魔术　～ Magical Astronomy}
+    - {amount: 400, idx: 9, name: Necro-Fantasia}
+    - {amount: 224, idx: 10, name: 另一侧的月}
+    idx: 5
+    name: 大空魔术
+  - data:
+    - {amount: 273, idx: 1, name: 未知之花 魅知之旅}
+    - {amount: 233, idx: 2, name: 无间之钟　～ Infinite Nightmare}
+    - {amount: 217, idx: 3, name: 明日之盛，昨日之俗}
+    idx: 6
+    name: 未知之花 魅知之旅
+  - data:
+    - {amount: 267, idx: 1, name: 卫星鸟船}
+    - {amount: 261, idx: 2, name: 特洛伊群的密林}
+    - {amount: 219, idx: 5, name: 天鸟船神社}
+    - {amount: 356, idx: 7, name: 哈德曼的妖怪少女}
+    - {amount: 285, idx: 8, name: 天鸟船神社的结界}
+    - {amount: 234, idx: 10, name: 漂浮于宇宙之中的幻想乡}
+    idx: 7
+    name: 鸟船遗迹
+  - data:
+    - {amount: 261, idx: 1, name: 绿意盎然的疗养院}
+    - {amount: 251, idx: 2, name: 被牛引到善光寺}
+    - {amount: 262, idx: 5, name: 阿加尔塔之风}
+    - {amount: 309, idx: 6, name: 伊奘诺物质}
+    - {amount: 260, idx: 7, name: 后院的妖怪参拜道}
+    - {amount: 226, idx: 9, name: 收集日本各地的不可思议}
+    idx: 8
+    name: 伊奘诺物质
+  - data:
+    - {amount: 202, idx: 1, name: 二人不值一提的博物志}
+    - {amount: 228, idx: 3, name: Dr. Latency的令人不眠之瞳}
+    - {amount: 219, idx: 5, name: 比普朗克更短的须臾}
+    - {amount: 212, idx: 6, name: 薛定谔的怪猫}
+    - {amount: 229, idx: 8, name: 禁忌的膜壁}
+    - {amount: 219, idx: 11, name: 永远的三日天下}
+    idx: 9
+    name: 燕石博物志
+  - data:
+    - {amount: 229, idx: 1, name: Bar·Old Adam}
+    - {amount: 225, idx: 2, name: 燕石博物志所带来的黑暗}
+    - {amount: 226, idx: 4, name: Outsider Cocktail}
+    - {amount: 247, idx: 5, name: 大神神话传}
+    - {amount: 187, idx: 7, name: 旧世界的冒险酒馆}
+    - {amount: 189, idx: 8, name: 魔界地方都市秘境}
+    - {amount: 202, idx: 10, name: 宿醉者的同床异梦}
+    idx: 10
+    name: 旧约酒馆
+  - data:
+    - {amount: 303, idx: 1, name: 七石之狼、登天吞云}
+    idx: 11
+    name: 虹色的北斗七星
+  idx: 2
+  name: ZUN的音乐CD
+- data:
+  - data:
+    - data:
+      - {amount: 220, idx: 1, name: 幻想乡　～ Lotus Land Story}
+      - {amount: 258, idx: 2, name: Witching Dream}
+      - {amount: 156, idx: 3, name: Selene's light}
+      - {amount: 153, idx: 4, name: 装饰战　～ Decoration Battle}
+      - {amount: 261, idx: 5, name: Break the Sabbath}
+      - {amount: 155, idx: 6, name: 红响曲　～ Scarlet Phoneme}
+      - {amount: 188, idx: 7, name: Bad Apple!!}
+      - {amount: 223, idx: 8, name: 灵战　～ Perdition crisis}
+      - {amount: 341, idx: 9, name: Alice Maestra}
+      - {amount: 183, idx: 10, name: 少女绮想曲　～ Capriccio}
+      - {amount: 167, idx: 11, name: 星之器　～ Casket of Star}
+      - {amount: 243, idx: 12, name: Lotus Love}
+      - {amount: 295, idx: 13, name: 沉睡的恐怖　～ Sleeping Terror}
+      - {amount: 193, idx: 14, name: Dream Land}
+      - {amount: 307, idx: 15, name: 幽梦　～ Inanimate Dream}
+      idx: 1
+      name: Disc A
+    - data:
+      - {amount: 275, idx: 1, name: 不可不禁止的游戏}
+      - {amount: 193, idx: 2, name: 女仆幻想　～ Icemilk Magic}
+      - {amount: 298, idx: 3, name: 可爱的恶魔　～ Innocence}
+      - {amount: 150, idx: 4, name: Days}
+      - {amount: 163, idx: 5, name: Peaceful}
+      - {amount: 253, idx: 6, name: Arcadian Dream}
+      - {amount: 138, idx: 7, name: 幻想的居民}
+      - {amount: 225, idx: 8, name: Lotus Road}
+      - {amount: 207, idx: 9, name: Dreamy pilot}
+      - {amount: 234, idx: 10, name: Incomplete Plot}
+      - {amount: 154, idx: 11, name: Border Land}
+      - {amount: 248, idx: 12, name: Magic Shop of Raspberry}
+      - {amount: 155, idx: 13, name: Crescent Dream}
+      - {amount: 133, idx: 14, name: 装饰战　～ Decoration Battle（未使用版本）}
+      - {amount: 307, idx: 15, name: 幽梦　～ Inanimate Dream（未使用版本）}
+      idx: 2
+      name: Disc B
+    idx: 1
+    name: 幺乐团的历史 vol.1
+  - data:
+    - {amount: 175, idx: 1, name: 怪绮谈　～ Mystic Square}
+    - {amount: 303, idx: 2, name: Dream Express}
+    - {amount: 145, idx: 3, name: 魔法阵　～ Magic Square}
+    - {amount: 170, idx: 4, name: 梦想时空}
+    - {amount: 111, idx: 5, name: 灵天　～ Spiritual Heaven}
+    - {amount: 306, idx: 6, name: Romantic Children}
+    - {amount: 206, idx: 7, name: Plastic Mind}
+    - {amount: 206, idx: 8, name: Maple Wise}
+    - {amount: 206, idx: 9, name: 禁忌的魔法　～ Forbidden Magic}
+    - {amount: 147, idx: 10, name: 绯红的少女　～ Crimson Dead!!}
+    - {amount: 101, idx: 11, name: 背叛的少女　～ Judas Kiss}
+    - {amount: 257, idx: 12, name: the Last Judgement}
+    - {amount: 226, idx: 13, name: 可悲的人偶　～ Doll of Misery}
+    - {amount: 97, idx: 14, name: 世界的尽头　～ World's End}
+    - {amount: 286, idx: 15, name: 神话幻想　～ Infinite Being}
+    - {amount: 216, idx: 16, name: 不可思议之国的爱丽丝}
+    - {amount: 186, idx: 17, name: the Grimoire of Alice}
+    - {amount: 97, idx: 18, name: 神社}
+    - {amount: 82, idx: 19, name: Endless}
+    - {amount: 61, idx: 20, name: 永远的乐园}
+    - {amount: 162, idx: 21, name: Mystic Dream}
+    - {amount: 87, idx: 22, name: 灵魂安息之所}
+    - {amount: 195, idx: 23, name: Peaceful Romancer}
+    idx: 2
+    name: 幺乐团的历史 vol.2
+  - data:
+    - {amount: 176, idx: 1, name: 东方封魔录　～ 净土曼茶罗}
+    - {amount: 238, idx: 2, name: 博丽　～ Eastern Wind}
+    - {amount: 145, idx: 3, name: She's in a temper!!}
+    - {amount: 247, idx: 4, name: End of Daylight}
+    - {amount: 176, idx: 5, name: 黑暗的力量}
+    - {amount: 268, idx: 6, name: 幻梦界}
+    - {amount: 157, idx: 7, name: 以死相赌}
+    - {amount: 177, idx: 8, name: 神篱，如紫色火焰般燃烧}
+    - {amount: 127, idx: 9, name: 恋色Magic}
+    - {amount: 207, idx: 10, name: 东方封魔录　～ 幽幻乱舞}
+    - {amount: 250, idx: 11, name: Complete Darkness}
+    - {amount: 189, idx: 12, name: Extra Love}
+    - {amount: 297, idx: 13, name: 战车娘所做的梦}
+    - {amount: 86, idx: 14, name: 远野之森}
+    - {amount: 176, idx: 15, name: 传说中的仙境}
+    - {amount: 266, idx: 16, name: 博丽神社境内}
+    - {amount: 167, idx: 17, name: 夕阳下落}
+    - {amount: 234, idx: 18, name: 封魔终演}
+    idx: 3
+    name: 幺乐团的历史 vol.3
+  - data:
+    - {amount: 214, idx: 1, name: 梦想超越时空}
+    - {amount: 81, idx: 2, name: Selection}
+    - {amount: 206, idx: 3, name: 东方妖恋谈}
+    - {amount: 201, idx: 4, name: Reincarnation}
+    - {amount: 258, idx: 5, name: Dim. Dream}
+    - {amount: 215, idx: 6, name: Tabula rasa　～ 空白少女}
+    - {amount: 157, idx: 7, name: Maniacal Princess}
+    - {amount: 268, idx: 8, name: 梦消失　～ Lost Dream}
+    - {amount: 311, idx: 9, name: 梦幻游戏　～ Dream War}
+    - {amount: 7, idx: 10, name: 胜利对话}
+    - {amount: 144, idx: 11, name: 魔法决战！　～ Fight it out!}
+    - {amount: 82, idx: 12, name: 非统一魔法世界论}
+    - {amount: 227, idx: 13, name: Sailor of Time}
+    - {amount: 46, idx: 14, name: 魔法钟爱}
+    - {amount: 353, idx: 15, name: Strawberry Crisis!!}
+    - {amount: 61, idx: 16, name: 久远之梦}
+    - {amount: 26, idx: 17, name: 东方的蓝色天空}
+    - {amount: 101, idx: 18, name: 永远的满月}
+    - {amount: 158, idx: 19, name: Maple Dream...}
+    - {amount: 6, idx: 20, name: Game Over}
+    - {amount: 66, idx: 21, name: 灵人的休息日}
+    - {amount: 163, idx: 22, name: 时之风}
+    - {amount: 116, idx: 23, name: Starbow Dream}
+    - {amount: 231, idx: 24, name: Phantasmagoria}
+    idx: 4
+    name: 幺乐团的历史 vol.4
+  - data:
+    - {amount: 193, idx: 1, name: A Sacred Lot}
+    - {amount: 197, idx: 2, name: 永远之巫女}
+    - {amount: 128, idx: 3, name: The Positive and Negative}
+    - {amount: 199, idx: 4, name: Highly Responsive to Prayers}
+    - {amount: 181, idx: 5, name: 东方怪奇谈}
+    - {amount: 198, idx: 6, name: 天使传说}
+    - {amount: 227, idx: 7, name: Oriental Magician}
+    - {amount: 139, idx: 8, name: 破邪的小太刀}
+    - {amount: 216, idx: 9, name: 魔镜}
+    - {amount: 176, idx: 10, name: the Legend of KAGE}
+    - {amount: 177, idx: 11, name: 来吧，直到倒地死去的那一刻}
+    - {amount: 250, idx: 12, name: Civilization of Magic}
+    - {amount: 217, idx: 13, name: 星幽天使}
+    - {amount: 172, idx: 14, name: 鸢尾花}
+    - {amount: 294, idx: 15, name: Theme of Eastern Story}
+    idx: 5
+    name: 幺乐团的历史 vol.5
+  idx: 3
+  name: 幺乐团的历史系列CD
+- data:
+  - data:
+    - data:
+      - {amount: 151, idx: 1, name: 遍参}
+      - {amount: 170, idx: 2, name: 东方妖恋谈}
+      - {amount: 36, idx: 3, name: 月轮}
+      - {amount: 125, idx: 4, name: 恋色Magic}
+      - {amount: 81, idx: 5, name: 东风}
+      - {amount: 208, idx: 6, name: 女仆与血之怀表}
+      - {amount: 60, idx: 7, name: 间奏曲}
+      - {amount: 237, idx: 8, name: 布加勒斯特的人偶师}
+      - {amount: 71, idx: 9, name: 魔所}
+      - {amount: 206, idx: 10, name: Locked Girl　～ 少女密室}
+      - {amount: 48, idx: 11, name: 内心}
+      - {amount: 141, idx: 12, name: 广有射怪鸟事　～ Till When?}
+      - {amount: 126, idx: 13, name: 献给已逝公主的七重奏}
+      - {amount: 103, idx: 14, name: 幽雅地绽放吧，墨染的樱花　～ Border of Life}
+      - {amount: 113, idx: 15, name: 夏明}
+      - {amount: 175, idx: 16, name: 恋色Magic 体验版Ver}
+      - {amount: 144, idx: 17, name: 广有射怪鸟事 体验版Ver}
+      - {amount: 273, idx: 18, name: 东方妖恋谈 二符Arrange}
+      - {amount: 267, idx: 19, name: 恋色Magic 二符Arrange}
+      - {amount: 243, idx: 20, name: 女仆与血之怀表 二符Arrange}
+      - {amount: 328, idx: 21, name: 布加勒斯特的人偶师 二符Arrange}
+      - {amount: 227, idx: 22, name: Locked Girl 二符Arrange}
+      - {amount: 189, idx: 23, name: 广有射怪鸟事 二符Arrange}
+      - {amount: 196, idx: 24, name: 献给已逝公主的七重奏 二符Arrange}
+      idx: 1
+      name: Day Disc
+    - data:
+      - {amount: 185, idx: 1, name: 萃梦想}
+      - {amount: 138, idx: 2, name: 少女绮想曲　～ Capriccio}
+      - {amount: 87, idx: 3, name: 森闲}
+      - {amount: 136, idx: 4, name: 魔女们的舞会}
+      - {amount: 75, idx: 5, name: 红夜}
+      - {amount: 174, idx: 6, name: 月时计　～ Luna Dial}
+      - {amount: 76, idx: 7, name: 幽境}
+      - {amount: 129, idx: 8, name: 人偶裁判}
+      - {amount: 103, idx: 9, name: 稀客}
+      - {amount: 167, idx: 10, name: 伏瓦鲁魔法图书馆}
+      - {amount: 71, idx: 11, name: 祸机}
+      - {amount: 162, idx: 12, name: 东方妖妖梦　～ Ancient Temple}
+      - {amount: 85, idx: 13, name: 仰空}
+      - {amount: 273, idx: 14, name: Demystify Feast}
+      - {amount: 83, idx: 15, name: 战迅}
+      - {amount: 293, idx: 16, name: 夜幕降临　～ Evening Star}
+      - {amount: 98, idx: 17, name: 碎月}
+      - {amount: 390, idx: 18, name: 御伽之国的鬼岛　～ Missing Power}
+      - {amount: 80, idx: 19, name: 东方萃梦想}
+      - {amount: 220, idx: 20, name: Demystify Feast（Arrange）}
+      - {amount: 111, idx: 21, name: 夜幕降临　～ Evening Star（Arrange）}
+      - {amount: 262, idx: 22, name: 御伽之国的鬼岛（Arrange）}
+      - {amount: 264, idx: 23, name: 东方萃梦想（Arrange）}
+      idx: 2
+      name: Night Disc
+    idx: 1
+    name: 幻想曲拔萃
+  - data:
+    - data:
+      - {amount: 225, idx: 1, name: 绯想天}
+      - {amount: 120, idx: 2, name: 日常坐卧}
+      - {amount: 183, idx: 3, name: 地之色乃黄色}
+      - {amount: 119, idx: 4, name: 甲论乙驳}
+      - {amount: 119, idx: 5, name: 风光明媚}
+      - {amount: 191, idx: 6, name: 散发着香气的树叶花}
+      - {amount: 191, idx: 7, name: 飞舞的水飞沫}
+      - {amount: 115, idx: 8, name: 以鱼驱蝇}
+      - {amount: 115, idx: 9, name: 冷吟闲醉}
+      - {amount: 191, idx: 10, name: 嘲讽的游戏}
+      - {amount: 99, idx: 11, name: 放纵不羁}
+      - {amount: 119, idx: 12, name: 云外苍天}
+      - {amount: 329, idx: 13, name: 黑海中的绯红　～ Legendary Fish}
+      - {amount: 135, idx: 14, name: 天衣无缝}
+      - {amount: 239, idx: 15, name: 有顶天变　～ Wonderful Heaven}
+      - {amount: 118, idx: 16, name: 幼小的有顶天}
+      - {amount: 149, idx: 17, name: 暮色苍然}
+      idx: 1
+      name: Original Disc
+    - data:
+      - {amount: 225, idx: 1, name: 绯想天}
+      - {amount: 170, idx: 2, name: 东方妖恋谈}
+      - {amount: 165, idx: 3, name: 星之器　～ Casket of Star}
+      - {amount: 195, idx: 4, name: Flowering Night}
+      - {amount: 200, idx: 5, name: 布加勒斯特的人偶师}
+      - {amount: 170, idx: 6, name: 广有射怪鸟事　～ Till When?}
+      - {amount: 185, idx: 7, name: Locked Girl　～ 少女密室}
+      - {amount: 169, idx: 8, name: 幽雅地绽放吧，墨染的樱花　～ Border of Life}
+      - {amount: 187, idx: 9, name: 献给已逝公主的七重奏}
+      - {amount: 176, idx: 10, name: 夜幕降临}
+      - {amount: 200, idx: 11, name: 碎月}
+      - {amount: 179, idx: 12, name: 狂气之瞳　～ Invisible Full Moon}
+      - {amount: 240, idx: 13, name: 风神少女}
+      - {amount: 169, idx: 14, name: 彼岸归航　～ Riverside View}
+      - {amount: 243, idx: 15, name: 黑海中的绯红　～ Legendary Fish}
+      - {amount: 299, idx: 16, name: 有顶天变　～ Wonderful Heaven}
+      - {amount: 221, idx: 17, name: 东方绯想天}
+      idx: 2
+      name: Arrange Disc
+    idx: 2
+    name: 全人类的天乐录
+  - data:
+    - {amount: 192, idx: 1, name: 你见到了那个影子吗}
+    - {amount: 180, idx: 2, name: 萃梦想}
+    - {amount: 174, idx: 3, name: 信仰是为了虚幻之人}
+    - {amount: 167, idx: 4, name: 活泼的纯情小姑娘}
+    - {amount: 176, idx: 5, name: 上海红茶馆　～ Chinese Tea}
+    - {amount: 174, idx: 6, name: 灵知的太阳信仰　～ Nuclear Fusion}
+    - {amount: 179, idx: 7, name: 明日之盛，昨日之俗}
+    - {amount: 313, idx: 8, name: 未知物Ｘ　～ Unfound Adventure}
+    - {amount: 81, idx: 9, name: 空中飘浮的物体Ｘ}
+    - {amount: 185, idx: 10, name: 二色莲花蝶　～ Ancients}
+    - {amount: 187, idx: 11, name: 恋色Magic}
+    - {amount: 187, idx: 12, name: the Grimoire of Alice}
+    - {amount: 163, idx: 13, name: 伏瓦鲁魔法图书馆}
+    - {amount: 108, idx: 14, name: 传说的巨神}
+    - {amount: 158, idx: 15, name: 我们的非想天则}
+    - {amount: 116, idx: 16, name: 人偶存在的风景}
+    - {amount: 89, idx: 17, name: 悠久的蒸汽机关}
+    - {amount: 233, idx: 18, name: 未知物Ｘ　～ Unfound Adventure}
+    - {amount: 260, idx: 19, name: 我们的非想天则（完整版）}
+    - {amount: 285, idx: 20, name: 巨大的影子与渺小的结局}
+    - {amount: 259, idx: 21, name: 我们的非想天则（卡拉OK版）}
+    idx: 3
+    name: 核热造神非想天则
+  - data:
+    - data:
+      - {amount: 248, idx: 1, name: 尘世不变的悲观主义～心绮楼囃子}
+      - {amount: 133, idx: 2, name: 有人气的场所}
+      - {amount: 217, idx: 3, name: 春色小径　～ Colorful Path}
+      - {amount: 259, idx: 4, name: Magus Night}
+      - {amount: 221, idx: 5, name: 守旧老爹与前卫少女}
+      - {amount: 265, idx: 6, name: 感情的摩天楼　～ Cosmic Mind}
+      - {amount: 249, idx: 7, name: 大神神话传}
+      - {amount: 274, idx: 8, name: 圣德传说　～ True Administrator}
+      - {amount: 234, idx: 9, name: 芥川龙之介的河童　～ Candid Friend}
+      - {amount: 240, idx: 10, name: 哈德曼的妖怪少女}
+      - {amount: 133, idx: 11, name: 无人气的场所}
+      - {amount: 245, idx: 12, name: 佐渡的二岩}
+      - {amount: 48, idx: 13, name: 本日的头版头条}
+      - {amount: 247, idx: 14, name: 幻想乡的二岩}
+      - {amount: 114, idx: 15, name: 丑时三刻的村庄}
+      - {amount: 517, idx: 16, name: 亡失的情感}
+      - {amount: 149, idx: 17, name: 晓云}
+      - {amount: 66, idx: 18, name: 官板黄昏新闻 (Short Version)}
+      - {amount: 72, idx: 19, name: 心绮楼囃子 (Short Version)}
+      idx: 1
+      name: DISC1
+    - data:
+      - {amount: 166, idx: 1, name: 心绮楼祭囃子}
+      - {amount: 151, idx: 2, name: 出演者选择}
+      - {amount: 141, idx: 3, name: 没用上的场所}
+      - {amount: 15, idx: 4, name: 人气爆发／博丽灵梦}
+      - {amount: 15, idx: 5, name: 人气爆发／雾雨魔理沙}
+      - {amount: 15, idx: 6, name: 人气爆发／云居一轮＆云山}
+      - {amount: 15, idx: 7, name: 人气爆发／圣白莲}
+      - {amount: 15, idx: 8, name: 人气爆发／物部布都}
+      - {amount: 15, idx: 9, name: 人气爆发／丰聪耳神子}
+      - {amount: 15, idx: 10, name: 人气爆发／河城荷取}
+      - {amount: 15, idx: 11, name: 人气爆发／古明地恋}
+      - {amount: 245, idx: 12, name: 人气爆发／二岩猯藏}
+      - {amount: 17, idx: 13, name: 人气爆发／秦心}
+      - {amount: 100, idx: 14, name: Lastword发动}
+      - {amount: 93, idx: 15, name: 官板黄昏新闻}
+      - {amount: 517, idx: 16, name: 亡失的情感 (Arrange Version)}
+      - {amount: 111, idx: 17, name: 音轨17}
+      idx: 2
+      name: DISC2
+    idx: 4
+    name: 暗黑能乐集心绮楼
+  - data:
+    - data:
+      - {amount: 191, idx: 1, name: 震撼心灵的都市传说}
+      - {amount: 95, idx: 2, name: 幻想乡不可思议发现}
+      - {amount: 118, idx: 3, name: 有珠子的日常}
+      - {amount: 207, idx: 4, name: 灵异任你选}
+      - {amount: 136, idx: 5, name: 显现的传承形态}
+      - {amount: 234, idx: 6, name: 七玉搜集大摊牌}
+      - {amount: 101, idx: 7, name: 时代风潮的造访}
+      - {amount: 190, idx: 8, name: 公正的争夺}
+      - {amount: 119, idx: 9, name: 价值不明}
+      - {amount: 202, idx: 10, name: 对跖点之钟}
+      - {amount: 146, idx: 11, name: 相信可能性}
+      - {amount: 207, idx: 12, name: 竹林大火}
+      - {amount: 127, idx: 13, name: 知晓真相之人}
+      - {amount: 297, idx: 14, name: 华狭间的战场}
+      - {amount: 123, idx: 15, name: 外界民俗}
+      - {amount: 464, idx: 16, name: Last Occultism　～ 现世的秘术师}
+      - {amount: 118, idx: 17, name: 各自的结局}
+      idx: 1
+      name: ORIGINAL DISC
+    - data:
+      - {amount: 276, idx: 1, name: 二色莲花蝶 ～ Red and White}
+      - {amount: 294, idx: 2, name: 恋色Master spark}
+      - {amount: 248, idx: 3, name: 守旧老爹与前卫少女}
+      - {amount: 290, idx: 4, name: 感情的摩天楼　～ Cosmic Mind}
+      - {amount: 286, idx: 5, name: 大神神话传}
+      - {amount: 285, idx: 6, name: 圣德传说　～ True Administrator}
+      - {amount: 272, idx: 7, name: 芥川龙之介的河童　～ Candid Friend}
+      - {amount: 252, idx: 8, name: 哈德曼的妖怪少女}
+      - {amount: 227, idx: 9, name: 幻想乡的二岩}
+      - {amount: 475, idx: 10, name: 亡失的情感}
+      - {amount: 338, idx: 11, name: 飘上月球，不死之烟}
+      - {amount: 286, idx: 12, name: 辉光之针的小人族　～ Little Princess}
+      - {amount: 228, idx: 13, name: 华狭间的战场}
+      - {amount: 269, idx: 14, name: Last Occultism　～ 现世的秘术师}
+      - {amount: 134, idx: 15, name: 被揭晓的深秘}
+      idx: 2
+      name: ARRANGE DISC
+    idx: 5
+    name: 深秘乐曲集
+  - data:
+    - data:
+      - {amount: 263, idx: 1, name: 狂气之瞳　～ Invisible Full Moon}
+      - {amount: 197, idx: 2, name: 新竹林大火}
+      - {amount: 213, idx: 3, name: 亿万劫之钟}
+      - {amount: 206, idx: 4, name: Occult Attract}
+      - {amount: 151, idx: 5, name: 境界民俗}
+      - {amount: 334, idx: 6, name: 未知物Ｘ　～ Occultly Madness}
+      - {amount: 49, idx: 7, name: 容貌错乱　～ Horrible Night}
+      idx: 1
+      name: EXTRA DISC
+    idx: 6
+    name: 深秘乐曲集·补
+  - data:
+    - data:
+      - {amount: 161, idx: 1, name: 异变的种子}
+      - {amount: 127, idx: 2, name: 凭投依合}
+      - {amount: 184, idx: 3, name: 地之色乃黄色　～ Primrose}
+      - {amount: 202, idx: 4, name: Mushroom·Waltz}
+      - {amount: 135, idx: 5, name: 连带责人}
+      - {amount: 209, idx: 6, name: 圣辇船飞向天空}
+      - {amount: 193, idx: 7, name: 法力之下的平等}
+      - {amount: 160, idx: 8, name: 疑惑的萌芽}
+      - {amount: 130, idx: 9, name: 合缘奇缘}
+      - {amount: 194, idx: 10, name: 恒常不变的参庙祀}
+      - {amount: 177, idx: 11, name: 光辉的天球仪}
+      - {amount: 133, idx: 12, name: 异心同体}
+      - {amount: 188, idx: 13, name: 泽之河童的技术力}
+      - {amount: 194, idx: 14, name: 地底绽放的蔷薇}
+      - {amount: 197, idx: 15, name: 在深绿的狸森里}
+      - {amount: 131, idx: 16, name: 智略纵横}
+      - {amount: 278, idx: 17, name: 凭坐处于梦与现实之间　～ Necro-Fantasia}
+      - {amount: 144, idx: 18, name: 行云流水}
+      - {amount: 80, idx: 19, name: 含苞待放的凭依华}
+      idx: 1
+      name: ORIGINAL DISC 1
+    - data:
+      - {amount: 161, idx: 1, name: 通往真相的枝叶}
+      - {amount: 206, idx: 2, name: 不灭的赤魂}
+      - {amount: 204, idx: 3, name: 永远延续的回廊}
+      - {amount: 131, idx: 4, name: 豪言壮语}
+      - {amount: 200, idx: 5, name: 落日映照下的逆城}
+      - {amount: 198, idx: 6, name: 心绮楼演舞}
+      - {amount: 144, idx: 7, name: 意气洋洋}
+      - {amount: 215, idx: 8, name: 梦世界民俗}
+      - {amount: 184, idx: 9, name: Sleep Sheep·Parade}
+      - {amount: 137, idx: 10, name: 天衣无缝　～ Yellow Lily}
+      - {amount: 192, idx: 11, name: 到达有顶天}
+      - {amount: 212, idx: 12, name: 克服万千之试炼}
+      - {amount: 132, idx: 13, name: 开演在即}
+      - {amount: 465, idx: 14, name: 今宵是飘逸的利己主义者(Live ver)　～ Egoistic Flowers.}
+      - {amount: 95, idx: 15, name: 争奇斗艳的凭依华}
+      - {amount: 160, idx: 16, name: 飞舞飘散的凭依华吹雪}
+      - {amount: 90, idx: 17, name: 悠久的蒸汽机关}
+      idx: 2
+      name: ORIGINAL DISC 2
+    - data:
+      - {amount: 385, idx: 1, name: 凭依华}
+      - {amount: 263, idx: 2, name: Last Occultism　～ 现世的秘术师}
+      - {amount: 338, idx: 3, name: 永远的春梦}
+      - {amount: 280, idx: 4, name: 辉光之针的小人族　～ Little Princess}
+      - {amount: 343, idx: 5, name: 有顶天变　～ Wonderful Heaven}
+      - {amount: 314, idx: 6, name: 华狭间的战场}
+      - {amount: 278, idx: 7, name: 夜幕降临　～ Evening Star}
+      - {amount: 265, idx: 8, name: 凭坐处于梦与现实之间　～ Necro-Fantasia}
+      - {amount: 291, idx: 9, name: 今宵是飘逸的利己主义者　～ Egoistic Flowers.}
+      idx: 3
+      name: ARRANGE DISC
+    idx: 7
+    name: 完全凭依唱片名录
+  - data:
+    - data:
+      - {amount: 156, idx: 1, name: 被水淹没的沉愁地狱}
+      - {amount: 141, idx: 2, name: 魔法使的忧郁}
+      - {amount: 188, idx: 3, name: 恋色Master spark}
+      - {amount: 217, idx: 4, name: 少女绮想曲}
+      - {amount: 228, idx: 5, name: 昏暗的风穴}
+      - {amount: 212, idx: 6, name: 请注意万年备用伞}
+      - {amount: 210, idx: 7, name: 被封印的妖怪}
+      - {amount: 94, idx: 8, name: 漫游旧地狱街道}
+      - {amount: 268, idx: 9, name: 大江山的花之酒宴}
+      - {amount: 201, idx: 10, name: 御柱的墓场}
+      - {amount: 300, idx: 11, name: 神圣庄严的古战场}
+      - {amount: 268, idx: 12, name: Captain Murasa}
+      - {amount: 212, idx: 13, name: 业火地幔}
+      - {amount: 209, idx: 14, name: 灵知的太阳信仰}
+      idx: 1
+      name: ORIGINAL DISC 1
+    - data:
+      - {amount: 179, idx: 1, name: 不朽的曼珠沙华}
+      - {amount: 209, idx: 2, name: Seraphic Chicken}
+      - {amount: 343, idx: 3, name: 今宵是飘逸的利己主义者　～ Egoistic Flowers.}
+      - {amount: 315, idx: 4, name: 魔法少女们的百年祭}
+      - {amount: 265, idx: 5, name: U.N.OWEN就是她吗？}
+      - {amount: 202, idx: 6, name: 大地之底，刚欲之海}
+      - {amount: 508, idx: 7, name: 贪欲之兽的记忆}
+      - {amount: 492, idx: 8, name: 全有机体的记忆　～ Memory of Fossil Energy.}
+      - {amount: 155, idx: 9, name: 天理人欲}
+      - {amount: 135, idx: 10, name: 东方刚欲异闻}
+      - {amount: 329, idx: 11, name: 贪欲之兽的记忆(Arrange Version)}
+      - {amount: 432, idx: 12, name: 被水淹没的沉愁地狱(Arrange Version)}
+      idx: 2
+      name: ORIGINAL DISC 2
+    idx: 8
+    name: 贪欲之兽的音乐
+  idx: 4
+  name: 格斗游戏OST
+- data:
+  - data:
+    - {amount: 255, idx: 1, name: Japanese Saga}
+    - {amount: 175, idx: 2, name: 阿礼的孩子}
+    - {amount: 337, idx: 3, name: 飞翔在夜晚的鸠山 -Power MIX}
+    idx: 1
+    name: 东方求闻史纪附属CD
+  - data:
+    - {amount: 392, idx: 1, name: 妖怪宇宙旅行}
+    - {amount: 209, idx: 2, name: 绵月的符卡　～ Lunatic Blue}
+    - {amount: 226, idx: 3, name: 酒鬼的雷姆利亚 (Retro Ver)}
+    idx: 2
+    name: 东方儚月抄（漫画）附属CD
+  - data:
+    - {amount: 196, idx: 3, name: 花映塚　～ after Higan Retour}
+    idx: 3
+    name: 东方文花帖（书籍）附属CD
+  - data:
+    - {amount: 262, idx: 1, name: 魔法使的忧郁}
+    - {amount: 266, idx: 2, name: 斯普特尼克幻夜}
+    idx: 4
+    name: The Grimoire of Marisa附属CD
+  - data:
+    - {amount: 222, idx: 1, name: Sunny Rutile Flection}
+    - {amount: 312, idx: 2, name: 因夜失眠}
+    - {amount: 264, idx: 3, name: 妖精灿烂的样子}
+    idx: 5
+    name: 东方三月精（第一季）附属CD
+  - data:
+    - {amount: 176, idx: 1, name: 桑尼米尔克的红雾异变}
+    - {amount: 250, idx: 2, name: 雪月樱花之国}
+    - {amount: 243, idx: 3, name: Star Voyage2008}
+    idx: 6
+    name: 东方三月精（第二季）附属CD1
+  - data:
+    - {amount: 233, idx: 1, name: 可爱的大战争叠奏曲}
+    idx: 7
+    name: 东方三月精（第二季）附属CD2
+  - data:
+    - {amount: 298, idx: 1, name: 妖精冒险谭}
+    - {amount: 251, idx: 2, name: 两方世界}
+    idx: 8
+    name: 东方三月精（第二季）附属CD3
+  - data:
+    - {amount: 233, idx: 1, name: 神域的捉迷藏生活}
+    - {amount: 238, idx: 2, name: 现代妖怪殖民地}
+    idx: 9
+    name: 东方三月精（第三季）附属CD1
+  - data:
+    - {amount: 214, idx: 1, name: 时刻旺盛的好奇心}
+    idx: 10
+    name: 东方三月精（第三季）附属CD2
+  - data:
+    - {amount: 179, idx: 2, name: 赌上性命去恶作剧}
+    idx: 11
+    name: 东方三月精（第三季）附属CD3
+  - data:
+    - {amount: 199, idx: 2, name: 永夜的报应　～ Pipes and Fiddle.}
+    - {amount: 274, idx: 3, name: Last Occultism　～ 现世的秘术师}
+    idx: 12
+    name: 东方外来韦编弐附属CD
+  - data:
+    - {amount: 213, idx: 1, name: 识文解意的爱书人}
+    idx: 13
+    name: 东方铃奈庵附属CD
+  idx: 5
+  name: 商业出版品附带CD
+idx: 0
+name: Touhou Project

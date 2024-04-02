@@ -1,19 +1,21 @@
 # 东方原曲认知测验（无尽版）
 
-## 环境变量
-`API_CLEAN_PASSWORD`: 清除 nextjs 数据缓存时的密码，如 `awpgijseopighjewsihougblns`
+## 简介
 
-`NEXT_PUBLIC_FETCH_DATA_URL`: 获取曲子划分数据时的 URL，如 `https://raw.githubusercontent.com/xxx/yyy/zzz.yaml`
+本项目是一个基于 [Next.js](https://nextjs.org/) 的东方原曲认知测验网页，可以用于测试对东方原曲的熟悉程度。
+为了不造重复的轮子，相比于 [THB版](https://cd.thwiki.cc/quiz)，有些许不同：
 
-`NEXT_PUBLIC_FETCH_MUSIC_URL_PREFIX`: 获取音乐文件时的 URL 前缀，如 `https://raw.githubusercontent.com/xxx/yyy/zzz/`（主要是为了方便更改）
+1. 不做题量限制，可自行选择结束。
 
-+ 会获取 `NEXT_PUBLIC_FETCH_DATA_URL` 和 `NEXT_PUBLIC_FETCH_MUSIC_URL_PREFIX/` 下的音乐文件
+2. 曲子片段完全随机。
 
-`NEXT_PUBLIC_QUIZ_BUFFER_SIZE`: 预加载的曲子数量，若不设置或者为无效值，则默认为 `auto`，即 Easy、Normal 难度缓存为 2，Hard、Lunatic 难度缓存为 1
+3. 可更自由选取要进行测试的曲子范围。
 
-`NEXT_PUBLIC_PREVIOUS_QUIZ_SET_CAPACITY`: 用于记录之前的 Quiz 的 SET 的大小，用于防止短期内重复，若不设置或为无效值或值小于 0，则默认为 10
+4. 可选取的曲子更多
 
+## 使用说明
 
-## 注意事项
+具体可参见网页内说明以及 Bilibili 视频。
 
-由于实现的原因，需要在安全上下文中部署该网页。
+关于可选取的曲子，因为有些曲子重复度很高，所以只选择了其中一个作为使用，具体来说时以先出现、在正作里的优先。
+[这里可查看完整的曲子列表以及剔除的曲子](./docs/data/README.md)，筛选比较匆忙，若有遗漏或者不合理的地方，欢迎提出。
