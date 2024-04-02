@@ -1,6 +1,6 @@
 {
   "name": "thmuisc-quiz",
-  "version": "0.1.0 beta2",
+  "version": "0.2.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -24,13 +24,13 @@
     "@types/node": "latest",
     "@types/react": "latest",
     "@types/react-dom": "latest",
-    "@unocss/eslint-config": "^0.58.5",
-    "@unocss/postcss": "^0.58.5",
+    "@unocss/eslint-config": "^0.58.9",
+    "@unocss/postcss": "^0.58.9",
     "autoprefixer": "latest",
     "eslint": "latest",
     "eslint-config-next": "latest",
     "postcss": "latest",
     "typescript": "latest",
-    "unocss": "^0.58.5"
+    "unocss": "^0.58.9"
   }
 }
