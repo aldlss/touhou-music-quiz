@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "re": "next build; next start"
   },
   "dependencies": {
     "@aldlss/async-sema": "^3.1.1",

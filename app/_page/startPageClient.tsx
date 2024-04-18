@@ -52,7 +52,9 @@ export function InfoDialog() {
                             target="_blank">
                             <GithubFillSvg className="w-8" />
                         </Link>
-                        <Link href="https://bilibili.com" target="_blank">
+                        <Link
+                            href="https://www.bilibili.com/video/BV1Nz42167QC/"
+                            target="_blank">
                             <BilibiliFillSvg className="w-8 fill-pink" />
                         </Link>
                     </address>

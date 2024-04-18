@@ -55,8 +55,14 @@ export function StartPage(props: IStartPageProps) {
                 </button>
             </div>
             <div className="p-2 text-small">
-                测验片段为随机选取，结果不具有参考价值，仅供娱乐。详细介绍可参看
-                Bilibili 视频，若有问题可在评论区或者{" "}
+                测验片段为随机选取，结果不具有参考价值，仅供娱乐。详细介绍可参看{" "}
+                <Link
+                    href="https://www.bilibili.com/video/BV1Nz42167QC/"
+                    target="_blank"
+                    className="text-link">
+                    Bilibili
+                </Link>{" "}
+                视频，若有问题可在评论区或者{" "}
                 <Link
                     href="https://github.com/aldlss/touhou-music-quiz"
                     target="_blank"
