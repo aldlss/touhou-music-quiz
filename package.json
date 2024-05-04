@@ -1,6 +1,6 @@
 {
   "name": "thmuisc-quiz",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -12,6 +12,7 @@
   "dependencies": {
     "@aldlss/async-sema": "^3.1.1",
     "@headlessui/react": "^1.7.18",
+    "@vercel/analytics": "^1.2.2",
     "immer": "^10.0.4",
     "next": "latest",
     "ogg-opus-decoder": "^1.6.12",
