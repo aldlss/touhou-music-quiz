@@ -1,7 +1,8 @@
 "use client";
 import React, { memo, useCallback, useEffect, useRef, useState } from "react";
 import {
-    MusicCollection,
+    type AnswerRecord,
+    type MusicCollection,
     PageType,
     RankType,
     ThemeAppearanceType,
@@ -20,6 +21,7 @@ import { StartPage } from "./_page/startPage";
 import { SelectPage } from "./_page/selectPage";
 import { RunningPage } from "./_page/runningPage";
 import { EndPage } from "./_page/endPage";
+import { ResultSummaryDialog } from "./_dialog/resultSummaryDialog";
 
 export function QuizMain({
     musicCollection,
@@ -54,6 +56,9 @@ export function QuizMain({
     const [rightAnswerCount, setRightAnswerCount] = useState(0);
     const musicDuration = useRef(5);
     const [rank, setRank] = useState(RankType.normal);
+    const [answerRecords, setAnswerRecords] = useImmer<AnswerRecord[]>([]);
+    const [resultSummaryDialogShow, setResultSummaryDialogShow] =
+        useState(false);
 
     const themeMatchQuery = useRef<MediaQueryList | null>(null);
     const GetThemeMatchQuery = () => {
@@ -143,6 +148,7 @@ export function QuizMain({
                             initFunc={() => {
                                 setNowQuizCount(0);
                                 setRightAnswerCount(0);
+                                setAnswerRecords([]);
                             }}
                             switchThemeAppearance={generateSwitchThemeAppearance(
                                 showedTheme
@@ -171,6 +177,10 @@ export function QuizMain({
                             setRightAnswerCount={setRightAnswerCount}
                             musicDuration={musicDuration}
                             rank={rank}
+                            setAnswerRecords={setAnswerRecords}
+                            invokeResultSummaryDialog={() => {
+                                setResultSummaryDialogShow(true);
+                            }}
                         />
                     ),
                     [PageType.end]: (
@@ -180,23 +190,24 @@ export function QuizMain({
                             nowQuizCount={nowQuizCount}
                             rightAnswerCount={rightAnswerCount}
                             rank={rank}
+                            invokeResultSummaryDialog={() => {
+                                setResultSummaryDialogShow(true);
+                            }}
                         />
                     ),
                 }[pageState]
             }
+            <ResultSummaryDialog
+                show={resultSummaryDialogShow}
+                onClose={() => {
+                    setResultSummaryDialogShow(false);
+                }}
+                answerAndResults={answerRecords}></ResultSummaryDialog>
         </div>
     );
 }
 
-export function ContainerDialog({
-    show,
-    onClose,
-    afterClose = voidFunc,
-    autoClose = false,
-    autoCloseTime = 2000,
-    appear = false,
-    children,
-}: {
+interface IContainerDialogProps {
     show: boolean;
     onClose: () => void;
     afterClose?: () => void;
@@ -204,7 +215,24 @@ export function ContainerDialog({
     autoCloseTime?: number | (() => number);
     appear?: boolean;
     children: React.ReactNode;
-}) {
+}
+
+export type IContainerDialogPropsBase = Omit<IContainerDialogProps, "children">;
+
+/**
+ * 需要自行在其中添加 Dialog 组件，例如 Dialog.Panel 以及 Dialog.Title
+ */
+export function ContainerDialog(props: IContainerDialogProps) {
+    const {
+        show,
+        onClose,
+        afterClose = voidFunc,
+        autoClose = false,
+        autoCloseTime = 2000,
+        appear = false,
+        children,
+    } = props;
+
     // 用于自动关闭界面
     useEffect(() => {
         let timer: NodeJS.Timeout;

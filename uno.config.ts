@@ -34,8 +34,12 @@ export default defineConfig({
             "bg-white group-data-not-child-checked:bg-neutral-3 dark:bg-material-dark-5 dark:group-data-not-child-checked:bg-neutral-5.5 transition-background-color",
         "bg-dialog":
             "bg-white dark:bg-material-dark-6 transition-background-color",
+        "bg-dialog-item":
+            "bg-gray-1 dark:bg-material-dark-8 transition-background-color",
         "common-button":
             "border-1 dark:border-dark rounded-lg text-center shadow-md disabled:grayscale transition-common",
+        "tertiary-button":
+            "common-button bg-stone-300 dark:bg-stone-700 simple-hover-active",
         "secondary-button":
             "common-button bg-slate dark:bg-emerald simple-hover-active",
         "main-button":
@@ -92,6 +96,10 @@ export default defineConfig({
             "deep-cyan-2": "#009a9b",
             "deep-cyan-r-1": "#327f7f",
             "deep-cyan-r-2": "#38afb0",
+            accepted: "#16b981", // emerald-5
+            "accepted-dark": "#66FF66",
+            "wrong-answer": "#e74c3c",
+            "wrong-answer-dark": "#FF6E6E",
         },
         media: {
             "h-sm": "(min-height: 480px)",

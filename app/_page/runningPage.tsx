@@ -2,17 +2,17 @@
 import { Sema } from "@aldlss/async-sema";
 import { Dialog } from "@headlessui/react";
 import type { OggOpusDecoderWebWorker } from "ogg-opus-decoder";
-import Link from "next/link";
 import React, {
-    MutableRefObject,
+    type MutableRefObject,
     useState,
     useMemo,
     useRef,
     useCallback,
     useEffect,
     memo,
+    useContext,
 } from "react";
-import { useImmer } from "use-immer";
+import { type Updater, useImmer } from "use-immer";
 import { SemaType, ControlledPromise } from "../class";
 import { ConfirmDialog, ContainerDialog } from "../clientComponent";
 import { AsyncBoundary } from "../serverComponent";
@@ -36,14 +36,17 @@ import {
 } from "../tools";
 import {
     RankType,
-    SimpleMusic,
+    type SimpleMusic,
     ErrorType,
-    Quiz,
+    type Quiz,
     PageType,
-    MusicCollection,
+    type MusicCollection,
+    type AnswerRecord,
 } from "../types";
 import { isSupportOggOpus } from "../clientConstant";
 import { importOggOpusDecoder } from "../dynamicImport";
+import { binarySearch } from "../alg";
+import { getDisplayMusicNameFromRouteName } from "../nameTools";
 
 export interface IRunningPageProps {
     setPageState: Function;
@@ -54,6 +57,8 @@ export interface IRunningPageProps {
     setRightAnswerCount: Function;
     musicDuration: MutableRefObject<number>;
     rank: RankType;
+    setAnswerRecords: Updater<AnswerRecord[]>;
+    invokeResultSummaryDialog: () => void;
 }
 
 export function RunningPage(props: IRunningPageProps) {
@@ -66,6 +71,8 @@ export function RunningPage(props: IRunningPageProps) {
         setRightAnswerCount,
         musicDuration,
         rank,
+        setAnswerRecords,
+        invokeResultSummaryDialog,
     } = props;
 
     const [selectSid, setSelectSid] = useState(-1);
@@ -449,10 +456,15 @@ export function RunningPage(props: IRunningPageProps) {
         <div className="h-full bg-container">
             <main className="relative h-full w-full flex flex-col animate-fade-in-up-fast">
                 <header className="relative">
-                    <p className="absolute left-0 top-0 p-2 text-h3">
-                        <span className="text-emerald">{rightAnswerCount}</span>
+                    <button
+                        className="tertiary-button absolute left-0 top-0 p-2 text-h3"
+                        type="button"
+                        onClick={invokeResultSummaryDialog}>
+                        <span className="text-accepted dark:text-accepted-dark">
+                            {rightAnswerCount}
+                        </span>
                         {`/${nowQuizCount}`}
-                    </p>
+                    </button>
                     <h1
                         className={`text-h2 flex-1 text-center ${difficultyTextColor}`}>
                         {h1Text}
@@ -511,13 +523,24 @@ export function RunningPage(props: IRunningPageProps) {
                     className="self-center p-0.5 main-button"
                     type="button"
                     onClick={() => {
-                        const correctSid = nowQuiz?.musicInfo.sid ?? -1;
-                        if (correctSid === -1) {
+                        if (nowQuiz === null) {
                             return;
                         }
+                        const correctSid = nowQuiz.musicInfo.sid;
                         setShowResultDialog(true);
                         setAnsweredSid(selectSid);
                         setNowQuizCount(nowQuizCount + 1);
+                        setAnswerRecords((draft) => {
+                            draft.push({
+                                correctAnswerSid: correctSid,
+                                correctAnswerName: nowQuiz.musicInfo.name,
+                                playerAnswerSid: selectSid,
+                                playerAnswerName:
+                                    binarySearch(selectedMusicList, (mid) => {
+                                        return selectSid - mid.sid;
+                                    })?.name ?? "未知",
+                            });
+                        });
                         if (selectSid === correctSid) {
                             setRightAnswerCount(rightAnswerCount + 1);
                         } else {
@@ -552,39 +575,7 @@ const ResultDialog = memo(function ResultDialog({
     const result = selectedSid === nowQuizInfo.sid;
     const description1 = <>{`正确答案${result ? "就" : ""}是`}</>;
     const description2 = useMemo(() => {
-        const names = nowQuizInfo.name.split(separator);
-        return (
-            <>
-                {names?.map((name, idx) => {
-                    if (idx === 0) {
-                        return <React.Fragment key={name}></React.Fragment>;
-                    } else if (idx === names.length - 1) {
-                        const nameWithoutIdx = name.replace(/\d{1,2}\. /g, "");
-                        return (
-                            <Link
-                                href={`https://thwiki.cc/${nameWithoutIdx}`}
-                                target="_blank"
-                                key={name}>
-                                <span className="text-link">
-                                    {nameWithoutIdx}
-                                </span>
-                            </Link>
-                        );
-                    } else if (idx === 1 || idx === 2) {
-                        return (
-                            <span key={name}>
-                                {/* 最后一个才加 “的” */}
-                                {`${name}中${
-                                    names.length - idx === 2 ? "的" : ""
-                                }`}
-                            </span>
-                        );
-                    } else {
-                        return <React.Fragment key={name}></React.Fragment>;
-                    }
-                })}
-            </>
-        );
+        return getDisplayMusicNameFromRouteName(nowQuizInfo.name);
     }, [nowQuizInfo.name]);
     return (
         <ContainerDialog

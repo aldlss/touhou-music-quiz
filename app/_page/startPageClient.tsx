@@ -15,7 +15,6 @@ export function InfoDialog() {
                 type="button"
                 aria-label="show infomation dialog"
                 onClick={() => {
-                    "a".startsWith("w");
                     setIsShow(true);
                 }}>
                 <InformationLineSvg className="tips-icon" />

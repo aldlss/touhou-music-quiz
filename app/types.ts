@@ -48,3 +48,10 @@ export enum ThemeAppearanceType {
     Dark = "Dark",
     Auto = "Auto",
 }
+
+export type AnswerRecord = {
+    playerAnswerSid: number;
+    playerAnswerName: string;
+    correctAnswerSid: number;
+    correctAnswerName: string;
+};

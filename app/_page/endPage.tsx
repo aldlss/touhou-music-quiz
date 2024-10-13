@@ -8,10 +8,17 @@ export interface IEndPageProps {
     nowQuizCount: number;
     rightAnswerCount: number;
     rank: RankType;
+    invokeResultSummaryDialog: () => void;
 }
 
 export function EndPage(props: IEndPageProps) {
-    const { setPageState, nowQuizCount, rightAnswerCount, rank } = props;
+    const {
+        setPageState,
+        nowQuizCount,
+        rightAnswerCount,
+        rank,
+        invokeResultSummaryDialog,
+    } = props;
 
     const [nickname, setNickname] = useState(() => {
         return GetLocalStorageValue("nickname", "");
@@ -21,7 +28,7 @@ export function EndPage(props: IEndPageProps) {
     return (
         <div className="h-full bg-container">
             <main className="h-full w-full flex flex-col animate-fade-in-up-fast items-center justify-center gap-1">
-                <h1 className="font-extrabold text-pure-red text-h1 dark:text-red">
+                <h1 className="text-pure-red font-extrabold text-h1 dark:text-red">
                     喜报
                 </h1>
                 {editNickName ? (
@@ -57,7 +64,13 @@ export function EndPage(props: IEndPageProps) {
                     <span className={difficultyColor}>{difficultyText}</span>
                     &nbsp;难度获得
                 </h3>
-                <h3 className="font-600 text-rose text-h2">{`${rightAnswerCount}/${nowQuizCount}`}</h3>
+                <h3 className="text-rose font-600 text-h2">
+                    <button
+                        className="tertiary-button p-x-1"
+                        onClick={invokeResultSummaryDialog}>
+                        {`${rightAnswerCount}/${nowQuizCount}`}
+                    </button>
+                </h3>
                 <h3 className="text-h3">的好成绩</h3>
                 <h2 className="text-h2">可喜可贺，可喜可贺</h2>
                 <button
