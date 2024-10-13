@@ -292,7 +292,7 @@ export function RunningPage(props: IRunningPageProps) {
         let stop = false;
         quizNeeded.current.release();
         setNowQuizInfo(null);
-        const loadingPromise = new ControlledPromise<void>();
+        const loadingPromise = new ControlledPromise();
         setLoadingPromise(loadingPromise.promise);
         const solve = (quiz: Quiz) => {
             setNowQuizInfo(quiz);
