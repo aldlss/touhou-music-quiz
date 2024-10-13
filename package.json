@@ -11,28 +11,28 @@
   },
   "dependencies": {
     "@aldlss/async-sema": "^3.1.1",
-    "@headlessui/react": "^1.7.18",
-    "@vercel/analytics": "^1.2.2",
-    "immer": "^10.0.4",
+    "@headlessui/react": "^1.7.19",
+    "@vercel/analytics": "^1.3.1",
+    "immer": "^10.1.1",
     "next": "latest",
     "ogg-opus-decoder": "^1.6.12",
     "react": "latest",
     "react-dom": "latest",
     "react-error-boundary": "^4.0.13",
-    "use-immer": "^0.9.0",
-    "yaml": "^2.4.1"
+    "use-immer": "^0.10.0",
+    "yaml": "^2.6.0"
   },
   "devDependencies": {
     "@types/node": "latest",
     "@types/react": "latest",
     "@types/react-dom": "latest",
-    "@unocss/eslint-config": "^0.58.9",
-    "@unocss/postcss": "^0.58.9",
+    "@unocss/eslint-config": "^0.63.4",
+    "@unocss/postcss": "^0.63.4",
     "autoprefixer": "latest",
     "eslint": "latest",
     "eslint-config-next": "latest",
     "postcss": "latest",
     "typescript": "latest",
-    "unocss": "^0.58.9"
+    "unocss": "^0.63.4"
   }
 }
