@@ -449,6 +449,18 @@
 0. 七石之狼、登天吞云
 1. ~~幻想的白色旅人~~
 2. ~~熙攘市场今何在　～ Immemorial Marketeers~~
+## 七夕坂梦幻能
+0. 日出七夕坂
+1. 不等式的廷克·贝尔
+2. 禁断之门对面，是此世还是彼世
+3. ~~Smoking Dragon~~
+4. 梦幻能　～ Taboo Marionette
+5. Crazy Back Dancers
+6. 凭坐处于梦与现实之间　～ Necro-Fantasia
+7. 独自一人的常陆行路
+8. 只有地藏知晓的哀叹
+9. ~~被秘匿的四个季节~~
+10. 毕竟就算不是夜晚也有鬼怪
 
 # 幺乐团的历史系列CD
 ## 幺乐团的历史 vol.1
@@ -843,7 +855,7 @@
 10. 贪欲之兽的记忆(Arrange Version)
 11. 被水淹没的沉愁地狱(Arrange Version)
 
-# 商业出版品附带CD
+# 商业出版物附带CD
 ## 东方求闻史纪附属CD
 0. Japanese Saga
 1. 阿礼的孩子

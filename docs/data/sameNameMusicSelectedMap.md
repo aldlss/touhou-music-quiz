@@ -158,7 +158,7 @@
 
 #### 妖精冒险谭 [Link](https://thwiki.cc/妖精冒险谭)
 1. ~~ZUN的音乐CD/鸟船遗迹/3. 妖精冒险谭~~
-1. 商业出版品附带CD/东方三月精（第二季）附属CD3/0. 妖精冒险谭
+1. 商业出版物附带CD/东方三月精（第二季）附属CD3/0. 妖精冒险谭
 
 #### 夜空中的UFO恋曲 [Link](https://thwiki.cc/夜空中的UFO恋曲)
 1. ~~ZUN的音乐CD/鸟船遗迹/5. 夜空中的UFO恋曲~~
@@ -257,6 +257,7 @@
 #### 被秘匿的四个季节 [Link](https://thwiki.cc/被秘匿的四个季节)
 1. ~~Windows作品/TH16.5 	秘封噩梦日记/7. 被秘匿的四个季节~~
 1. Windows作品/TH16 	东方天空璋/12. 被秘匿的四个季节
+1. ~~ZUN的音乐CD/七夕坂梦幻能/9. 被秘匿的四个季节~~
 
 #### 永远的春梦 [Link](https://thwiki.cc/永远的春梦)
 1. ~~Windows作品/TH16.5 	秘封噩梦日记/6. 永远的春梦~~
@@ -265,7 +266,7 @@
 
 #### 现代妖怪殖民地 [Link](https://thwiki.cc/现代妖怪殖民地)
 1. Windows作品/TH12.5  DS东方文花帖/2. 现代妖怪殖民地
-1. 商业出版品附带CD/东方三月精（第三季）附属CD1/1. 现代妖怪殖民地
+1. 商业出版物附带CD/东方三月精（第三季）附属CD1/1. 现代妖怪殖民地
 
 #### 妖怪之山　～ Mysterious Mountain [Link](https://thwiki.cc/妖怪之山　～_Mysterious_Mountain)
 1. ~~Windows作品/TH12.5  DS东方文花帖/5. 妖怪之山　～ Mysterious Mountain~~
@@ -319,32 +320,32 @@
 
 #### 往来于运河的人与妖 [Link](https://thwiki.cc/往来于运河的人与妖)
 1. Windows作品/TH14 	东方辉针城/3. 往来于运河的人与妖
-1. ~~商业出版品附带CD/东方铃奈庵附属CD/1. 往来于运河的人与妖~~
+1. ~~商业出版物附带CD/东方铃奈庵附属CD/1. 往来于运河的人与妖~~
 
 #### 赌上性命去恶作剧 [Link](https://thwiki.cc/赌上性命去恶作剧)
 1. Windows作品/TH12.8  妖精大战争/2. 赌上性命去恶作剧
-1. 商业出版品附带CD/东方三月精（第三季）附属CD3/1. 赌上性命去恶作剧
+1. 商业出版物附带CD/东方三月精（第三季）附属CD3/1. 赌上性命去恶作剧
 
 #### 妖精大战争　～ Fairy Wars [Link](https://thwiki.cc/妖精大战争　～_Fairy_Wars)
 1. Windows作品/TH12.8  妖精大战争/5. 妖精大战争　～ Fairy Wars
-1. ~~商业出版品附带CD/东方三月精（第三季）附属CD2/2. 妖精大战争　～ Fairy Wars~~
+1. ~~商业出版物附带CD/东方三月精（第三季）附属CD2/2. 妖精大战争　～ Fairy Wars~~
 
 #### 可爱的大战争叠奏曲 [Link](https://thwiki.cc/可爱的大战争叠奏曲)
 1. Windows作品/TH12.8  妖精大战争/1. 可爱的大战争叠奏曲
-1. 商业出版品附带CD/东方三月精（第二季）附属CD2/0. 可爱的大战争叠奏曲
+1. 商业出版物附带CD/东方三月精（第二季）附属CD2/0. 可爱的大战争叠奏曲
 
 #### Magus Night [Link](https://thwiki.cc/Magus_Night)
 1. Windows作品/TH12.8  妖精大战争/7. Magus Night
-1. ~~商业出版品附带CD/东方三月精（第三季）附属CD3/0. Magus Night~~
+1. ~~商业出版物附带CD/东方三月精（第三季）附属CD3/0. Magus Night~~
 1. 格斗游戏OST/暗黑能乐集心绮楼/DISC1/3. Magus Night
 
 #### 午夜的妖精舞会 [Link](https://thwiki.cc/午夜的妖精舞会)
 1. Windows作品/TH12.8  妖精大战争/4. 午夜的妖精舞会
-1. ~~商业出版品附带CD/东方三月精（第三季）附属CD2/1. 午夜的妖精舞会~~
+1. ~~商业出版物附带CD/东方三月精（第三季）附属CD2/1. 午夜的妖精舞会~~
 
 #### 时刻旺盛的好奇心 [Link](https://thwiki.cc/时刻旺盛的好奇心)
 1. Windows作品/TH12.8  妖精大战争/3. 时刻旺盛的好奇心
-1. 商业出版品附带CD/东方三月精（第三季）附属CD2/0. 时刻旺盛的好奇心
+1. 商业出版物附带CD/东方三月精（第三季）附属CD2/0. 时刻旺盛的好奇心
 
 #### 灵知的太阳信仰　～ Nuclear Fusion [Link](https://thwiki.cc/灵知的太阳信仰　～_Nuclear_Fusion)
 1. Windows作品/TH11 	东方地灵殿/12. 灵知的太阳信仰　～ Nuclear Fusion
@@ -382,11 +383,11 @@
 
 #### 活泼纯情小姑娘的冒险 [Link](https://thwiki.cc/活泼纯情小姑娘的冒险)
 1. Windows作品/TH09 	东方花映塚/6. 活泼纯情小姑娘的冒险
-1. ~~商业出版品附带CD/东方文花帖（书籍）附属CD/1. 活泼纯情小姑娘的冒险~~
+1. ~~商业出版物附带CD/东方文花帖（书籍）附属CD/1. 活泼纯情小姑娘的冒险~~
 
 #### 古老的元神 [Link](https://thwiki.cc/古老的元神)
 1. Windows作品/TH13 	东方神灵庙/8. 古老的元神
-1. ~~商业出版品附带CD/东方三月精（第三季）附属CD3/2. 古老的元神~~
+1. ~~商业出版物附带CD/东方三月精（第三季）附属CD3/2. 古老的元神~~
 
 #### 魔法少女们的百年祭 [Link](https://thwiki.cc/魔法少女们的百年祭)
 1. Windows作品/TH06 	东方红魔乡/13. 魔法少女们的百年祭
@@ -421,7 +422,7 @@
 
 #### 兔已着陆 [Link](https://thwiki.cc/兔已着陆)
 1. Windows作品/TH15 	东方绀珠传/2. 兔已着陆
-1. ~~商业出版品附带CD/东方铃奈庵附属CD/2. 兔已着陆~~
+1. ~~商业出版物附带CD/东方铃奈庵附属CD/2. 兔已着陆~~
 
 #### 不朽的曼珠沙华 [Link](https://thwiki.cc/不朽的曼珠沙华)
 1. Windows作品/TH17 	东方鬼形兽/5. 不朽的曼珠沙华
@@ -442,7 +443,7 @@
 
 #### 风神少女 [Link](https://thwiki.cc/风神少女)
 1. ~~Windows作品/TH09.5  东方文花帖/5. 风神少女~~
-1. ~~商业出版品附带CD/东方文花帖（书籍）附属CD/0. 风神少女~~
+1. ~~商业出版物附带CD/东方文花帖（书籍）附属CD/0. 风神少女~~
 1. 格斗游戏OST/全人类的天乐录/Arrange Disc/12. 风神少女
 
 #### 守旧老爹与前卫少女 [Link](https://thwiki.cc/守旧老爹与前卫少女)
@@ -459,29 +460,29 @@
 1. 格斗游戏OST/贪欲之兽的音乐/ORIGINAL DISC 1/5. 请注意万年备用伞
 
 #### 魔法使的忧郁 [Link](https://thwiki.cc/魔法使的忧郁)
-1. 商业出版品附带CD/The Grimoire of Marisa附属CD/0. 魔法使的忧郁
+1. 商业出版物附带CD/The Grimoire of Marisa附属CD/0. 魔法使的忧郁
 1. 格斗游戏OST/贪欲之兽的音乐/ORIGINAL DISC 1/1. 魔法使的忧郁
 
 #### 妖精灿烂的样子 [Link](https://thwiki.cc/妖精灿烂的样子)
-1. 商业出版品附带CD/东方三月精（第一季）附属CD/2. 妖精灿烂的样子
-1. ~~商业出版品附带CD/东方三月精（第二季）附属CD2/3. 妖精灿烂的样子~~
+1. 商业出版物附带CD/东方三月精（第一季）附属CD/2. 妖精灿烂的样子
+1. ~~商业出版物附带CD/东方三月精（第二季）附属CD2/3. 妖精灿烂的样子~~
 
 #### 因夜失眠 [Link](https://thwiki.cc/因夜失眠)
-1. 商业出版品附带CD/东方三月精（第一季）附属CD/1. 因夜失眠
-1. ~~商业出版品附带CD/东方三月精（第二季）附属CD2/2. 因夜失眠~~
+1. 商业出版物附带CD/东方三月精（第一季）附属CD/1. 因夜失眠
+1. ~~商业出版物附带CD/东方三月精（第二季）附属CD2/2. 因夜失眠~~
 
 #### Sunny Rutile Flection [Link](https://thwiki.cc/Sunny_Rutile_Flection)
-1. 商业出版品附带CD/东方三月精（第一季）附属CD/0. Sunny Rutile Flection
-1. ~~商业出版品附带CD/东方三月精（第二季）附属CD2/1. Sunny Rutile Flection~~
+1. 商业出版物附带CD/东方三月精（第一季）附属CD/0. Sunny Rutile Flection
+1. ~~商业出版物附带CD/东方三月精（第二季）附属CD2/1. Sunny Rutile Flection~~
 
 #### Last Occultism　～ 现世的秘术师 [Link](https://thwiki.cc/Last_Occultism　～_现世的秘术师)
-1. 商业出版品附带CD/东方外来韦编弐附属CD/2. Last Occultism　～ 现世的秘术师
+1. 商业出版物附带CD/东方外来韦编弐附属CD/2. Last Occultism　～ 现世的秘术师
 1. 格斗游戏OST/完全凭依唱片名录/ARRANGE DISC/1. Last Occultism　～ 现世的秘术师
 1. 格斗游戏OST/深秘乐曲集/ARRANGE DISC/13. Last Occultism　～ 现世的秘术师
 1. 格斗游戏OST/深秘乐曲集/ORIGINAL DISC/15. Last Occultism　～ 现世的秘术师
 
 #### Occult Attract [Link](https://thwiki.cc/Occult_Attract)
-1. ~~商业出版品附带CD/东方外来韦编弐附属CD/0. Occult Attract~~
+1. ~~商业出版物附带CD/东方外来韦编弐附属CD/0. Occult Attract~~
 1. 格斗游戏OST/深秘乐曲集·补/EXTRA DISC/3. Occult Attract
 
 #### 少女绮想曲　～ Capriccio [Link](https://thwiki.cc/少女绮想曲　～_Capriccio)
@@ -521,6 +522,7 @@
 #### 凭坐处于梦与现实之间　～ Necro-Fantasia [Link](https://thwiki.cc/凭坐处于梦与现实之间　～_Necro-Fantasia)
 1. 格斗游戏OST/完全凭依唱片名录/ARRANGE DISC/7. 凭坐处于梦与现实之间　～ Necro-Fantasia
 1. 格斗游戏OST/完全凭依唱片名录/ORIGINAL DISC 1/16. 凭坐处于梦与现实之间　～ Necro-Fantasia
+1. ZUN的音乐CD/七夕坂梦幻能/6. 凭坐处于梦与现实之间　～ Necro-Fantasia
 
 #### 华狭间的战场 [Link](https://thwiki.cc/华狭间的战场)
 1. 格斗游戏OST/完全凭依唱片名录/ARRANGE DISC/5. 华狭间的战场
@@ -559,4 +561,20 @@
 #### 被揭晓的深秘 [Link](https://thwiki.cc/被揭晓的深秘)
 1. 格斗游戏OST/深秘乐曲集/ARRANGE DISC/14. 被揭晓的深秘
 1. ~~格斗游戏OST/深秘乐曲集/ORIGINAL DISC/17. 被揭晓的深秘~~
+
+#### Smoking Dragon [Link](https://thwiki.cc/Smoking_Dragon)
+1. ~~ZUN的音乐CD/七夕坂梦幻能/3. Smoking Dragon~~
+1. Windows作品/TH18 	东方虹龙洞/6. Smoking Dragon
+
+#### 禁断之门对面，是此世还是彼世 [Link](https://thwiki.cc/禁断之门对面，是此世还是彼世)
+1. ZUN的音乐CD/七夕坂梦幻能/2. 禁断之门对面，是此世还是彼世
+1. Windows作品/TH16 	东方天空璋/9. 禁断之门对面，是此世还是彼世
+
+#### Crazy Back Dancers [Link](https://thwiki.cc/Crazy_Back_Dancers)
+1. ZUN的音乐CD/七夕坂梦幻能/5. Crazy Back Dancers
+1. Windows作品/TH16 	东方天空璋/10. Crazy Back Dancers
+
+#### 只有地藏知晓的哀叹 [Link](https://thwiki.cc/只有地藏知晓的哀叹)
+1. ZUN的音乐CD/七夕坂梦幻能/8. 只有地藏知晓的哀叹
+1. Windows作品/TH17 	东方鬼形兽/1. 只有地藏知晓的哀叹
 
