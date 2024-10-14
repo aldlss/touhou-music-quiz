@@ -7,6 +7,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "东方原曲认知测验无尽版",
+  keywords: "touhou, music, quiz, game",
   description: "东方原曲认知测验，但是是无尽版",
   authors: { name: "aldlss", url: "https://github.com/aldlss" },
 };
