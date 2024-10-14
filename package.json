@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "re": "next build; next start"
+    "re": "next build; next start",
+    "pretty": "prettier --write \"./**/*.{js,jsx,mjs,cjs,ts,tsx}\""
   },
   "dependencies": {
     "@aldlss/async-sema": "^3.1.1",
@@ -29,9 +30,10 @@
     "@unocss/eslint-config": "^0.63.4",
     "@unocss/postcss": "^0.63.4",
     "autoprefixer": "latest",
-    "eslint": "latest",
+    "eslint": "^8.57.1",
     "eslint-config-next": "latest",
     "postcss": "latest",
+    "prettier": "^3.3.3",
     "typescript": "latest",
     "unocss": "^0.63.4"
   }

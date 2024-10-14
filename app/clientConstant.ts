@@ -5,6 +5,6 @@ export let localStorageAvailable: boolean = false;
 export let isSupportOggOpus: boolean = false;
 
 export function InitClientConstant() {
-    localStorageAvailable = CheckLocalStorageAvailable();
-    isSupportOggOpus = checkIsSupportOggOpus();
+  localStorageAvailable = CheckLocalStorageAvailable();
+  isSupportOggOpus = checkIsSupportOggOpus();
 }
