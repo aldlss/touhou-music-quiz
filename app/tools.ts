@@ -1,7 +1,7 @@
 import { cache } from "react";
 import { parse } from "yaml";
-import { Music, MusicCollection, SimpleMusic } from "./types";
-import { separator } from "./constant";
+import { ErrorType, Music, MusicCollection, SimpleMusic } from "./types";
+import { fetchMusicUrlPrefix, separator } from "./constant";
 import { localStorageAvailable } from "./clientConstant";
 
 export const getSortedDefaultMusicCollection = cache(async () => {
@@ -189,6 +189,7 @@ export function flatMusicColletion(
           sid: music.sid,
           amount: music.amount,
           name: `${prefix}${separator}${music.idx - 1}. ${music.name}`,
+          uuid: music.uuid,
         });
       }
     });
@@ -267,3 +268,43 @@ export function checkIsSupportOggOpus() {
   const audio = document.createElement("audio");
   return audio.canPlayType("audio/ogg; codecs=opus") !== "";
 }
+
+/**
+ * 根据曲子名称获取曲子
+ * @param originName 带路径原始曲子名称
+ * @returns 返回曲子的 ArrayBuffer
+ * @deprecated 改动了曲子获取方式，现使用 `fetchMusicByUuid`
+ */
+export const fetchMusic = async (originName: string) => {
+  const digestName = await digestMuiscName(originName);
+  const response = await fetch(`${fetchMusicUrlPrefix}${digestName}.ogg`, {
+    headers: { Accept: "audio/ogg" },
+    next: { tags: ["music"] },
+  });
+  if (!response.ok) {
+    throw Error(ErrorType.NetworkError, {
+      cause: `${response.status} ${response.statusText}`,
+    });
+  }
+  return await response.arrayBuffer();
+};
+
+/**
+ * 根据曲子的 uuid 获取曲子
+ * @param uuid 曲子的 uuid
+ * @param idx 曲子片段的索引
+ * @returns 返回曲子的 ArrayBuffer
+ */
+export const fetchMusicByUuid = async (uuid: string, idx: number) => {
+  const fileName = `${uuid[0]}/${uuid}/${idx}.ogg`;
+  const response = await fetch(`${fetchMusicUrlPrefix}${fileName}`, {
+    headers: { Accept: "audio/ogg" },
+    next: { tags: ["music"] },
+  });
+  if (!response.ok) {
+    throw Error(ErrorType.NetworkError, {
+      cause: `${response.status} ${response.statusText}`,
+    });
+  }
+  return await response.arrayBuffer();
+};

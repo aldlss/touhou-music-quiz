@@ -4,12 +4,14 @@ export type Music = {
   amount: number;
   sid: number;
   selected: boolean;
+  uuid: string;
 };
 
 export type SimpleMusic = {
   name: string;
   amount: number;
   sid: number;
+  uuid: string;
 };
 
 export type Quiz = { musicInfo: SimpleMusic; music: AudioBuffer };

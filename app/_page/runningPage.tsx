@@ -10,7 +10,6 @@ import React, {
   useCallback,
   useEffect,
   memo,
-  useContext,
 } from "react";
 import { type Updater, useImmer } from "use-immer";
 import { SemaType, ControlledPromise } from "../class";
@@ -18,9 +17,7 @@ import { ConfirmDialog, ContainerDialog } from "../clientComponent";
 import { AsyncBoundary } from "../serverComponent";
 import {
   difficultyColorAndText,
-  fetchMusicUrlPrefix,
   previousQuizSetCapacity,
-  separator,
   voidFunc,
 } from "../constant";
 import { MusicList } from "../muiscListComponent";
@@ -29,10 +26,10 @@ import {
   filterMusicCollection,
   setMusicCollectionSelected,
   flatMusicColletion,
-  digestMuiscName,
   selectMusicCollectionBySid,
   GetLocalStorageValue,
   SetLocalStorageValue,
+  fetchMusicByUuid,
 } from "../tools";
 import {
   RankType,
@@ -145,21 +142,9 @@ export function RunningPage(props: IRunningPageProps) {
 
     // 异步并发获取段落
     const promises = [];
-    const fetchMusic = async (originName: string) => {
-      const digestName = await digestMuiscName(originName);
-      const response = await fetch(`${fetchMusicUrlPrefix}${digestName}.ogg`, {
-        headers: { Accept: "audio/ogg" },
-        next: { tags: ["music"] },
-      });
-      if (!response.ok) {
-        throw Error(ErrorType.NetworkError, {
-          cause: `${response.status} ${response.statusText}`,
-        });
-      }
-      return await response.arrayBuffer();
-    };
+
     for (let i = 0; i < needFetchAmount; i++) {
-      promises.push(fetchMusic(`${music.name}${separator}${i + startIdx}`));
+      promises.push(fetchMusicByUuid(music.uuid, startIdx + i));
     }
 
     let responses: ArrayBuffer[] = [];
