@@ -188,7 +188,7 @@ export function flatMusicColletion(
         result.push({
           sid: music.sid,
           amount: music.amount,
-          name: `${prefix}${separator}${music.idx - 1}. ${music.name}`,
+          name: `${prefix}${separator}${music.idx}. ${music.name}`,
           uuid: music.uuid,
         });
       }
