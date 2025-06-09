@@ -459,7 +459,7 @@ function SubAlbumCollectionList({
   ) => void;
 }) {
   return subAlbumList.map((subAlbum) => (
-    <>
+    <Fragment key={subAlbum.sid}>
       <div key={subAlbum.name} className="p-1 text-p">
         {subAlbum.name}
       </div>
@@ -468,6 +468,6 @@ function SubAlbumCollectionList({
       ) : (
         <></>
       )}
-    </>
+    </Fragment>
   ));
 }
