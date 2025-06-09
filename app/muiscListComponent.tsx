@@ -384,7 +384,7 @@ const H2TabPanelsItem = memo(function H2TabPanelsItem({
     [onClickMusic],
   );
   return (
-    <TabPanel className="" static={true}>
+    <TabPanel className="overflow-x-clip" static={true}>
       <div onClick={musicOnClick}>
         {isMusicList(album.data) ? (
           <AlbumMusicList musicList={album.data} onClickMusic={voidFunc} />
