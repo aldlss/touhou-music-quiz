@@ -1,7 +1,15 @@
 "use client";
-import { Switch, Tab } from "@headlessui/react";
+import {
+  Switch,
+  Tab,
+  TabGroup,
+  TabList,
+  TabPanel,
+  TabPanels,
+} from "@headlessui/react";
 import { Music, MusicCollection } from "./types";
 import React, {
+  Fragment,
   SyntheticEvent,
   memo,
   useCallback,
@@ -36,7 +44,11 @@ export const MusicList = memo(function MusicList({
   return (
     musicCollection && (
       <div className="flex flex-1 flex-col gap-1 overflow-auto p-0.5">
-        <Tab.Group selectedIndex={selectedH1Tab} onChange={onChangeH1Tab}>
+        <TabGroup
+          as={Fragment}
+          selectedIndex={selectedH1Tab}
+          onChange={onChangeH1Tab}
+        >
           <H1TabList
             categoryCollection={musicCollection}
             onClickTab={onClickTab}
@@ -48,7 +60,7 @@ export const MusicList = memo(function MusicList({
             onClickTab={onClickTab}
             onClickMusic={onClickMusic}
           />
-        </Tab.Group>
+        </TabGroup>
       </div>
     )
   );
@@ -65,7 +77,7 @@ const H1TabList = memo(function H1TabList({
   ) => void;
 }) {
   return (
-    <Tab.List className="flex flex-row overflow-x-auto border-1 rounded-lg text-center border-tab-list-color">
+    <TabList className="flex flex-row overflow-x-auto border-1 rounded-lg text-center border-tab-list-color">
       {categoryCollection.data.map((category) => (
         <H1TabListItem
           key={category.name}
@@ -75,7 +87,7 @@ const H1TabList = memo(function H1TabList({
           onClickTab={onClickTab}
         />
       ))}
-    </Tab.List>
+    </TabList>
   );
 });
 
@@ -154,7 +166,7 @@ function H1TabPanels({
 }) {
   return (
     // 占据下方空间的
-    <Tab.Panels
+    <TabPanels
       className={`flex-1 overflow-hidden will-change-opacity transition-opacity-delay ${
         isH1Pending ? "opacity-80" : ""
       }`}
@@ -171,7 +183,7 @@ function H1TabPanels({
             />
           ),
       )}
-    </Tab.Panels>
+    </TabPanels>
   );
 }
 
@@ -198,8 +210,12 @@ const H1TabPanelsItem = memo(function H1TabPanelsItem({
     });
   }, []);
   return (
-    <Tab.Panel className="h-full flex flex-row gap-2 overflow-hidden" static>
-      <Tab.Group selectedIndex={selectedH2Tab} onChange={onChangeH2Tab}>
+    <TabPanel className="h-full flex flex-row gap-2 overflow-hidden" static>
+      <TabGroup
+        as={Fragment}
+        selectedIndex={selectedH2Tab}
+        onChange={onChangeH2Tab}
+      >
         <H2TabList albumCollection={albumCollection} onClickTab={onClickTab} />
         <H2TabPanels
           selectedH2Tab={selectedH2Tab}
@@ -207,8 +223,8 @@ const H1TabPanelsItem = memo(function H1TabPanelsItem({
           isH2Pending={isH2Pending}
           onClickMusic={onClickMusic}
         />
-      </Tab.Group>
-    </Tab.Panel>
+      </TabGroup>
+    </TabPanel>
   );
 });
 
@@ -223,7 +239,7 @@ const H2TabList = memo(function H2TabList({
   ) => void;
 }) {
   return (
-    <Tab.List className="w-40% overflow-y-auto border-1 rounded-lg will-change-scroll border-tab-list-color">
+    <TabList className="w-40% overflow-y-auto border-1 rounded-lg will-change-scroll border-tab-list-color">
       {albumCollection.data.map((album) => (
         <H2TabListItem
           key={album.name}
@@ -233,7 +249,7 @@ const H2TabList = memo(function H2TabList({
           onClickTab={onClickTab}
         />
       ))}
-    </Tab.List>
+    </TabList>
   );
 });
 
@@ -325,7 +341,7 @@ function H2TabPanels({
   ) => void;
 }) {
   return (
-    <Tab.Panels
+    <TabPanels
       className={`flex-1 overflow-y-auto border-1 rounded-lg will-change-scroll-opacity border-tab-list-color transition-opacity-delay ${
         isH2Pending ? "opacity-80" : ""
       }`}
@@ -340,7 +356,7 @@ function H2TabPanels({
             />
           ),
       )}
-    </Tab.Panels>
+    </TabPanels>
   );
 }
 
@@ -368,7 +384,7 @@ const H2TabPanelsItem = memo(function H2TabPanelsItem({
     [onClickMusic],
   );
   return (
-    <Tab.Panel className="" static={true}>
+    <TabPanel className="" static={true}>
       <div onClick={musicOnClick}>
         {isMusicList(album.data) ? (
           <AlbumMusicList musicList={album.data} onClickMusic={voidFunc} />
@@ -379,7 +395,7 @@ const H2TabPanelsItem = memo(function H2TabPanelsItem({
           />
         )}
       </div>
-    </Tab.Panel>
+    </TabPanel>
   );
 });
 

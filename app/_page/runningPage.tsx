@@ -1,9 +1,9 @@
 "use client";
 import { Sema } from "@aldlss/async-sema";
-import { Dialog } from "@headlessui/react";
+import { Description, DialogPanel, DialogTitle } from "@headlessui/react";
 import type { OggOpusDecoderWebWorker } from "ogg-opus-decoder";
 import React, {
-  type MutableRefObject,
+  type RefObject,
   useState,
   useMemo,
   useRef,
@@ -52,7 +52,7 @@ export interface IRunningPageProps {
   setNowQuizCount: Function;
   rightAnswerCount: number;
   setRightAnswerCount: Function;
-  musicDuration: MutableRefObject<number>;
+  musicDuration: RefObject<number>;
   rank: RankType;
   setAnswerRecords: Updater<AnswerRecord[]>;
   invokeResultSummaryDialog: () => void;
@@ -557,22 +557,23 @@ const ResultDialog = memo(function ResultDialog({
       autoClose={autoClose}
       autoCloseTime={autoCloseTime}
     >
-      <Dialog.Panel className="flex flex-col p-4">
+      <DialogPanel className="flex flex-col p-4">
         <button
+          data-autofocus
           type="button"
           aria-label="close"
           className="h-0 w-0"
           onClick={onClose}
         />
-        <Dialog.Title className="text-center text-h2">
+        <DialogTitle className="text-center text-h2">
           答{result ? "对" : "错"}了
-        </Dialog.Title>
-        <Dialog.Description className="text-p">
+        </DialogTitle>
+        <Description className="text-p">
           {description1}
           {description2}
-        </Dialog.Description>
+        </Description>
         <p className="self-center text-gray text-p">点击框外立即关闭</p>
-      </Dialog.Panel>
+      </DialogPanel>
     </ContainerDialog>
   );
 });
@@ -585,8 +586,8 @@ const MusicPlayer = memo(function MusicPlayer({
 }: {
   audioBuffer: AudioBuffer;
   audioContext: AudioContext;
-  playTheMusic: MutableRefObject<() => void>;
-  musicDuration: MutableRefObject<number>;
+  playTheMusic: RefObject<() => void>;
+  musicDuration: RefObject<number>;
 }) {
   const startTime = useRef(0);
   const volumeNode = useRef<GainNode | null>(null);
@@ -602,8 +603,7 @@ const MusicPlayer = memo(function MusicPlayer({
   }, [audioContext]);
 
   // 用于播放音乐的
-  const audioSource: MutableRefObject<AudioBufferSourceNode | null> =
-    useRef(null);
+  const audioSource: RefObject<AudioBufferSourceNode | null> = useRef(null);
   const playMusic = useCallback(() => {
     // 防止默认挂起导致不能自动播放
     if (audioContext.state === "suspended") {

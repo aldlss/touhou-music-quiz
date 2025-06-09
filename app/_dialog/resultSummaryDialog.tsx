@@ -1,4 +1,10 @@
-import { Dialog, Disclosure } from "@headlessui/react";
+import {
+  DialogPanel,
+  DialogTitle,
+  Disclosure,
+  DisclosureButton,
+  DisclosurePanel,
+} from "@headlessui/react";
 import { useMemo } from "react";
 import {
   type IContainerDialogPropsBase,
@@ -67,7 +73,7 @@ export function ResultSummaryDialog(props: IResultSummaryDialogProps) {
                 as="li"
                 className={`border-2 rounded-lg overflow-clip border-tab-color`}
               >
-                <Disclosure.Button className={`w-full p-y-1 bg-dialog-item`}>
+                <DisclosureButton className={`w-full p-y-1 bg-dialog-item`}>
                   <AListItem
                     no={`${idx + 1}`}
                     yourAnswer={getMuiscPureNameFromRouteName(playerAnswerName)}
@@ -81,14 +87,14 @@ export function ResultSummaryDialog(props: IResultSummaryDialogProps) {
                     )}
                     containerClassName="text-p"
                   />
-                </Disclosure.Button>
-                <Disclosure.Panel className="whitespace-pre-wrap p-x-2 p-y-1">
+                </DisclosureButton>
+                <DisclosurePanel className="whitespace-pre-wrap p-x-2 p-y-1">
                   你的答案：
                   {getDisplayMusicNameFromRouteName(playerAnswerName)}
                   {"\n"}
                   正确答案：
                   {getDisplayMusicNameFromRouteName(correctAnswerName)}
-                </Disclosure.Panel>
+                </DisclosurePanel>
               </Disclosure>
             );
           })}
@@ -99,8 +105,8 @@ export function ResultSummaryDialog(props: IResultSummaryDialogProps) {
 
   return (
     <ContainerDialog {...containerDialogProps}>
-      <Dialog.Panel className="flex flex-col gap-1 p-2">
-        <Dialog.Title className="text-center text-h2">结果总结</Dialog.Title>
+      <DialogPanel className="flex flex-col gap-1 p-2">
+        <DialogTitle className="text-center text-h2">结果总结</DialogTitle>
         {ResultSummary}
         <div className="sticky bottom-0 flex bg-dialog">
           <button
@@ -111,7 +117,7 @@ export function ResultSummaryDialog(props: IResultSummaryDialogProps) {
             关闭
           </button>
         </div>
-      </Dialog.Panel>
+      </DialogPanel>
     </ContainerDialog>
   );
 }

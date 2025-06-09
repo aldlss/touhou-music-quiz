@@ -7,7 +7,14 @@ import {
   RankType,
   ThemeAppearanceType,
 } from "./types";
-import { Dialog, Transition } from "@headlessui/react";
+import {
+  Description,
+  Dialog,
+  DialogPanel,
+  DialogTitle,
+  Transition,
+  TransitionChild,
+} from "@headlessui/react";
 import { TouhouMusicQuizContainer } from "./serverComponent";
 import { useImmer } from "use-immer";
 import {
@@ -212,7 +219,7 @@ interface IContainerDialogProps {
 export type IContainerDialogPropsBase = Omit<IContainerDialogProps, "children">;
 
 /**
- * 需要自行在其中添加 Dialog 组件，例如 Dialog.Panel 以及 Dialog.Title
+ * 需要自行在其中添加 Dialog 组件，例如 DialogPanel 以及 DialogTitle
  */
 export function ContainerDialog(props: IContainerDialogProps) {
   const {
@@ -255,7 +262,7 @@ export function ContainerDialog(props: IContainerDialogProps) {
       >
         <TouhouMusicQuizContainer>
           <div className="relative h-full w-full flex flex-col items-center justify-center overflow-hidden rounded-lg">
-            <Transition.Child
+            <TransitionChild
               as={React.Fragment}
               enter="transition transform-gpu"
               enterFrom="opacity-0"
@@ -268,8 +275,8 @@ export function ContainerDialog(props: IContainerDialogProps) {
                 className="absolute left-0 top-0 h-full w-full bg-black/10"
                 aria-hidden={true}
               />
-            </Transition.Child>
-            <Transition.Child
+            </TransitionChild>
+            <TransitionChild
               as={React.Fragment}
               enter="transition transform-gpu"
               enterFrom="scale-0 opacity-0"
@@ -281,7 +288,7 @@ export function ContainerDialog(props: IContainerDialogProps) {
               <div className="z-10 max-h-90% w-90% overflow-y-auto border-1 rounded-lg shadow-md border-surface-color bg-dialog">
                 {children}
               </div>
-            </Transition.Child>
+            </TransitionChild>
           </div>
         </TouhouMusicQuizContainer>
       </Dialog>
@@ -304,11 +311,9 @@ export const ConfirmDialog = memo(function ConfirmDialog({
 }) {
   return (
     <ContainerDialog show={show} onClose={onClose}>
-      <Dialog.Panel className="flex flex-col gap-2 p-4">
-        <Dialog.Title className="text-center text-h2">{operation}</Dialog.Title>
-        <Dialog.Description className="text-p">
-          确认要{operation}吗？
-        </Dialog.Description>
+      <DialogPanel className="flex flex-col gap-2 p-4">
+        <DialogTitle className="text-center text-h2">{operation}</DialogTitle>
+        <Description className="text-p">确认要{operation}吗？</Description>
         <div className="flex flex-row justify-evenly gap-2 p-x-4">
           <button
             type="button"
@@ -325,7 +330,7 @@ export const ConfirmDialog = memo(function ConfirmDialog({
             确认
           </button>
         </div>
-      </Dialog.Panel>
+      </DialogPanel>
     </ContainerDialog>
   );
 });

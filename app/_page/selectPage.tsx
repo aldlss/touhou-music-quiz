@@ -1,4 +1,9 @@
-import { Dialog, Transition } from "@headlessui/react";
+import {
+  Description,
+  DialogPanel,
+  DialogTitle,
+  Transition,
+} from "@headlessui/react";
 import { useState, useCallback, memo } from "react";
 import { Updater } from "use-immer";
 import { ContainerDialog } from "../clientComponent";
@@ -141,22 +146,20 @@ const SelectHelpDialog = memo(function SelectHelpDialog({
 }) {
   return (
     <ContainerDialog show={show} onClose={onClose} appear={true}>
-      <Dialog.Panel className="flex flex-col gap-2 p-4">
-        <Dialog.Title className="text-center text-h2">
-          选择原曲说明
-        </Dialog.Title>
-        <Dialog.Description className="text-p">
+      <DialogPanel className="flex flex-col gap-2 p-4">
+        <DialogTitle className="text-center text-h2">选择原曲说明</DialogTitle>
+        <Description className="text-p">
           主要是用于提高自由度的，简单来说就是可以选取用于进行测验的曲子的范围。
           <br />
           对于某一类目，在选取状态后再次点击可以 全选/全不选
           该类目下的所有曲子。
           <br />
           默认已选取 Windows 作品 下的所有曲子。
-        </Dialog.Description>
+        </Description>
         <CommonSecondaryButton onClick={onClose}>
           我知道了
         </CommonSecondaryButton>
-      </Dialog.Panel>
+      </DialogPanel>
     </ContainerDialog>
   );
 });

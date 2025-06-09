@@ -1,7 +1,7 @@
-import { defineConfig, presetUno, transformerVariantGroup } from "unocss";
+import { defineConfig, presetWind3 , transformerVariantGroup } from "unocss";
 
 export default defineConfig({
-  presets: [presetUno()],
+  presets: [presetWind3()],
   transformers: [transformerVariantGroup()],
   shortcuts: {
     "text-common-color": "text-black dark:text-gray-2",

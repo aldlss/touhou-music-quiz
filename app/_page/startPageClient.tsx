@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { ContainerDialog } from "../clientComponent";
 import { BilibiliFillSvg, GithubFillSvg, InformationLineSvg } from "../svg";
-import { Dialog } from "@headlessui/react";
+import { DialogPanel, DialogTitle } from "@headlessui/react";
 import Link from "next/link";
 import { CommonSecondaryButton } from "../serverComponent";
 
@@ -26,8 +26,8 @@ export function InfoDialog() {
           setIsShow(false);
         }}
       >
-        <Dialog.Panel className="p-4">
-          <Dialog.Title className="text-center text-h2">关于</Dialog.Title>
+        <DialogPanel className="p-4">
+          <DialogTitle className="text-center text-h2">关于</DialogTitle>
           <p className="whitespace-pre-wrap p-2 text-center text-p">
             {`【程序】\naldlss\n【设计】\naldlss\n【曲子资源及信息来源】\n`}
             <Link
@@ -70,7 +70,7 @@ export function InfoDialog() {
               关闭
             </CommonSecondaryButton>
           </div>
-        </Dialog.Panel>
+        </DialogPanel>
       </ContainerDialog>
     </div>
   );
