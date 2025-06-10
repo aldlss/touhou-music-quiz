@@ -37,5 +37,6 @@
     "prettier": "^3.5.3",
     "typescript": "latest",
     "unocss": "^66.1.4"
-  }
+  },
+  "packageManager": "pnpm@10.11.1"
 }
