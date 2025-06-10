@@ -71,7 +71,7 @@ export function ResultSummaryDialog(props: IResultSummaryDialogProps) {
               <Disclosure
                 key={idx}
                 as="li"
-                className={`border-2 rounded-lg overflow-clip border-tab-color`}
+                className="border-2 rounded-lg overflow-clip transition-transform border-tab-color-with-hover hover:translate-y--0.25"
               >
                 <DisclosureButton className={`w-full p-y-1 bg-dialog-item`}>
                   <AListItem
@@ -88,7 +88,10 @@ export function ResultSummaryDialog(props: IResultSummaryDialogProps) {
                     containerClassName="text-p"
                   />
                 </DisclosureButton>
-                <DisclosurePanel className="whitespace-pre-wrap p-x-2 p-y-1">
+                <DisclosurePanel
+                  transition
+                  className="whitespace-pre-wrap p-x-2 p-y-1 transition data-[enter]:data-[closed]:scale-y-0 data-[enter]:data-[closed]:opacity-0 transform-origin-top"
+                >
                   你的答案：
                   {getDisplayMusicNameFromRouteName(playerAnswerName)}
                   {"\n"}

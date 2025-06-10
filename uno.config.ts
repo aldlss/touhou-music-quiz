@@ -1,4 +1,4 @@
-import { defineConfig, presetWind3 , transformerVariantGroup } from "unocss";
+import { defineConfig, presetWind3, transformerVariantGroup } from "unocss";
 
 export default defineConfig({
   presets: [presetWind3()],
@@ -11,6 +11,8 @@ export default defineConfig({
       "border-yellow dark:border-gray-6 transition-border-color",
     "border-tab-color":
       "border-gray-2 dark:border-gray-4.5 transition-border-color",
+    "border-tab-color-with-hover":
+      "border-tab-color hover:border-sky-3 hover:dark:border-sky-6",
     "bg-tab-h1":
       "bg-tab-list dark:data-selected:bg-deep-cyan-2 dark:group-data-not-child-checked:data-selected:bg-[#008384]  data-selected:bg-sky-4 group-data-not-child-checked:data-selected:bg-[#30a1d3]",
     "bg-tab-h2":
@@ -33,7 +35,7 @@ export default defineConfig({
       "bg-white group-data-not-child-checked:bg-neutral-3 dark:bg-material-dark-5 dark:group-data-not-child-checked:bg-neutral-5.5 transition-background-color",
     "bg-dialog": "bg-white dark:bg-material-dark-6 transition-background-color",
     "bg-dialog-item":
-      "bg-gray-1 dark:bg-material-dark-8 transition-background-color",
+      "bg-gray-1 dark:bg-material-dark-8 hover:bg-gray-2 dark:hover:bg-material-dark-10 transition-background-color",
     "common-button":
       "border-1 dark:border-dark rounded-lg text-center shadow-md disabled:grayscale transition-common",
     "tertiary-button":
