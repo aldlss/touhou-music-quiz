@@ -17,9 +17,13 @@ export function StartPage(props: IStartPageProps) {
   return (
     <main className="h-full w-full flex flex-col justify-between bg-container">
       <div className="flex flex-row justify-between">
-        <div className="p-2 text-right text-gray text-p">
+        <Link
+          href="/docs/version"
+          target="_blank"
+          className="p-2 text-right text-gray text-p hover:text-link"
+        >
           {packageInfo.version}
-        </div>
+        </Link>
         <InfoDialog />
       </div>
       <p className="absolute m-t-20 aspect-[9999/1] min-h-0 overflow-y-hidden">

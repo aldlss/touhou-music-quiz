@@ -18,9 +18,13 @@
     "immer": "^10.1.1",
     "next": "latest",
     "ogg-opus-decoder": "^1.7.0",
+    "raw-loader": "^4.0.2",
     "react": "latest",
     "react-dom": "latest",
     "react-error-boundary": "^6.0.0",
+    "react-markdown": "^10.1.0",
+    "react-shadow": "^20.6.0",
+    "remark-gfm": "^4.0.1",
     "use-immer": "^0.11.0",
     "yaml": "^2.8.0"
   },
