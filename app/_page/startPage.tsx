@@ -1,4 +1,4 @@
-import { PageType, ThemeAppearanceType } from "../types";
+import { PageType } from "../types";
 import packageInfo from "../../package.json";
 import { MoonLineSvg, SunLineSvg } from "../svg";
 import { voidFunc } from "../constant";

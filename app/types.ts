@@ -45,12 +45,6 @@ export enum ErrorType {
   UnknownError = "UnknownError",
 }
 
-export enum ThemeAppearanceType {
-  Light = "Light",
-  Dark = "Dark",
-  Auto = "Auto",
-}
-
 export type AnswerRecord = {
   playerAnswerSid: number;
   playerAnswerName: string;

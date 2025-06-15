@@ -5,8 +5,8 @@ import {
   type MusicCollection,
   PageType,
   RankType,
-  ThemeAppearanceType,
 } from "./types";
+import { themeStore } from "./_store/themeStore";
 import {
   Description,
   Dialog,
@@ -17,45 +17,19 @@ import {
 } from "@headlessui/react";
 import { TouhouMusicQuizContainer } from "./serverComponent";
 import { useImmer } from "use-immer";
-import {
-  ClearLocalStorage,
-  GetLocalStorageValue,
-  LocalStorageKey,
-  SetLocalStorageValue,
-} from "./_tools/localStorage";
-import { InitClientConstant } from "./clientConstant";
 import { voidFunc } from "./constant";
 import { StartPage } from "./_page/startPage";
 import { SelectPage } from "./_page/selectPage";
 import { RunningPage } from "./_page/runningPage";
 import { EndPage } from "./_page/endPage";
 import { ResultSummaryDialog } from "./_dialog/resultSummaryDialog";
+import { useStore } from "zustand";
 
 export function QuizMain({
   musicCollection,
 }: {
   musicCollection: MusicCollection;
 }) {
-  useEffect(() => {
-    // 设置客户端的一些基本信息，不知道没有更好的办法
-    InitClientConstant();
-    window.AudioContext =
-      window.AudioContext || (window as any).webkitAudioContext;
-    window.OfflineAudioContext =
-      window.OfflineAudioContext || (window as any).webkitOfflineAudioContext;
-
-    // 检查是否过期，过期则清除一遍 localStorage，设置过期时间十五天
-    const expireTimeDelta = 15 * 24 * 60 * 60 * 1000;
-    // Number(null)为 0，大概不用担心
-    const expireTime = Number(GetLocalStorageValue(LocalStorageKey.ExpireTime));
-    if (expireTime + expireTimeDelta < Date.now() || isNaN(expireTime)) {
-      ClearLocalStorage();
-      SetLocalStorageValue(
-        LocalStorageKey.ExpireTime,
-        (Date.now() + expireTimeDelta).toString(),
-      );
-    }
-  }, []);
   const [pageState, setPageState] = useState(PageType.start);
   const [musicCollectionState, setMusicCollectionState] =
     useImmer(musicCollection);
@@ -66,74 +40,10 @@ export function QuizMain({
   const [answerRecords, setAnswerRecords] = useImmer<AnswerRecord[]>([]);
   const [resultSummaryDialogShow, setResultSummaryDialogShow] = useState(false);
 
-  const themeMatchQuery = useRef<MediaQueryList | null>(null);
-  const GetThemeMatchQuery = () => {
-    if (themeMatchQuery.current === null) {
-      themeMatchQuery.current = matchMedia("(prefers-color-scheme: dark)");
-    }
-    return themeMatchQuery.current;
-  };
-  // 因为不显示 Auto，所以不要
-  const [showedTheme, setShowedTheme] = useState<
-    ThemeAppearanceType.Light | ThemeAppearanceType.Dark
-  >(ThemeAppearanceType.Light);
-  // 根据三个状态进行处理
-  const changeThemeAppearance = useCallback((target: ThemeAppearanceType) => {
-    function changeTheme(dark: boolean) {
-      if (dark) {
-        setShowedTheme(ThemeAppearanceType.Dark);
-        document.documentElement.classList.add("dark");
-      } else {
-        setShowedTheme(ThemeAppearanceType.Light);
-        document.documentElement.classList.remove("dark");
-      }
-    }
-    switch (target) {
-      case ThemeAppearanceType.Auto:
-        SetLocalStorageValue(LocalStorageKey.ThemeAppearance, "auto");
-        changeTheme(GetThemeMatchQuery().matches);
-        GetThemeMatchQuery().onchange = (e) => {
-          changeTheme(e.matches);
-        };
-        break;
-      case ThemeAppearanceType.Light:
-        SetLocalStorageValue(LocalStorageKey.ThemeAppearance, "light");
-        GetThemeMatchQuery().onchange = null;
-        changeTheme(false);
-        break;
-      case ThemeAppearanceType.Dark:
-        SetLocalStorageValue(LocalStorageKey.ThemeAppearance, "dark");
-        GetThemeMatchQuery().onchange = null;
-        changeTheme(true);
-        break;
-    }
-  }, []);
-  const generateSwitchThemeAppearance = useCallback(
-    (nowShowedTheme: ThemeAppearanceType.Light | ThemeAppearanceType.Dark) => {
-      return () => {
-        if (
-          (nowShowedTheme === ThemeAppearanceType.Light) ===
-          GetThemeMatchQuery().matches
-        ) {
-          changeThemeAppearance(ThemeAppearanceType.Auto);
-        } else {
-          changeThemeAppearance(
-            nowShowedTheme === ThemeAppearanceType.Dark
-              ? ThemeAppearanceType.Light
-              : ThemeAppearanceType.Dark,
-          );
-        }
-      };
-    },
-    [changeThemeAppearance],
+  const switchThemeAppearance = useStore(
+    themeStore,
+    (state) => state.switchThemeAppearance,
   );
-  useEffect(() => {
-    const theme = GetLocalStorageValue(LocalStorageKey.ThemeAppearance, "auto");
-    if (theme === "light") changeThemeAppearance(ThemeAppearanceType.Light);
-    else if (theme === "dark") changeThemeAppearance(ThemeAppearanceType.Dark);
-    else changeThemeAppearance(ThemeAppearanceType.Auto);
-    // 虽然我感觉好像没必要加依赖(？
-  }, [changeThemeAppearance]);
 
   const SelectPageSetMusicDuration = useCallback((duration: number) => {
     musicDuration.current = duration;
@@ -151,7 +61,7 @@ export function QuizMain({
                 setRightAnswerCount(0);
                 setAnswerRecords([]);
               }}
-              switchThemeAppearance={generateSwitchThemeAppearance(showedTheme)}
+              switchThemeAppearance={switchThemeAppearance}
             />
           ),
           [PageType.loading]: <div>loading</div>,

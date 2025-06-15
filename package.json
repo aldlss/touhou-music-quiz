@@ -26,7 +26,8 @@
     "react-shadow": "^20.6.0",
     "remark-gfm": "^4.0.1",
     "use-immer": "^0.11.0",
-    "yaml": "^2.8.0"
+    "yaml": "^2.8.0",
+    "zustand": "^5.0.5"
   },
   "devDependencies": {
     "@types/node": "latest",
