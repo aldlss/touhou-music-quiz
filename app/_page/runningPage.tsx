@@ -27,10 +27,13 @@ import {
   setMusicCollectionSelected,
   flatMusicColletion,
   selectMusicCollectionBySid,
-  GetLocalStorageValue,
-  SetLocalStorageValue,
   fetchMusicByUuid,
 } from "../tools";
+import {
+  GetLocalStorageValue,
+  LocalStorageKey,
+  SetLocalStorageValue,
+} from "../_tools/localStorage";
 import {
   RankType,
   type SimpleMusic,
@@ -596,7 +599,7 @@ const MusicPlayer = memo(function MusicPlayer({
     if (volumeNode.current === null) {
       volumeNode.current = audioContext.createGain();
       volumeNode.current.gain.value = Number(
-        GetLocalStorageValue("thm_volume", "0.5"),
+        GetLocalStorageValue(LocalStorageKey.THM_Volume, "0.5"),
       );
     }
     return volumeNode.current;
@@ -660,7 +663,7 @@ const MusicPlayer = memo(function MusicPlayer({
         // 考虑在设定之后再保存，感觉大概可以避免频繁的保存
         onPointerUp={() => {
           SetLocalStorageValue(
-            "thm_volume",
+            LocalStorageKey.THM_Volume,
             getVolumeNode().gain.value.toString(),
           );
         }}

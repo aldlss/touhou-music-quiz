@@ -2,7 +2,6 @@ import { cache } from "react";
 import { parse } from "yaml";
 import { ErrorType, Music, MusicCollection, SimpleMusic } from "./types";
 import { fetchMusicUrlPrefix, separator } from "./constant";
-import { localStorageAvailable } from "./clientConstant";
 
 export const getSortedDefaultMusicCollection = cache(async () => {
   const musicCollection = await getMusicCollection();
@@ -216,52 +215,6 @@ export async function digestMuiscName(str: string): Promise<string> {
   return Array.from(new Uint8Array(res))
     .map((b) => b.toString(16).padStart(2, "0"))
     .join("");
-}
-
-export function CheckLocalStorageAvailable(): boolean {
-  try {
-    const storage = window.localStorage;
-    const x = "__storage_test__";
-    storage.setItem(x, x);
-    storage.removeItem(x);
-    return true;
-  } catch (e) {
-    return false;
-  }
-}
-
-export function SetLocalStorageValue(key: string, value: string) {
-  if (!localStorageAvailable) {
-    return false;
-  }
-  window.localStorage.setItem(key, value);
-  return true;
-}
-
-export function GetLocalStorageValue(key: string): string | null;
-export function GetLocalStorageValue(key: string, defaultValue: string): string;
-export function GetLocalStorageValue(key: string, defaultValue?: string) {
-  if (!localStorageAvailable) {
-    return defaultValue ?? null;
-  }
-  const value = window.localStorage.getItem(key);
-  if (defaultValue === undefined) {
-    return value ?? null;
-  } else {
-    if (value === null) {
-      SetLocalStorageValue(key, defaultValue);
-      return defaultValue;
-    } else {
-      return value;
-    }
-  }
-}
-
-export function ClearLocalStorage() {
-  if (!localStorageAvailable) {
-    return;
-  }
-  window.localStorage.clear();
 }
 
 export function checkIsSupportOggOpus() {

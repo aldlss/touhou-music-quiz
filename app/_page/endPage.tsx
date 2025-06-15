@@ -1,6 +1,10 @@
 import { useState } from "react";
 import { difficultyColorAndText } from "../constant";
-import { GetLocalStorageValue, SetLocalStorageValue } from "../tools";
+import {
+  GetLocalStorageValue,
+  LocalStorageKey,
+  SetLocalStorageValue,
+} from "../_tools/localStorage";
 import { RankType, PageType } from "../types";
 
 export interface IEndPageProps {
@@ -21,7 +25,7 @@ export function EndPage(props: IEndPageProps) {
   } = props;
 
   const [nickname, setNickname] = useState(() => {
-    return GetLocalStorageValue("nickname", "");
+    return GetLocalStorageValue(LocalStorageKey.Nickname, "");
   });
   const [editNickName, setEditNickName] = useState(true);
   const [difficultyColor, difficultyText] = difficultyColorAndText[rank];
@@ -50,7 +54,7 @@ export function EndPage(props: IEndPageProps) {
               className="w-30% p-2 secondary-button"
               onClick={() => {
                 setEditNickName(false);
-                SetLocalStorageValue("nickname", nickname);
+                SetLocalStorageValue(LocalStorageKey.Nickname, nickname);
               }}
             >
               确认

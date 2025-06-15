@@ -9,11 +9,12 @@ import { Updater } from "use-immer";
 import { ContainerDialog } from "../clientComponent";
 import { MusicList } from "../muiscListComponent";
 import { ArrowRightSSvg, QuestionLineSvg } from "../svg";
+import { selectMusicCollectionBySid } from "../tools";
 import {
   GetLocalStorageValue,
-  selectMusicCollectionBySid,
+  LocalStorageKey,
   SetLocalStorageValue,
-} from "../tools";
+} from "../_tools/localStorage";
 import { MusicCollection, PageType, RankType } from "../types";
 import { CommonSecondaryButton } from "../serverComponent";
 
@@ -37,7 +38,9 @@ export function SelectPage(props: ISelectPageProps) {
   const [showTimeSelect, setShowTimeSelect] = useState(false);
   const [showMusicSelect, setShowMusicSelect] = useState(true);
   const [showHelpDialog, setShowHelpDialog] = useState(() => {
-    const isFirstVisit = Number(GetLocalStorageValue("thm_first_visit", "1"));
+    const isFirstVisit = Number(
+      GetLocalStorageValue(LocalStorageKey.THM_FirstVisit, "1"),
+    );
     return isFirstVisit !== 0;
   });
   // 可能并不是最好的办法
@@ -75,7 +78,7 @@ export function SelectPage(props: ISelectPageProps) {
   }, []);
   const SelectHelpDialogOnClose = useCallback(() => {
     setShowHelpDialog(false);
-    SetLocalStorageValue("thm_first_visit", "0");
+    SetLocalStorageValue(LocalStorageKey.THM_FirstVisit, "0");
   }, []);
   const durationSelectPageBeforeLeave = useCallback(() => {
     setShowMusicSelect(true);

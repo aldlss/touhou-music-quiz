@@ -20,8 +20,9 @@ import { useImmer } from "use-immer";
 import {
   ClearLocalStorage,
   GetLocalStorageValue,
+  LocalStorageKey,
   SetLocalStorageValue,
-} from "./tools";
+} from "./_tools/localStorage";
 import { InitClientConstant } from "./clientConstant";
 import { voidFunc } from "./constant";
 import { StartPage } from "./_page/startPage";
@@ -46,11 +47,11 @@ export function QuizMain({
     // 检查是否过期，过期则清除一遍 localStorage，设置过期时间十五天
     const expireTimeDelta = 15 * 24 * 60 * 60 * 1000;
     // Number(null)为 0，大概不用担心
-    const expireTime = Number(GetLocalStorageValue("expire_time"));
+    const expireTime = Number(GetLocalStorageValue(LocalStorageKey.ExpireTime));
     if (expireTime + expireTimeDelta < Date.now() || isNaN(expireTime)) {
       ClearLocalStorage();
       SetLocalStorageValue(
-        "expire_time",
+        LocalStorageKey.ExpireTime,
         (Date.now() + expireTimeDelta).toString(),
       );
     }
@@ -89,19 +90,19 @@ export function QuizMain({
     }
     switch (target) {
       case ThemeAppearanceType.Auto:
-        SetLocalStorageValue("theme_appearance", "auto");
+        SetLocalStorageValue(LocalStorageKey.ThemeAppearance, "auto");
         changeTheme(GetThemeMatchQuery().matches);
         GetThemeMatchQuery().onchange = (e) => {
           changeTheme(e.matches);
         };
         break;
       case ThemeAppearanceType.Light:
-        SetLocalStorageValue("theme_appearance", "light");
+        SetLocalStorageValue(LocalStorageKey.ThemeAppearance, "light");
         GetThemeMatchQuery().onchange = null;
         changeTheme(false);
         break;
       case ThemeAppearanceType.Dark:
-        SetLocalStorageValue("theme_appearance", "dark");
+        SetLocalStorageValue(LocalStorageKey.ThemeAppearance, "dark");
         GetThemeMatchQuery().onchange = null;
         changeTheme(true);
         break;
@@ -127,7 +128,7 @@ export function QuizMain({
     [changeThemeAppearance],
   );
   useEffect(() => {
-    const theme = GetLocalStorageValue("theme_appearance", "auto");
+    const theme = GetLocalStorageValue(LocalStorageKey.ThemeAppearance, "auto");
     if (theme === "light") changeThemeAppearance(ThemeAppearanceType.Light);
     else if (theme === "dark") changeThemeAppearance(ThemeAppearanceType.Dark);
     else changeThemeAppearance(ThemeAppearanceType.Auto);
