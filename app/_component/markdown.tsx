@@ -1,7 +1,8 @@
 import Markdown from "react-markdown";
-import { ShadowRootSection } from "./shadow-root";
 import remarkGfm from "remark-gfm";
-import githubMarkdownStylesUrl from "@/app/docs/github-markdown-shadow.css?url";
+import rehypeSlug from "rehype-slug";
+import rehypeAutolinkHeadings from "rehype-autolink-headings";
+import githubMarkdownStylesUrl from "@/app/docs/github-markdown.css?url";
 
 interface MarkdownProps {
   title: string;
@@ -21,7 +22,7 @@ export function MarkdownPage({ title, markdown }: MarkdownProps) {
 
 export function MarkdownContent({ markdown }: Omit<MarkdownProps, "title">) {
   return (
-    <ShadowRootSection className="shadow-root-markdown">
+    <article className="markdown-body">
       <link rel="stylesheet" href={githubMarkdownStylesUrl} />
       <style>
         {`.markdown-body {
@@ -38,9 +39,32 @@ export function MarkdownContent({ markdown }: Omit<MarkdownProps, "title">) {
   }
 }`}
       </style>
-      <article className="markdown-body">
-        <Markdown remarkPlugins={[remarkGfm]}>{markdown}</Markdown>
-      </article>
-    </ShadowRootSection>
+      <Markdown
+        remarkPlugins={[remarkGfm]}
+        rehypePlugins={[
+          rehypeSlug,
+          [
+            rehypeAutolinkHeadings,
+            {
+              properties: {
+                className: ["anchor"],
+                ariaHidden: true,
+                tabIndex: -1,
+              },
+              content: {
+                type: "element",
+                tagName: "span",
+                properties: {
+                  className: ["octicon", "octicon-link"],
+                },
+                children: [],
+              },
+            },
+          ],
+        ]}
+      >
+        {markdown}
+      </Markdown>
+    </article>
   );
 }

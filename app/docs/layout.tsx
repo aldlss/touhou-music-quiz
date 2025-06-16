@@ -1,5 +1,3 @@
-import "./github-markdown-host-color-var.css";
-
 export default function DocsLayout({
   children,
 }: {
