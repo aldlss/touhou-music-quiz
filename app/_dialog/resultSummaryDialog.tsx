@@ -13,7 +13,7 @@ import {
 import { type AnswerRecord } from "../types";
 import {
   getDisplayMusicNameFromRouteName,
-  getMuiscPureNameFromRouteName,
+  getMusicPureNameFromRouteName,
 } from "../nameTools";
 
 interface IResultSummaryDialogProps extends IContainerDialogPropsBase {
@@ -76,13 +76,13 @@ export function ResultSummaryDialog(props: IResultSummaryDialogProps) {
                 <DisclosureButton className={`w-full p-y-1 bg-dialog-item`}>
                   <AListItem
                     no={`${idx + 1}`}
-                    yourAnswer={getMuiscPureNameFromRouteName(playerAnswerName)}
+                    yourAnswer={getMusicPureNameFromRouteName(playerAnswerName)}
                     yourAnswerClassName={`${
                       isCorrect
                         ? "text-accepted dark:text-accepted-dark"
                         : "text-wrong-answer dark-text-wrong-answer-dark"
                     }`}
-                    correctAnswer={getMuiscPureNameFromRouteName(
+                    correctAnswer={getMusicPureNameFromRouteName(
                       correctAnswerName,
                     )}
                     containerClassName="text-p"

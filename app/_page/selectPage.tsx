@@ -7,7 +7,7 @@ import {
 import { useState, useCallback, memo } from "react";
 import { Updater } from "use-immer";
 import { ContainerDialog } from "../clientComponent";
-import { MusicList } from "../muiscListComponent";
+import { MusicList } from "../musicListComponent";
 import { ArrowRightSSvg, QuestionLineSvg } from "../svg";
 import { selectMusicCollectionBySid } from "../tools";
 import {

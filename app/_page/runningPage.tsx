@@ -20,7 +20,7 @@ import {
   previousQuizSetCapacity,
   voidFunc,
 } from "../constant";
-import { MusicList } from "../muiscListComponent";
+import { MusicList } from "../musicListComponent";
 import { PlayFillSvg } from "../svg";
 import {
   filterMusicCollection,

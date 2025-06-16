@@ -25,7 +25,7 @@ export function getMusicPureNameFromIdxName(musicPureName: string) {
  * @param musicRouteName 例：`Windows作品//TH16.5 	秘封噩梦日记//2. Lunatic Dreamer`
  * @returns 例：`2. Lunatic Dreamer`
  */
-export function getMuiscIdxNameFromRouteName(musicRouteName: string) {
+export function getMusicIdxNameFromRouteName(musicRouteName: string) {
   const split = splitMusicRouteName(musicRouteName);
   return split[split.length - 1];
 }
@@ -35,9 +35,9 @@ export function getMuiscIdxNameFromRouteName(musicRouteName: string) {
  * @param musicRouteName 例：`Windows作品//TH16.5 	秘封噩梦日记//2. Lunatic Dreamer`
  * @returns 例：`Lunatic Dreamer`
  */
-export function getMuiscPureNameFromRouteName(musicRouteName: string) {
+export function getMusicPureNameFromRouteName(musicRouteName: string) {
   return getMusicPureNameFromIdxName(
-    getMuiscIdxNameFromRouteName(musicRouteName),
+    getMusicIdxNameFromRouteName(musicRouteName),
   );
 }
 

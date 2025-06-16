@@ -207,7 +207,7 @@ export function flatMusicColletion(
   return result;
 }
 
-export async function digestMuiscName(str: string): Promise<string> {
+export async function digestMusicName(str: string): Promise<string> {
   const res = await crypto.subtle.digest(
     "SHA-1",
     new TextEncoder().encode(str),
@@ -229,7 +229,7 @@ export function checkIsSupportOggOpus() {
  * @deprecated 改动了曲子获取方式，现使用 `fetchMusicByUuid`
  */
 export const fetchMusic = async (originName: string) => {
-  const digestName = await digestMuiscName(originName);
+  const digestName = await digestMusicName(originName);
   const response = await fetch(`${fetchMusicUrlPrefix}${digestName}.ogg`, {
     headers: { Accept: "audio/ogg" },
     next: { tags: ["music"] },
