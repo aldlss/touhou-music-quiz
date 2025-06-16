@@ -45,6 +45,14 @@ export function InfoDialog() {
             >
               Remix Icon
             </Link>
+            {`\n【筛曲名单】\n`}
+            <Link href="/docs/selected" target="_blank" className="text-link">
+              按类目
+            </Link>
+            {`   `}
+            <Link href="/docs/same-name" target="_blank" className="text-link">
+              按名称
+            </Link>
             {`\n【特别感谢】\nLizBaka / Ghost_ABB / 椿梦栀结 / 锵群的米娜 \n And You.`}
           </p>
           <address className="flex justify-center gap-2">

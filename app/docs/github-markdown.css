@@ -654,6 +654,14 @@
   list-style-type: none;
 }
 
+.markdown-body ol {
+  list-style-type: decimal;
+}
+
+.markdown-body ul {
+  list-style-type: disc;
+}
+
 .markdown-body ol[type="a s"] {
   list-style-type: lower-alpha;
 }
