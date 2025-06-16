@@ -1,6 +1,7 @@
 import Markdown from "react-markdown";
 import { ShadowRootSection } from "./shadow-root";
 import remarkGfm from "remark-gfm";
+import githubMarkdownStylesUrl from "@/app/docs/github-markdown-shadow.css?url";
 
 interface MarkdownProps {
   title: string;
@@ -20,11 +21,8 @@ export function MarkdownPage({ title, markdown }: MarkdownProps) {
 
 export function MarkdownContent({ markdown }: Omit<MarkdownProps, "title">) {
   return (
-    <ShadowRootSection>
-      <link
-        href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.8.1/github-markdown.min.css"
-        rel="stylesheet"
-      />
+    <ShadowRootSection className="shadow-root-markdown">
+      <link rel="stylesheet" href={githubMarkdownStylesUrl} />
       <style>
         {`.markdown-body {
   box-sizing: border-box;

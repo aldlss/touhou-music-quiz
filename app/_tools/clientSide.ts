@@ -1,3 +1,6 @@
+"use client";
+
+import { initThemeStore } from "../_store/themeStore";
 import { InitClientConstant } from "../clientConstant";
 import {
   GetLocalStorageValue,
@@ -10,7 +13,7 @@ export function isClientSide() {
   return typeof window !== "undefined" && typeof document !== "undefined";
 }
 
-export function initClient() {
+function initClient() {
   // 设置客户端的一些基本信息
   InitClientConstant();
   window.AudioContext =
@@ -29,6 +32,8 @@ export function initClient() {
       (Date.now() + expireTimeDelta).toString(),
     );
   }
+
+  initThemeStore();
 }
 
 if (isClientSide()) {

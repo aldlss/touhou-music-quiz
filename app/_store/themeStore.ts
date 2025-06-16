@@ -26,7 +26,11 @@ export const themeStore = createStore<ThemeStore>(() => ({
 
 let isInit = false;
 
-function initThemeStore() {
+/**
+ * 初始化主题存储
+ * @tips 请在客户端环境下调用此函数
+ */
+export function initThemeStore() {
   // 如果是 SSR 环境，则不需要处理主题
   if (!isClientSide() || isInit) return;
   isInit = true;
@@ -93,6 +97,3 @@ function initThemeStore() {
     },
   });
 }
-
-// 初始化主题存储
-initThemeStore();

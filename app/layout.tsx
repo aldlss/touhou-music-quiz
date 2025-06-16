@@ -1,10 +1,8 @@
 import "./globals.css";
+import "./_tools/clientSide";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
-
-// 副作用引入，初始化客户端相关的内容
-import "./_tools/clientSide";
 
 const inter = Inter({ subsets: ["latin"] });
 
