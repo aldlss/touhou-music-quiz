@@ -176,8 +176,14 @@ export function RunningPage(props: IRunningPageProps) {
               data.samplesDecoded,
               data.sampleRate,
             );
-            for (let i = 0; i < 2; i++) {
-              temp.getChannelData(i).set(data.channelData[i]);
+            for (
+              let channelIndex = 0;
+              channelIndex < data.channelData.length;
+              channelIndex++
+            ) {
+              temp
+                .getChannelData(channelIndex)
+                .set(data.channelData[channelIndex]);
             }
             decodeBuffer.push(temp);
           });
