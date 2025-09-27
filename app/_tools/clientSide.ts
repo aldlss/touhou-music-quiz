@@ -8,10 +8,7 @@ import {
   ClearLocalStorage,
   SetLocalStorageValue,
 } from "./localStorage";
-
-export function isClientSide() {
-  return typeof window !== "undefined" && typeof document !== "undefined";
-}
+import { isClientSide } from "./environment";
 
 function initClient() {
   // 设置客户端的一些基本信息

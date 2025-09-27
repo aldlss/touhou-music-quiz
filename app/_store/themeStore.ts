@@ -4,7 +4,7 @@ import {
   LocalStorageKey,
   SetLocalStorageValue,
 } from "../_tools/localStorage";
-import { isClientSide } from "../_tools/clientSide";
+import { isClientSide } from "../_tools/environment";
 
 export enum ThemeAppearanceType {
   Light = "Light",
