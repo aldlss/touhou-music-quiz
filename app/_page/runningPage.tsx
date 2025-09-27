@@ -620,7 +620,7 @@ const MusicPlayer = memo(function MusicPlayer({
     audioSource.current.buffer = audioBuffer;
     audioSource.current.connect(getVolumeNode());
     getVolumeNode().connect(audioContext.destination);
-    audioSource.current.start(startTime.current, 0, musicDuration.current);
+    audioSource.current.start(0, startTime.current, musicDuration.current);
   }, [audioBuffer, audioContext, getVolumeNode, musicDuration]);
   // 用于在外部调用播放音乐的，没想到更好的办法
   playTheMusic.current = playMusic;
