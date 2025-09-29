@@ -163,31 +163,30 @@ export function RunningPage(props: IRunningPageProps) {
     async function decodeAudioDataWithOggOpus() {
       if (decoderRef.current === null) {
         const { OggOpusDecoderWebWorker } = await importOggOpusDecoder();
-        decoderRef.current = new OggOpusDecoderWebWorker();
+        decoderRef.current =
+          decoderRef.current ?? new OggOpusDecoderWebWorker();
       }
       const decoder = decoderRef.current;
       await decoder.ready;
       try {
         for (const buffer of responses) {
           // TODO: 按照文档说应该是可以不用直接在这里 await 的，但是不这样会出问题
-          await decoder.decode(new Uint8Array(buffer)).then((data) => {
-            const temp = audioContext.createBuffer(
-              data.channelData.length,
-              data.samplesDecoded,
-              data.sampleRate,
-            );
-            for (
-              let channelIndex = 0;
-              channelIndex < data.channelData.length;
-              channelIndex++
-            ) {
-              temp
-                .getChannelData(channelIndex)
-                .set(data.channelData[channelIndex]);
-            }
-            decodeBuffer.push(temp);
-          });
-          decoder.reset();
+          const data = await decoder.decodeFile(new Uint8Array(buffer));
+          const temp = audioContext.createBuffer(
+            data.channelData.length,
+            data.samplesDecoded,
+            data.sampleRate,
+          );
+          for (
+            let channelIndex = 0;
+            channelIndex < data.channelData.length;
+            channelIndex++
+          ) {
+            temp
+              .getChannelData(channelIndex)
+              .set(data.channelData[channelIndex]);
+          }
+          decodeBuffer.push(temp);
         }
       } catch (e) {
         throw Error(ErrorType.DecodeError, { cause: e });

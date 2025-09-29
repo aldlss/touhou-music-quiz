@@ -6,6 +6,14 @@ export let localStorageAvailable: boolean = false;
 export let isSupportOggOpus: boolean = false;
 
 export function InitClientConstant() {
+  const urlParams = new URLSearchParams(window.location.search);
+
   localStorageAvailable = CheckLocalStorageAvailable();
-  isSupportOggOpus = checkIsSupportOggOpus();
+
+  const isSupportOggOpusParam = urlParams.get("dev_supportOggOpus");
+  if (isSupportOggOpusParam !== null) {
+    isSupportOggOpus = isSupportOggOpusParam === "true";
+  } else {
+    isSupportOggOpus = checkIsSupportOggOpus();
+  }
 }
