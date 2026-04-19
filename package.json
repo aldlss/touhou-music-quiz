@@ -16,7 +16,7 @@
     "@unocss/reset": "^66.1.4",
     "@vercel/analytics": "^1.5.0",
     "immer": "^10.1.1",
-    "next": "latest",
+    "next": "15.5.8",
     "ogg-opus-decoder": "^1.7.1",
     "react": "latest",
     "react-dom": "latest",
