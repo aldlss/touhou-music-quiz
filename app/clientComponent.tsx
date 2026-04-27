@@ -49,7 +49,7 @@ export function QuizMain({
     musicDuration.current = duration;
   }, []);
   return (
-    <div className="h-full w-full overflow-hidden border-1 rounded-lg @container/main border-surface-color">
+    <div className="h-full w-full overflow-hidden border-1 border-surface-color rounded-lg @container/main">
       {
         {
           [PageType.start]: (
@@ -196,7 +196,7 @@ export function ContainerDialog(props: IContainerDialogProps) {
               leaveFrom="opacity-100 translate-y-0"
               leaveTo="opacity-0 translate-y--30%"
             >
-              <div className="z-10 max-h-90% w-90% overflow-y-auto border-1 rounded-lg shadow-md border-surface-color bg-dialog">
+              <div className="z-10 max-h-90% w-90% overflow-y-auto border-1 border-surface-color rounded-lg bg-dialog shadow-md">
                 {children}
               </div>
             </TransitionChild>
@@ -228,14 +228,14 @@ export const ConfirmDialog = memo(function ConfirmDialog({
         <div className="flex flex-row justify-evenly gap-2 p-x-4">
           <button
             type="button"
-            className="max-w-40% flex-1 p-1 secondary-button text-h3"
+            className="max-w-40% flex-1 secondary-button p-1 text-h3"
             onClick={onCancel}
           >
             取消
           </button>
           <button
             type="button"
-            className="max-w-40% flex-1 p-1 text-h3 main-button"
+            className="main-button max-w-40% flex-1 p-1 text-h3"
             onClick={onConfirm}
           >
             确认

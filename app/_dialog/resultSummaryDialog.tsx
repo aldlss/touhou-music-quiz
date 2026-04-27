@@ -38,7 +38,7 @@ export function ResultSummaryDialog(props: IResultSummaryDialogProps) {
   }) => {
     return (
       <div
-        className={`grid grid-cols-[2.5rem_repeat(2,_calc(50%-1.25rem))] overflow-clip whitespace-nowrap text-center ${containerClassName}`}
+        className={`grid grid-cols-[2.5rem_repeat(2,calc(50%-1.25rem))] overflow-clip whitespace-nowrap text-center ${containerClassName}`}
       >
         <p className="p-x-1">{no}</p>
         <p className={`overflow-clip p-x-1 ${yourAnswerClassName}`}>
@@ -71,9 +71,9 @@ export function ResultSummaryDialog(props: IResultSummaryDialogProps) {
               <Disclosure
                 key={idx}
                 as="li"
-                className="border-2 rounded-lg overflow-clip transition-transform border-tab-color-with-hover hover:translate-y--0.25"
+                className="overflow-clip border-2 border-tab-color-with-hover rounded-lg transition-transform hover:translate-y--0.25"
               >
-                <DisclosureButton className={`w-full p-y-1 bg-dialog-item`}>
+                <DisclosureButton className={`w-full bg-dialog-item p-y-1`}>
                   <AListItem
                     no={`${idx + 1}`}
                     yourAnswer={getMusicPureNameFromRouteName(playerAnswerName)}
@@ -90,7 +90,7 @@ export function ResultSummaryDialog(props: IResultSummaryDialogProps) {
                 </DisclosureButton>
                 <DisclosurePanel
                   transition
-                  className="whitespace-pre-wrap p-x-2 p-y-1 transition data-[enter]:data-[closed]:scale-y-0 data-[enter]:data-[closed]:opacity-0 transform-origin-top"
+                  className="data-enter:data-closed:scale-y-0 data-enter:data-closed:opacity-0 transform-origin-top whitespace-pre-wrap p-x-2 p-y-1 transition"
                 >
                   你的答案：
                   {getDisplayMusicNameFromRouteName(playerAnswerName)}
@@ -115,7 +115,7 @@ export function ResultSummaryDialog(props: IResultSummaryDialogProps) {
           <button
             type="button"
             onClick={containerDialogProps.onClose}
-            className="m-x-auto w-30% p-1 secondary-button text-h3"
+            className="m-x-auto w-30% secondary-button p-1 text-h3"
           >
             关闭
           </button>

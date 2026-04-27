@@ -44,16 +44,7 @@ export const Badge = ({
 
   return (
     <div
-      className={`
-        relative inline-block
-        ${shouldShow ? "after:content-[attr(data-badge-count)]" : "after:hidden"}
-        after:absolute after:top-0 after:right-0 after:translate-x-1/2
-        after:bg-red-500 after:text-white after:text-xs
-        after:font-semibold after:rounded-full
-        ${dot ? "after:min-w-2 after:h-2" : "after:min-w-3 after:h-3"}
-        after:flex after:items-center after:justify-center
-        after:p-1 after:z-10
-      `}
+      className={`relative inline-block ${shouldShow ? "after:content-[attr(data-badge-count)]" : "after:hidden"} after:absolute after:right-0 after:top-0 after:translate-x-1/2 after:rounded-full after:bg-red-500 after:text-xs after:text-white after:font-semibold ${dot ? "after:min-w-2 after:h-2" : "after:min-w-3 after:h-3"} after:z-10 after:flex after:items-center after:justify-center after:p-1`}
       data-badge-count={dot ? "" : displayCount} // 将要显示的内容传递给CSS的attr()函数
     >
       {children}

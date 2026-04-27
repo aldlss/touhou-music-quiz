@@ -435,7 +435,7 @@ export function RunningPage(props: IRunningPageProps) {
       <main className="relative h-full w-full flex flex-col animate-fade-in-up-fast">
         <header className="relative">
           <button
-            className="absolute left-0 top-0 p-2 tertiary-button text-h3"
+            className="absolute left-0 top-0 tertiary-button p-2 text-h3"
             type="button"
             onClick={invokeResultSummaryDialog}
           >
@@ -444,11 +444,11 @@ export function RunningPage(props: IRunningPageProps) {
             </span>
             {`/${nowQuizCount}`}
           </button>
-          <h1 className={`text-h2 flex-1 text-center ${difficultyTextColor}`}>
+          <h1 className={`flex-1 text-center text-h2 ${difficultyTextColor}`}>
             {h1Text}
           </h1>
           <button
-            className="absolute right-0 top-0 m-1 min-w-fit w-20% p-x-2 p-y-1 secondary-button text-h3"
+            className="absolute right-0 top-0 m-1 min-w-fit w-20% secondary-button p-x-2 p-y-1 text-h3"
             type="button"
             onClick={() => {
               setShowEndGameDialog(true);
@@ -499,7 +499,7 @@ export function RunningPage(props: IRunningPageProps) {
         />
         <button
           disabled={selectSid < 0 || nowQuiz === null}
-          className="self-center p-0.5 main-button"
+          className="main-button self-center p-0.5"
           type="button"
           onClick={() => {
             if (nowQuiz === null) {
@@ -580,7 +580,7 @@ const ResultDialog = memo(function ResultDialog({
           {description1}
           {description2}
         </Description>
-        <p className="self-center text-gray text-p">点击框外立即关闭</p>
+        <p className="self-center text-p text-gray">点击框外立即关闭</p>
       </DialogPanel>
     </ContainerDialog>
   );
@@ -648,7 +648,7 @@ const MusicPlayer = memo(function MusicPlayer({
       <button
         type="button"
         aria-label="play music"
-        className="aspect-square h-full max-h-10vh max-w-10vh rounded-3xl bg-sky-3 common-button dark:bg-sky-6 simple-hover-active"
+        className="aspect-square h-full max-h-10vh max-w-10vh common-button rounded-3xl bg-sky-3 simple-hover-active dark:bg-sky-6"
         onClick={() => {
           playMusic();
         }}

@@ -20,13 +20,13 @@ export function StartPage(props: IStartPageProps) {
         <Link
           href="/docs/version"
           target="_blank"
-          className="p-2 text-right text-gray text-p hover:text-link"
+          className="p-2 text-right text-p text-gray hover:text-link"
         >
           {packageInfo.version}
         </Link>
         <InfoDialog />
       </div>
-      <p className="absolute m-t-20 aspect-[9999/1] min-h-0 overflow-y-hidden">
+      <p className="absolute m-t-20 aspect-9999/1 min-h-0 overflow-y-hidden">
         如果你看到了这行字
         <br />
         而且界面显得很扁的话
@@ -43,7 +43,7 @@ export function StartPage(props: IStartPageProps) {
         </h1>
         <button
           type="button"
-          className="p-4 main-button"
+          className="main-button p-4"
           onClick={() => {
             setPageState(PageType.selecting);
             initFunc();

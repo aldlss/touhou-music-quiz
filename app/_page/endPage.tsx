@@ -32,7 +32,7 @@ export function EndPage(props: IEndPageProps) {
   return (
     <div className="h-full bg-container">
       <main className="h-full w-full flex flex-col animate-fade-in-up-fast items-center justify-center gap-1">
-        <h1 className="text-pure-red font-extrabold text-h1 dark:text-red">
+        <h1 className="text-h1 text-pure-red font-extrabold dark:text-red">
           喜报
         </h1>
         {editNickName ? (
@@ -41,7 +41,7 @@ export function EndPage(props: IEndPageProps) {
               name="nickname"
               placeholder="Player"
               autoComplete="off"
-              className="max-w-90% border-2 rounded-lg bg-gray-3 p-1 text-center font-bold border-tab-color hover:border-blue dark:bg-material-dark-8 text-h2 dark:hover:border-cyan"
+              className="max-w-90% border-2 border-tab-color rounded-lg bg-gray-3 p-1 text-center text-h2 font-bold hover:border-blue dark:bg-material-dark-8 dark:hover:border-cyan"
               type="text"
               value={nickname}
               onChange={(e) => {
@@ -51,7 +51,7 @@ export function EndPage(props: IEndPageProps) {
             <button
               type="button"
               disabled={nickname.length === 0}
-              className="w-30% p-2 secondary-button"
+              className="w-30% secondary-button p-2"
               onClick={() => {
                 setEditNickName(false);
                 SetLocalStorageValue(LocalStorageKey.Nickname, nickname);
@@ -61,7 +61,7 @@ export function EndPage(props: IEndPageProps) {
             </button>
           </>
         ) : (
-          <h2 className="font-bold text-h2">{nickname}</h2>
+          <h2 className="text-h2 font-bold">{nickname}</h2>
         )}
         <h3 className="text-center text-h3">
           在东方原曲认知测验无尽版
@@ -69,9 +69,9 @@ export function EndPage(props: IEndPageProps) {
           <span className={difficultyColor}>{difficultyText}</span>
           &nbsp;难度获得
         </h3>
-        <h3 className="text-rose font-600 text-h2">
+        <h3 className="text-h2 text-rose font-600">
           <button
-            className="p-x-1 tertiary-button"
+            className="tertiary-button p-x-1"
             onClick={invokeResultSummaryDialog}
           >
             {`${rightAnswerCount}/${nowQuizCount}`}
@@ -81,7 +81,7 @@ export function EndPage(props: IEndPageProps) {
         <h2 className="text-h2">可喜可贺，可喜可贺</h2>
         <button
           type="button"
-          className="p-y-2 main-button"
+          className="main-button p-y-2"
           onClick={() => {
             setPageState(PageType.start);
           }}

@@ -8,8 +8,8 @@ export function AdaptiveMainContain({
   children: React.JSX.Element;
 }) {
   return (
-    <div className="m-x-auto aspect-[2/3] h-95% max-w-95% w-auto flex items-center">
-      <div className="aspect-[2/3] h-auto max-h-full w-full">{children}</div>
+    <div className="m-x-auto aspect-2/3 h-95% max-w-95% w-auto flex items-center">
+      <div className="aspect-2/3 h-auto max-h-full w-full">{children}</div>
     </div>
   );
 }
@@ -60,7 +60,7 @@ export function AsyncBoundary({
                 <pre className="inline">{errorMessage}</pre>
               </div>
               <button
-                className="p-2 secondary-button"
+                className="secondary-button p-2"
                 type="button"
                 onClick={() => {
                   resetErrorBoundary();
@@ -88,7 +88,7 @@ export function CommonSecondaryButton(props: ICommonSecondaryButtonProps) {
   return (
     <button
       type="button"
-      className="w-fit self-center p-x-4 p-y-2 secondary-button"
+      className="w-fit self-center secondary-button p-x-4 p-y-2"
       onClick={onClick}
     >
       {children}

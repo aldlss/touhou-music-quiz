@@ -77,7 +77,7 @@ const H1TabList = memo(function H1TabList({
   ) => void;
 }) {
   return (
-    <TabList className="flex flex-row overflow-x-auto border-1 rounded-lg text-center border-tab-list-color">
+    <TabList className="flex flex-row overflow-x-auto border-1 border-tab-list-color rounded-lg text-center">
       {categoryCollection.data.map((category) => (
         <H1TabListItem
           key={category.name}
@@ -108,7 +108,7 @@ const H1TabListItem = memo(function H1TabListItem({
   return (
     <>
       <TabListItemShell
-        className="min-w-22.5 flex-1 border-l-2 @xs/main:min-w-initial border-tab-color first:border-unset"
+        className="min-w-22.5 flex-1 border-l-2 border-tab-color @xs/main:min-w-initial first:border-unset"
         slectedChild={slectedChild}
       >
         <H1TabListInner
@@ -135,7 +135,7 @@ const H1TabListInner = memo(function H1TabListInner({
 }) {
   return (
     <Tab
-      className="h-full w-full p-1 text-center transition text-p data-selected:hover:text-common-color hover:text-purple simple-hover-active bg-tab-h1"
+      className="h-full w-full bg-tab-h1 p-1 text-center text-p simple-hover-active transition hover:text-purple data-selected:hover:text-common-color"
       onClick={(e) => {
         onClickTab(itemSid, e);
       }}
@@ -167,7 +167,7 @@ function H1TabPanels({
   return (
     // 占据下方空间的
     <TabPanels
-      className={`flex-1 overflow-hidden will-change-opacity transition-opacity-delay ${
+      className={`flex-1 overflow-hidden transition-opacity-delay will-change-opacity ${
         isH1Pending ? "opacity-80" : ""
       }`}
     >
@@ -239,7 +239,7 @@ const H2TabList = memo(function H2TabList({
   ) => void;
 }) {
   return (
-    <TabList className="w-40% overflow-y-auto border-1 rounded-lg will-change-scroll border-tab-list-color">
+    <TabList className="w-40% overflow-y-auto border-1 border-tab-list-color rounded-lg will-change-scroll">
       {albumCollection.data.map((album) => (
         <H2TabListItem
           key={album.name}
@@ -316,7 +316,7 @@ const H2TabListInner = memo(function H2TabListInner({
 }) {
   return (
     <Tab
-      className="h-full w-full p-0.5 text-left transition text-p data-selected:hover:text-common-color hover:text-purple simple-hover-active bg-tab-h2"
+      className="h-full w-full bg-tab-h2 p-0.5 text-left text-p simple-hover-active transition hover:text-purple data-selected:hover:text-common-color"
       onClick={(e) => {
         onClickTab(itemSid, e);
       }}
@@ -342,7 +342,7 @@ function H2TabPanels({
 }) {
   return (
     <TabPanels
-      className={`flex-1 overflow-y-auto border-1 rounded-lg will-change-scroll-opacity border-tab-list-color transition-opacity-delay ${
+      className={`flex-1 overflow-y-auto border-1 border-tab-list-color rounded-lg transition-opacity-delay will-change-scroll-opacity ${
         isH2Pending ? "opacity-80" : ""
       }`}
     >
@@ -436,7 +436,7 @@ const AlbumMusicListItem = memo(function AlbumMusicListItem({
     <li className="group">
       <Switch
         data-sid={music.sid}
-        className="group w-full p-0.5 text-left transition group-even:bg-gray-3 group-odd:bg-gray-2.5 text-p group-hover:text-purple hover:brightness-102.5 dark:group-even:bg-neutral-5.5 dark:group-odd:bg-neutral-6 group-even:data-checked:bg-sky-1.5 group-odd:data-checked:bg-sky-2 group-hover:data-checked:text-dark-orange dark:group-even:data-checked:bg-deep-cyan-1 dark:group-odd:data-checked:bg-deep-cyan-r-1"
+        className="group w-full p-0.5 text-left text-p transition group-even:bg-gray-3 group-odd:bg-gray-2.5 group-hover:text-purple hover:brightness-102.5 dark:group-even:bg-neutral-5.5 dark:group-odd:bg-neutral-6 group-even:data-checked:bg-sky-1.5 group-odd:data-checked:bg-sky-2 group-hover:data-checked:text-dark-orange dark:group-even:data-checked:bg-deep-cyan-1 dark:group-odd:data-checked:bg-deep-cyan-r-1"
         checked={music.selected}
         onClick={(e) => {
           onClickMusic(music.sid, e);

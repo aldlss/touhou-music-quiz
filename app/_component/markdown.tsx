@@ -11,7 +11,7 @@ interface MarkdownProps {
 export function MarkdownPage({ title, markdown }: MarkdownProps) {
   return (
     <main>
-      <h1 className="text-h1 text-common-color text-center font-bold">
+      <h1 className="text-center text-h1 text-common-color font-bold">
         {title}
       </h1>
       <MarkdownContent markdown={markdown} />

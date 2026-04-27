@@ -114,7 +114,7 @@ export function SelectPage(props: ISelectPageProps) {
         />
         <button
           disabled={!nextButtonEnable}
-          className="self-center p-0.5 main-button"
+          className="main-button self-center p-0.5"
           type="button"
           onClick={() => {
             setShowTimeSelect(true);
@@ -232,7 +232,7 @@ const DurationSelectPage = memo(function DurationSelectPage({
   ];
   return (
     <Transition
-      className="absolute h-full w-full flex flex-col translate-y--100% transition-common bg-container"
+      className="absolute h-full w-full flex flex-col translate-y--100% bg-container transition-common"
       as="section"
       show={show}
       enterFrom="translate-x-100%"
@@ -286,7 +286,7 @@ function DurationSelectItem({
   return (
     <div className="flex flex-col items-center gap-1">
       <button
-        className={`text-shadow-sm text-shadow-color-gray common-button p-y-2 p-x-4 text-h2 simple-hover-active ${
+        className={`common-button p-x-4 p-y-2 text-h2 text-shadow-sm text-shadow-color-gray simple-hover-active ${
           buttonClassName ?? ""
         } dark:[--un-bg-opacity:0.8]`}
         type="button"
