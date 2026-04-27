@@ -36,3 +36,7 @@ function initClient() {
 if (isClientSide()) {
   initClient();
 }
+
+export function ClientInitializer() {
+  return null;
+}

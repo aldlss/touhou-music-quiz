@@ -1,8 +1,8 @@
 import "./globals.css";
-import "./_tools/clientSide";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
+import { ClientInitializer } from "./_tools/ClientInitializer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -44,6 +44,7 @@ export default function RootLayout({
               })();`,
           }}
         />
+        <ClientInitializer />
         {children}
         <Analytics />
       </body>
