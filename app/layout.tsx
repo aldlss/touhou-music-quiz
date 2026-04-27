@@ -11,6 +11,7 @@ export const metadata: Metadata = {
   keywords: "touhou, music, quiz, game",
   description: "东方原曲认知测验，但是是无尽版",
   authors: { name: "aldlss", url: "https://github.com/aldlss" },
+  metadataBase: new URL("https://quiz.touhou.page"),
 };
 
 export default function RootLayout({
