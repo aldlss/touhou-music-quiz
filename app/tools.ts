@@ -39,6 +39,14 @@ export function isMusicList(
   return items.length === 0 || !isMusicCollection(items[0]);
 }
 
+export async function fetchDocsText(url: string): Promise<string> {
+  const res = await fetch(url, {
+    next: { revalidate: 86_400, tags: ["docs"] },
+  });
+  if (!res.ok) throw new Error(`Failed to fetch ${url}`);
+  return await res.text();
+}
+
 const getMusicCollection = async () => {
   const res = await fetch(`${process.env.NEXT_PUBLIC_FETCH_DATA_URL}`, {
     next: { revalidate: 86_400, tags: ["music-collection"] },
