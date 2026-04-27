@@ -12,7 +12,7 @@ export async function GET(request: NextRequest) {
     });
   }
   if (tag) {
-    revalidateTag(tag);
+    revalidateTag(tag, "max");
     return Response.json({ revalidated: true, now: Date.now(), tag: tag });
   } else {
     revalidatePath("/");

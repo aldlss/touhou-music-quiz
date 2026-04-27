@@ -1,3 +1,5 @@
+import "./github-markdown.css";
+
 export default function DocsLayout({
   children,
 }: {

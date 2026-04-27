@@ -50,11 +50,14 @@ export function AsyncBoundary({
         resetKeys={resetKeys}
         onReset={onRetry}
         fallbackRender={({ error, resetErrorBoundary }) => {
+          const errorMessage =
+            error instanceof Error ? error.message : String(error);
+
           return (
             <div className="h-full flex flex-col items-center justify-center">
               <div className="text-center">
                 <h1 className="inline text-p">少女出错了！</h1>
-                <pre className="inline">{error.message}</pre>
+                <pre className="inline">{errorMessage}</pre>
               </div>
               <button
                 className="p-2 secondary-button"

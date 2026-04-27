@@ -6,43 +6,49 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "eslint .",
     "re": "next build; next start",
     "pretty": "prettier --write \"./**/*.{js,jsx,mjs,cjs,ts,tsx}\""
   },
   "dependencies": {
     "@aldlss/async-sema": "^3.1.1",
-    "@headlessui/react": "^2.2.4",
-    "@unocss/reset": "^66.1.4",
-    "@vercel/analytics": "^1.5.0",
-    "immer": "^10.1.1",
-    "next": "^15.3.3",
-    "ogg-opus-decoder": "^1.7.1",
-    "react": "^19.1.0",
-    "react-dom": "^19.1.0",
-    "react-error-boundary": "^6.0.0",
+    "@headlessui/react": "^2.2.10",
+    "@unocss/reset": "^66.6.8",
+    "@vercel/analytics": "^1.6.1",
+    "immer": "^10.2.0",
+    "next": "16.2.4",
+    "ogg-opus-decoder": "^1.7.3",
+    "react": "19.2.5",
+    "react-dom": "19.2.5",
+    "react-error-boundary": "^6.1.1",
     "react-markdown": "^10.1.0",
     "react-shadow": "^20.6.0",
     "rehype-autolink-headings": "^7.1.0",
     "rehype-slug": "^6.0.0",
     "remark-gfm": "^4.0.1",
     "use-immer": "^0.11.0",
-    "yaml": "^2.8.0",
-    "zustand": "^5.0.5"
+    "yaml": "^2.8.3",
+    "zustand": "^5.0.12"
   },
   "devDependencies": {
-    "@types/node": "^22.15.30",
-    "@types/react": "^19.1.6",
-    "@types/react-dom": "^19.1.6",
-    "@unocss/eslint-config": "^66.1.4",
-    "@unocss/postcss": "^66.1.4",
-    "autoprefixer": "^10.4.21",
-    "eslint": "^9.28.0",
-    "eslint-config-next": "^15.3.3",
-    "postcss": "^8.5.4",
-    "prettier": "^3.5.3",
-    "typescript": "^5.8.3",
-    "unocss": "^66.1.4"
+    "@types/node": "^22.19.17",
+    "@types/react": "19.2.14",
+    "@types/react-dom": "19.2.3",
+    "@unocss/eslint-config": "^66.6.8",
+    "@unocss/postcss": "^66.6.8",
+    "autoprefixer": "^10.5.0",
+    "eslint": "^9.39.4",
+    "eslint-config-next": "16.2.4",
+    "postcss": "^8.5.12",
+    "prettier": "^3.8.3",
+    "typescript": "^5.9.3",
+    "unocss": "^66.6.8"
   },
-  "packageManager": "pnpm@10.33.2"
+  "packageManager": "pnpm@10.33.2",
+  "pnpm": {
+    "overrides": {
+      "@types/react": "19.2.14",
+      "@types/react-dom": "19.2.3"
+    }
+  }
 }

@@ -2,7 +2,6 @@ import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeSlug from "rehype-slug";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
-import githubMarkdownStylesUrl from "@/app/docs/github-markdown.css?url";
 
 interface MarkdownProps {
   title: string;
@@ -23,7 +22,6 @@ export function MarkdownPage({ title, markdown }: MarkdownProps) {
 export function MarkdownContent({ markdown }: Omit<MarkdownProps, "title">) {
   return (
     <article className="markdown-body">
-      <link rel="stylesheet" href={githubMarkdownStylesUrl} />
       <style>
         {`.markdown-body {
   box-sizing: border-box;
