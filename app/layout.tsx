@@ -3,15 +3,34 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
 import { ClientInitializer } from "./_tools/ClientInitializer";
+import { SITE_URL, WEB_DESCRIPTION, WEB_TITLE } from "./constant";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "东方原曲认知测验无尽版",
-  keywords: "touhou, music, quiz, game",
-  description: "东方原曲认知测验，但是是无尽版",
+  applicationName: WEB_TITLE,
+  title: {
+    default: `${WEB_TITLE} | 随机音乐片段听曲答题`,
+    template: `%s | ${WEB_TITLE}`,
+  },
+  keywords:
+    "东方Project, 东方原曲, 东方音乐, 东方音乐测验, 东方听歌识曲, 东方原曲认知测验, Touhou, Touhou music, Touhou music quiz",
+  description: WEB_DESCRIPTION,
   authors: { name: "aldlss", url: "https://github.com/aldlss" },
-  metadataBase: new URL("https://quiz.touhou.page"),
+  metadataBase: new URL(SITE_URL),
+  openGraph: {
+    title: WEB_TITLE,
+    description: WEB_DESCRIPTION,
+    url: SITE_URL,
+    siteName: WEB_TITLE,
+    locale: "zh_CN",
+    type: "website",
+  },
+  twitter: {
+    card: "summary",
+    title: WEB_TITLE,
+    description: WEB_DESCRIPTION,
+  },
 };
 
 export default function RootLayout({
@@ -20,7 +39,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="zh" suppressHydrationWarning>
+    <html lang="zh-CN" suppressHydrationWarning>
       <body className={`${inter.className} bg-bg`}>
         <script
           dangerouslySetInnerHTML={{
