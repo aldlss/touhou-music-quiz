@@ -2,6 +2,7 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   serverExternalPackages: ["ogg-opus-decoder"],
+  reactCompiler: true,
   turbopack: {
     rules: {
       "*.md": {
