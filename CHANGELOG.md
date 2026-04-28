@@ -1,3 +1,12 @@
+# 0.3.2
+
++ add: 为主要页面添加 canonical 链接
++ perf: 引入 React Compiler
++ docs: 将选曲名单文档转为在 quiz 网页中查看
++ fix: 修复客户端初始化、夜间模式水合警告、Markdown 文档加载和环境变量 URL 拼接等问题
++ dep: 升级依赖
++ refactor: 调整优化部分播放、初始化和 localStorage 逻辑以及其他一些 eslint 发现的问题
+
 # 0.3.1
 
 + fix: 修复了在部分苹果设备下可能无限加载的问题
