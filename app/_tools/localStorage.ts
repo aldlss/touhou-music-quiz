@@ -45,15 +45,18 @@ export function GetLocalStorageValue(key: LocalStorageKey): string | null;
  * 获取 localStorage 中的值
  * @param key localStorage 键
  * @param defaultValue 默认值，如果 localStorage 中不存在该键，会设置该键的值为 `defaultValue`
+ * @param writeDefaultValue 是否在 localStorage 中不存在该键时设置默认值，默认为 `true`
  * @return localStorage 中的值，如果不存在则返回 `defaultValue`
  */
 export function GetLocalStorageValue(
   key: LocalStorageKey,
   defaultValue: string,
+  writeDefaultValue?: boolean,
 ): string;
 export function GetLocalStorageValue(
   key: LocalStorageKey,
   defaultValue?: string,
+  writeDefaultValue = true,
 ) {
   if (!localStorageAvailable) {
     return defaultValue ?? null;
@@ -63,7 +66,9 @@ export function GetLocalStorageValue(
     return value ?? null;
   } else {
     if (value === null) {
-      SetLocalStorageValue(key, defaultValue);
+      if (writeDefaultValue) {
+        SetLocalStorageValue(key, defaultValue);
+      }
       return defaultValue;
     } else {
       return value;

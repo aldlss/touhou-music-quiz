@@ -20,34 +20,34 @@ interface IResultSummaryDialogProps extends IContainerDialogPropsBase {
   answerAndResults: AnswerRecord[];
 }
 
+const AListItem = ({
+  no,
+  yourAnswer,
+  correctAnswer,
+  containerClassName,
+  yourAnswerClassName,
+}: {
+  no: string;
+  yourAnswer: string;
+  correctAnswer: string;
+  containerClassName?: string;
+  yourAnswerClassName?: string;
+}) => {
+  return (
+    <div
+      className={`grid grid-cols-[2.5rem_repeat(2,calc(50%-1.25rem))] overflow-clip whitespace-nowrap text-center ${containerClassName}`}
+    >
+      <p className="p-x-1">{no}</p>
+      <p className={`overflow-clip p-x-1 ${yourAnswerClassName}`}>
+        {yourAnswer}
+      </p>
+      <p className="overflow-clip p-x-1">{correctAnswer}</p>
+    </div>
+  );
+};
+
 export function ResultSummaryDialog(props: IResultSummaryDialogProps) {
   const { answerAndResults, ...containerDialogProps } = props;
-
-  const AListItem = ({
-    no,
-    yourAnswer,
-    correctAnswer,
-    containerClassName,
-    yourAnswerClassName,
-  }: {
-    no: string;
-    yourAnswer: string;
-    correctAnswer: string;
-    containerClassName?: string;
-    yourAnswerClassName?: string;
-  }) => {
-    return (
-      <div
-        className={`grid grid-cols-[2.5rem_repeat(2,calc(50%-1.25rem))] overflow-clip whitespace-nowrap text-center ${containerClassName}`}
-      >
-        <p className="p-x-1">{no}</p>
-        <p className={`overflow-clip p-x-1 ${yourAnswerClassName}`}>
-          {yourAnswer}
-        </p>
-        <p className="overflow-clip p-x-1">{correctAnswer}</p>
-      </div>
-    );
-  };
 
   const ResultSummary = useMemo(() => {
     return (

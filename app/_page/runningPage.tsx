@@ -10,6 +10,7 @@ import React, {
   useCallback,
   useEffect,
   memo,
+  useImperativeHandle,
 } from "react";
 import { type Updater, useImmer } from "use-immer";
 import { SemaType, ControlledPromise } from "../class";
@@ -55,7 +56,7 @@ export interface IRunningPageProps {
   setNowQuizCount: Function;
   rightAnswerCount: number;
   setRightAnswerCount: Function;
-  musicDuration: RefObject<number>;
+  musicDuration: number;
   rank: RankType;
   setAnswerRecords: Updater<AnswerRecord[]>;
   invokeResultSummaryDialog: () => void;
@@ -108,12 +109,12 @@ export function RunningPage(props: IRunningPageProps) {
   );
 
   const audioContext = useRef<AudioContext | null>(null);
-  function getAudioContext() {
+  const getAudioContext = useCallback(() => {
     if (audioContext.current === null) {
       audioContext.current = new AudioContext({ sampleRate: 48000 });
     }
     return audioContext.current;
-  }
+  }, []);
 
   const decoderRef = useRef<OggOpusDecoderWebWorker | null>(null);
   useEffect(() => {
@@ -248,9 +249,9 @@ export function RunningPage(props: IRunningPageProps) {
   // 这个起着表示 loading 状态和作为 quiz 的功能，原谅我一变量多用 = =
   const [nowQuiz, setNowQuizInfo] = useState<Quiz | null>(null);
   // 用于显示 loading 界面，为什么非要这样子写，因为真想试试 suspense 和 error boundary
-  const [LoadingPromise, setLoadingPromise] = useState<Promise<void>>(
-    new Promise(voidFunc),
-  );
+  const [loadingControllerPromise, setLoadingControllerPromise] = useState<
+    ControlledPromise<void>
+  >(() => new ControlledPromise());
   // 因为使用了该信号量顺便传递 Promise，因此需要更改 initFn，不然不给传，这里的 initFn 无意义
   const quizAvailabled = useRef(
     new SemaType(0, {
@@ -267,67 +268,74 @@ export function RunningPage(props: IRunningPageProps) {
   const quizNeedMaxSize = useRef(quizesLimit);
 
   // 消费者的
-  const nextQuiz = useCallback(() => {
-    let stop = false;
-    quizNeeded.current.release();
-    setNowQuizInfo(null);
-    const loadingPromise = new ControlledPromise();
-    setLoadingPromise(loadingPromise.promise);
-    const solve = (quiz: Quiz) => {
-      setNowQuizInfo(quiz);
-      loadingPromise.resolve();
-      for (let i = 0; i < quizesLimit - quizNeedMaxSize.current; ++i) {
-        quizNeeded.current.release();
-      }
-      quizNeedMaxSize.current = quizesLimit;
-    };
-    const getNextQuiz = async () => {
-      try {
-        // await 的是 Promise<Promise<Quiz>>，直接展平了
-        const quiz: Quiz = await quizAvailabled.current.acquire();
-        if (stop) return;
-        solve(quiz);
-      } catch (e) {
-        // 这里总体思想是出错后看看后面的有没有出错，没有的话就直接 resolve
-        // 后面都出错的话那就爆
-        let quizPromiseTry: Promise<Quiz> | undefined;
-        // 这个是为了保证最多只会尝试缓存这么多的 Promise
-        // 然后就是要把用了的资源还回去
-        let count = 0;
-        const releaseCount = () => {
-          for (let i = 0; i < count; ++i) {
-            quizNeeded.current.release();
-          }
-        };
-        while ((quizPromiseTry = quizAvailabled.current.tryAcquire())) {
-          ++count;
-          try {
-            const quiz = await quizPromiseTry;
-            releaseCount();
-            if (stop) return;
-            solve(quiz);
-            return;
-          } catch (error) {
-            e = error;
-          }
+  const startNextQuiz = useCallback(
+    (loadingPromise: ControlledPromise<void>) => {
+      let stop = false;
+      quizNeeded.current.release();
+      const solve = (quiz: Quiz) => {
+        setNowQuizInfo(quiz);
+        loadingPromise.resolve();
+        for (let i = 0; i < quizesLimit - quizNeedMaxSize.current; ++i) {
+          quizNeeded.current.release();
         }
-        quizNeedMaxSize.current -= count;
-        if (stop) return;
-        loadingPromise.reject(e);
-      }
-    };
-    getNextQuiz();
-    return () => {
-      stop = true;
-    };
-  }, [quizesLimit]);
+        quizNeedMaxSize.current = quizesLimit;
+      };
+      const getNextQuiz = async () => {
+        try {
+          // await 的是 Promise<Promise<Quiz>>，直接展平了
+          const quiz: Quiz = await quizAvailabled.current.acquire();
+          if (stop) return;
+          solve(quiz);
+        } catch (e) {
+          // 这里总体思想是出错后看看后面的有没有出错，没有的话就直接 resolve
+          // 后面都出错的话那就爆
+          let quizPromiseTry: Promise<Quiz> | undefined;
+          // 这个是为了保证最多只会尝试缓存这么多的 Promise
+          // 然后就是要把用了的资源还回去
+          let count = 0;
+          const releaseCount = () => {
+            for (let i = 0; i < count; ++i) {
+              quizNeeded.current.release();
+            }
+          };
+          while ((quizPromiseTry = quizAvailabled.current.tryAcquire())) {
+            ++count;
+            try {
+              const quiz = await quizPromiseTry;
+              releaseCount();
+              if (stop) return;
+              solve(quiz);
+              return;
+            } catch (error) {
+              e = error;
+            }
+          }
+          quizNeedMaxSize.current -= count;
+          if (stop) return;
+          loadingPromise.reject(e);
+        }
+      };
+      getNextQuiz();
+      return () => {
+        stop = true;
+      };
+    },
+    [quizesLimit],
+  );
+
+  // nextQuiz 更新 UI 信息 --触发--> quiz effect --调用--> startNextQuiz
+  // 用 effect 驱动调用还能顺便统一 cancel，不过总感觉有点怪
+  const nextQuiz = useCallback(() => {
+    setNowQuizInfo(null);
+    setLoadingControllerPromise(new ControlledPromise());
+  }, []);
 
   useEffect(() => {
-    const cancel = nextQuiz();
+    const cancel = startNextQuiz(loadingControllerPromise);
     return () => {
       cancel();
     };
-  }, [nextQuiz]);
+  }, [loadingControllerPromise, startNextQuiz]);
 
   // 生产者的
   useEffect(() => {
@@ -357,7 +365,7 @@ export function RunningPage(props: IRunningPageProps) {
             ];
           // 如果选出来的音乐不够长或者和之前几个重复，那么就再选一次，虽然运气不好的话会有巨大性能问题，但是应该不会吧（
         } while (
-          randomMusic.amount < musicDuration.current ||
+          randomMusic.amount < musicDuration ||
           previouseQuizSidSet.has(randomMusic.sid)
         );
         // 更新 previouseQuizSid 队列和 set
@@ -379,7 +387,7 @@ export function RunningPage(props: IRunningPageProps) {
         try {
           const randomAudioBuffer = await getMusicPiece(
             randomMusic,
-            musicDuration.current,
+            musicDuration,
             audioContext,
           );
           if (stop) return;
@@ -399,9 +407,9 @@ export function RunningPage(props: IRunningPageProps) {
       quizAvailabledCurrent.drain();
       stop = true;
     };
-  }, [musicDuration, selectedMusicList]);
+  }, [getAudioContext, musicDuration, selectedMusicList]);
 
-  const playTheMusic = useRef(voidFunc);
+  const musicPlayerRef = useRef<MusicPlayerHandle | null>(null);
 
   const [showResultDialog, setShowResultDialog] = useState(false);
   const [showEndGameDialog, setShowEndGameDialog] = useState(false);
@@ -418,7 +426,7 @@ export function RunningPage(props: IRunningPageProps) {
     setShowResultDialog(false);
   }, []);
   const resultDialogAutoCloseTime = useCallback(
-    () => Math.max(3000, musicDuration.current * 1000),
+    () => Math.max(3000, musicDuration * 1000),
     [musicDuration],
   );
 
@@ -479,15 +487,15 @@ export function RunningPage(props: IRunningPageProps) {
             // 不得不说的是，这样处理 error 和 loading 总感觉有点方便(？
             <AsyncBoundary onRetry={nextQuiz}>
               {(async () => {
-                await LoadingPromise;
+                await loadingControllerPromise.promise;
                 return <></>;
               })()}
             </AsyncBoundary>
           ) : (
             <MusicPlayer
               audioBuffer={nowQuiz.music}
-              audioContext={getAudioContext()}
-              playTheMusic={playTheMusic}
+              getAudioContext={getAudioContext}
+              ref={musicPlayerRef}
               musicDuration={musicDuration}
             />
           )}
@@ -524,7 +532,7 @@ export function RunningPage(props: IRunningPageProps) {
               setRightAnswerCount(rightAnswerCount + 1);
             } else {
               // 意思是错了要多听（
-              playTheMusic.current();
+              musicPlayerRef.current?.playTheMusic();
             }
           }}
         >
@@ -586,33 +594,39 @@ const ResultDialog = memo(function ResultDialog({
   );
 });
 
+interface MusicPlayerHandle {
+  playTheMusic: () => void;
+}
+
 const MusicPlayer = memo(function MusicPlayer({
+  ref,
   audioBuffer,
-  audioContext,
-  playTheMusic,
+  getAudioContext,
   musicDuration,
 }: {
+  ref: RefObject<MusicPlayerHandle | null>;
   audioBuffer: AudioBuffer;
-  audioContext: AudioContext;
-  playTheMusic: RefObject<() => void>;
-  musicDuration: RefObject<number>;
+  getAudioContext: () => AudioContext;
+  musicDuration: number;
 }) {
   const startTime = useRef(0);
   const volumeNode = useRef<GainNode | null>(null);
   // 从 localStorage 里面读取之前设置的音量，没有的话就用（可能）默认的音量
   const getVolumeNode = useCallback(() => {
     if (volumeNode.current === null) {
+      const audioContext = getAudioContext();
       volumeNode.current = audioContext.createGain();
       volumeNode.current.gain.value = Number(
         GetLocalStorageValue(LocalStorageKey.THM_Volume, "0.5"),
       );
     }
     return volumeNode.current;
-  }, [audioContext]);
+  }, [getAudioContext]);
 
   // 用于播放音乐的
   const audioSource: RefObject<AudioBufferSourceNode | null> = useRef(null);
   const playMusic = useCallback(() => {
+    const audioContext = getAudioContext();
     // 防止默认挂起导致不能自动播放
     if (audioContext.state === "suspended") {
       audioContext.resume();
@@ -625,15 +639,21 @@ const MusicPlayer = memo(function MusicPlayer({
     audioSource.current.buffer = audioBuffer;
     audioSource.current.connect(getVolumeNode());
     getVolumeNode().connect(audioContext.destination);
-    audioSource.current.start(0, startTime.current, musicDuration.current);
-  }, [audioBuffer, audioContext, getVolumeNode, musicDuration]);
-  // 用于在外部调用播放音乐的，没想到更好的办法
-  playTheMusic.current = playMusic;
+    audioSource.current.start(0, startTime.current, musicDuration);
+  }, [audioBuffer, getAudioContext, getVolumeNode, musicDuration]);
+  // 用于在外部调用播放音乐的，改进为使用该 hook，更加贴合点
+  useImperativeHandle(
+    ref,
+    () => ({
+      playTheMusic: playMusic,
+    }),
+    [playMusic],
+  );
 
   useEffect(() => {
     // 既然有片段，那么在片段里面也随机一下，max 是兜底
     startTime.current = Math.max(
-      Math.random() * (audioBuffer.duration - musicDuration.current),
+      Math.random() * (audioBuffer.duration - musicDuration),
       0,
     );
 
@@ -661,7 +681,10 @@ const MusicPlayer = memo(function MusicPlayer({
         min={0}
         max={1}
         step={0.01}
-        defaultValue={getVolumeNode().gain.value}
+        // 防止 render 时写入操作，因此设为 false
+        defaultValue={Number(
+          GetLocalStorageValue(LocalStorageKey.THM_Volume, "0.5", false),
+        )}
         onChange={(e) => {
           getVolumeNode().gain.value = Number(e.target.value);
         }}

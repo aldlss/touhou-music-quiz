@@ -1,5 +1,5 @@
 "use client";
-import React, { memo, useCallback, useEffect, useRef, useState } from "react";
+import React, { memo, useCallback, useEffect, useState } from "react";
 import {
   type AnswerRecord,
   type MusicCollection,
@@ -35,7 +35,7 @@ export function QuizMain({
     useImmer(musicCollection);
   const [nowQuizCount, setNowQuizCount] = useState(1);
   const [rightAnswerCount, setRightAnswerCount] = useState(0);
-  const musicDuration = useRef(5);
+  const [musicDuration, setMusicDuration] = useState(5);
   const [rank, setRank] = useState(RankType.normal);
   const [answerRecords, setAnswerRecords] = useImmer<AnswerRecord[]>([]);
   const [resultSummaryDialogShow, setResultSummaryDialogShow] = useState(false);
@@ -46,7 +46,7 @@ export function QuizMain({
   );
 
   const SelectPageSetMusicDuration = useCallback((duration: number) => {
-    musicDuration.current = duration;
+    setMusicDuration(duration);
   }, []);
   return (
     <div className="h-full w-full overflow-hidden border-1 border-surface-color rounded-lg @container/main">
