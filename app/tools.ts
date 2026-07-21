@@ -1,6 +1,12 @@
 import { cache } from "react";
 import { parse } from "yaml";
-import { ErrorType, Music, MusicCollection, SimpleMusic } from "./types";
+import {
+  ErrorType,
+  Music,
+  MusicCollection,
+  RootMusicCollection,
+  SimpleMusic,
+} from "./types";
 import { fetchMusicUrlPrefix, separator } from "./constant";
 
 export const getSortedDefaultMusicCollection = cache(async () => {
@@ -47,19 +53,19 @@ export async function fetchDocsText(url: string): Promise<string> {
   return await res.text();
 }
 
-const getMusicCollection = async () => {
+const getMusicCollection = async (): Promise<RootMusicCollection> => {
   const res = await fetch(`${process.env.NEXT_PUBLIC_FETCH_DATA_URL}`, {
     next: { revalidate: 86_400, tags: ["music-collection"] },
   });
   if (!res.ok) throw new Error("Failed to fetch music collection");
   const text = await res.text();
-  const data: MusicCollection = parse(text);
+  const data: RootMusicCollection = parse(text);
   return data;
 };
 
-const sortMusicCollection = (
-  musicCollection: MusicCollection,
-): MusicCollection => {
+const sortMusicCollection = <Collection extends MusicCollection>(
+  musicCollection: Collection,
+): Collection => {
   musicCollection.data.sort((a, b) => a.idx - b.idx);
   for (const item of musicCollection.data) {
     if (isMusicCollection(item)) {
@@ -72,15 +78,38 @@ const sortMusicCollection = (
 };
 
 const setDefalutSetting = (
-  musicCollection: MusicCollection,
-): MusicCollection => {
+  musicCollection: RootMusicCollection,
+): RootMusicCollection => {
   setMusicCollectionSelected(musicCollection, false);
   generateSid(musicCollection);
-  selectMusicCollectionBySid(
-    musicCollection.data.find((value) => value.name === "Windows作品")!.sid,
+  if (!musicCollection.defaultSelectedCollectionUuid) {
+    throw new Error("曲库数据缺少 defaultSelectedCollectionUuid。");
+  }
+  const defaultSelectedCollection = findMusicCollectionByUuid(
     musicCollection,
+    musicCollection.defaultSelectedCollectionUuid,
   );
+  if (!defaultSelectedCollection) {
+    throw new Error(
+      `默认选中分类 ${musicCollection.defaultSelectedCollectionUuid} 不在曲库中。`,
+    );
+  }
+  selectMusicCollectionBySid(defaultSelectedCollection.sid, musicCollection);
   return musicCollection;
+};
+
+const findMusicCollectionByUuid = (
+  musicCollection: MusicCollection,
+  uuid: string,
+): MusicCollection | undefined => {
+  if (musicCollection.uuid === uuid) return musicCollection;
+  if (!isMusicCollectionList(musicCollection.data)) return undefined;
+
+  for (const collection of musicCollection.data) {
+    const result = findMusicCollectionByUuid(collection, uuid);
+    if (result) return result;
+  }
+  return undefined;
 };
 
 // 这样较为刻意地构造后，sid 可用于从上至下查找某一 sid 的位置

@@ -80,7 +80,7 @@ const H1TabList = memo(function H1TabList({
     <TabList className="flex flex-row overflow-x-auto border-1 border-tab-list-color rounded-lg text-center">
       {categoryCollection.data.map((category) => (
         <H1TabListItem
-          key={category.name}
+          key={category.uuid}
           categoryName={category.name}
           itemSid={category.sid}
           slectedChild={category.selected !== 0}
@@ -176,7 +176,7 @@ function H1TabPanels({
           idx === selectedH1Tab && (
             // 将下方空间化为左右两份的
             <H1TabPanelsItem
-              key={category.name}
+              key={category.uuid}
               albumCollection={category as MusicCollection}
               onClickTab={onClickTab}
               onClickMusic={onClickMusic}
@@ -242,7 +242,7 @@ const H2TabList = memo(function H2TabList({
     <TabList className="w-40% overflow-y-auto border-1 border-tab-list-color rounded-lg will-change-scroll">
       {albumCollection.data.map((album) => (
         <H2TabListItem
-          key={album.name}
+          key={album.uuid}
           albumName={album.name}
           slectedChild={album.selected !== 0}
           itemSid={album.sid}
@@ -350,7 +350,7 @@ function H2TabPanels({
         (album, idx) =>
           selectedH2Tab === idx && (
             <H2TabPanelsItem
-              key={album.name}
+              key={album.uuid}
               album={album as MusicCollection}
               onClickMusic={onClickMusic}
             />
@@ -413,7 +413,7 @@ function AlbumMusicList({
     <ol className="">
       {musicList.map((value: Music) => (
         <AlbumMusicListItem
-          key={`${value.idx}.${value.name}`}
+          key={value.uuid}
           music={value}
           onClickMusic={onClickMusic}
         />
@@ -459,8 +459,8 @@ function SubAlbumCollectionList({
   ) => void;
 }) {
   return subAlbumList.map((subAlbum) => (
-    <Fragment key={subAlbum.sid}>
-      <div key={subAlbum.name} className="p-1 text-p">
+    <Fragment key={subAlbum.uuid}>
+      <div className="p-1 text-p">
         {subAlbum.name}
       </div>
       {isMusicList(subAlbum.data) ? (

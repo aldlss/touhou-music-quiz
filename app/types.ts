@@ -19,9 +19,14 @@ export type Quiz = { musicInfo: SimpleMusic; music: AudioBuffer };
 export type MusicCollection = {
   idx: number;
   name: string;
+  uuid: string;
   sid: number;
   data: MusicCollection[] | Music[];
   selected: number;
+};
+
+export type RootMusicCollection = MusicCollection & {
+  defaultSelectedCollectionUuid: string;
 };
 
 export enum PageType {
