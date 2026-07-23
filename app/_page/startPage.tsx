@@ -4,6 +4,8 @@ import { MoonLineSvg, SunLineSvg } from "../svg";
 import { voidFunc } from "../constant";
 import { InfoDialog } from "./startPageClient";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
+import { LanguageSwitcher } from "../_component/languageSwitcher";
 
 export interface IStartPageProps {
   setPageState: Function;
@@ -13,6 +15,7 @@ export interface IStartPageProps {
 
 export function StartPage(props: IStartPageProps) {
   const { setPageState, initFunc = voidFunc, switchThemeAppearance } = props;
+  const t = useTranslations("StartPage");
 
   return (
     <main className="h-full w-full flex flex-col justify-between bg-container">
@@ -37,9 +40,9 @@ export function StartPage(props: IStartPageProps) {
       </p>
       <div className="flex flex-col items-center gap-6">
         <h1 className="text-center text-h1">
-          东方原曲认知测验
+          {t("title")}
           <br />
-          无尽版
+          {t("edition")}
         </h1>
         <button
           type="button"
@@ -49,16 +52,20 @@ export function StartPage(props: IStartPageProps) {
             initFunc();
           }}
         >
-          开始
+          {t("start")}
         </button>
-        <button
-          type="button"
-          aria-label="change theme"
-          onClick={switchThemeAppearance}
-        >
-          <SunLineSvg className="block w-8 dark:hidden" />
-          <MoonLineSvg className="hidden w-8 dark:block" />
-        </button>
+        <div className="flex items-center gap-4">
+          <LanguageSwitcher label={t("changeLanguage")} />
+          <button
+            type="button"
+            aria-label={t("changeTheme")}
+            className="icon-button"
+            onClick={switchThemeAppearance}
+          >
+            <SunLineSvg className="block dark:hidden" />
+            <MoonLineSvg className="hidden dark:block" />
+          </button>
+        </div>
       </div>
       <div className="p-2 text-small">
         测验片段为随机选取，结果不具有参考价值，仅供娱乐。详细介绍可参看{" "}

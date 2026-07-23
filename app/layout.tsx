@@ -1,7 +1,8 @@
 import "./globals.css";
+import { Analytics } from "@vercel/analytics/react";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import { Analytics } from "@vercel/analytics/react";
+import { RootDocument } from "./_component/rootDocument";
 import { ClientInitializer } from "./_tools/ClientInitializer";
 import { SITE_URL, WEB_DESCRIPTION, WEB_TITLE } from "./constant";
 
@@ -35,11 +36,11 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: {
+}: Readonly<{
   children: React.ReactNode;
-}) {
+}>) {
   return (
-    <html lang="zh-CN" suppressHydrationWarning>
+    <RootDocument>
       <body className={`${inter.className} bg-bg`}>
         <script
           dangerouslySetInnerHTML={{
@@ -67,6 +68,6 @@ export default function RootLayout({
         {children}
         <Analytics />
       </body>
-    </html>
+    </RootDocument>
   );
 }

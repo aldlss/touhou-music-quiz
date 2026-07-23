@@ -28,6 +28,7 @@ export default defineConfig({
     "simple-hover-active": "active:brightness-95 hover:brightness-105",
     "tips-icon":
       "w-10 fill-lightblue p-1 transition-common simple-hover-active",
+    "icon-button": "h-8 w-8 flex items-center justify-center",
     "bg-bg": "bg-gray-1  dark:bg-material-dark-1 transition-background-color",
     "bg-container":
       "bg-white dark:bg-material-dark-2 transition-background-color",
