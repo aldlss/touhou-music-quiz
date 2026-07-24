@@ -1,6 +1,7 @@
 export type Music = {
   idx: number;
   name: string;
+  displayName: string;
   amount: number;
   sid: number;
   selected: boolean;
@@ -9,6 +10,7 @@ export type Music = {
 
 export type SimpleMusic = {
   name: string;
+  displayName: string;
   amount: number;
   sid: number;
   uuid: string;
@@ -19,6 +21,7 @@ export type Quiz = { musicInfo: SimpleMusic; music: AudioBuffer };
 export type MusicCollection = {
   idx: number;
   name: string;
+  displayName: string;
   uuid: string;
   sid: number;
   data: MusicCollection[] | Music[];
@@ -53,6 +56,8 @@ export enum ErrorType {
 export type AnswerRecord = {
   playerAnswerSid: number;
   playerAnswerName: string;
+  playerAnswerDisplayName: string;
   correctAnswerSid: number;
   correctAnswerName: string;
+  correctAnswerDisplayName: string;
 };

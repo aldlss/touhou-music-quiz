@@ -6,7 +6,7 @@
 
 ## 关键的两个外部输入
 
-分别是曲子的分类和切分信息，这个存储在了一个 yaml 文件中，对应了环境变量中的 `NEXT_PUBLIC_FETCH_DATA_URL`；以及曲子的切片后资源，对应环境变量中的 `NEXT_PUBLIC_FETCH_MUSIC_URL_PREFIX`。
+分别是曲子的分类和切分信息，这个存储在了一个 yaml 文件中，对应环境变量 `NEXT_PUBLIC_FETCH_DATA_URL`；日英曲库名称对应 `NEXT_PUBLIC_FETCH_MUSIC_NAMES_URL` 指向的 JSON 模板；曲子的切片后资源对应 `NEXT_PUBLIC_FETCH_MUSIC_URL_PREFIX`。
 
 曲子的分类和切分信息是一个 yaml 文件，首先有如下两个定义：
 ```typescript

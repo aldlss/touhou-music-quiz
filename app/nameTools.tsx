@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { separator } from "./constant";
-import { Fragment } from "react";
+import { useTranslations } from "next-intl";
 
 /**
  * 将包含路径的曲子按分隔符分割并返回
@@ -43,38 +43,38 @@ export function getMusicPureNameFromRouteName(musicRouteName: string) {
 
 /**
  * 通过包含路径的曲子全名返回用于展示渲染的全名
- * @param musicRouteName 包含路径的曲子
+ * @param name 中文路径名称
+ * @param displayName 当前语言的展示路径名称
  * @returns 用于渲染展示的 JSX.Element
  */
-export function getDisplayMusicNameFromRouteName(musicRouteName: string) {
-  const names = splitMusicRouteName(musicRouteName);
+export function DisplayMusicName({
+  name,
+  displayName,
+}: {
+  name: string;
+  displayName: string;
+}) {
+  const t = useTranslations("MusicName");
+  const displayNames = splitMusicRouteName(displayName);
+  const sourceMusicName = getMusicPureNameFromRouteName(name);
+  const musicName = getMusicPureNameFromRouteName(displayName);
+  const pathNames = displayNames.slice(1, -1).slice(0, 2);
+  const pathPrefix =
+    pathNames.length === 2
+      ? t("doublePathPrefix", {
+          parent: pathNames[0],
+          collection: pathNames[1],
+        })
+      : pathNames.length === 1
+        ? t("singlePathPrefix", { collection: pathNames[0] })
+        : "";
+
   return (
-    <>
-      {names?.map((name, idx) => {
-        if (idx === 0) {
-          return <Fragment key={name}></Fragment>;
-        } else if (idx === names.length - 1) {
-          const nameWithoutIdx = getMusicPureNameFromIdxName(name);
-          return (
-            <Link
-              href={`https://thwiki.cc/${nameWithoutIdx}`}
-              target="_blank"
-              key={name}
-            >
-              <span className="text-link">{nameWithoutIdx}</span>
-            </Link>
-          );
-        } else if (idx === 1 || idx === 2) {
-          return (
-            <span key={name}>
-              {/* 最后一个才加 “的” */}
-              {`${name}中${names.length - idx === 2 ? "的" : ""}`}
-            </span>
-          );
-        } else {
-          return <Fragment key={name}></Fragment>;
-        }
-      })}
-    </>
+    <span>
+      {pathPrefix}
+      <Link href={`https://thwiki.cc/${sourceMusicName}`} target="_blank">
+        <span className="text-link">{musicName}</span>
+      </Link>
+    </span>
   );
 }

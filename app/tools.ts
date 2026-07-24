@@ -9,9 +9,16 @@ import {
 } from "./types";
 import { fetchMusicUrlPrefix, separator } from "./constant";
 
-export const getSortedDefaultMusicCollection = cache(async () => {
+type MusicNameMap = Record<string, string>;
+
+export const getSortedDefaultMusicCollection = cache(async (locale: string) => {
   const musicCollection = await getMusicCollection();
-  const sortedMusicCollection = sortMusicCollection(musicCollection);
+  const musicNames = await getMusicNames(locale);
+  const localizedMusicCollection = localizeMusicCollection(
+    musicCollection,
+    musicNames,
+  );
+  const sortedMusicCollection = sortMusicCollection(localizedMusicCollection);
   const defaultMusicCollection = setDefalutSetting(sortedMusicCollection);
   return defaultMusicCollection;
 });
@@ -24,6 +31,15 @@ export function checkEnv(): void {
   if (!process.env.NEXT_PUBLIC_FETCH_MUSIC_URL_PREFIX)
     throw new Error(
       "Please set NEXT_PUBLIC_FETCH_MUSIC_URL_PREFIX environment variables and rebuild!",
+    );
+  const musicNamesUrl = process.env.NEXT_PUBLIC_FETCH_MUSIC_NAMES_URL;
+  if (!musicNamesUrl)
+    throw new Error(
+      "Please set NEXT_PUBLIC_FETCH_MUSIC_NAMES_URL environment variables and rebuild!",
+    );
+  if (!musicNamesUrl.includes("{locale}"))
+    throw new Error(
+      "NEXT_PUBLIC_FETCH_MUSIC_NAMES_URL must include the {locale} placeholder.",
     );
 }
 
@@ -61,6 +77,65 @@ const getMusicCollection = async (): Promise<RootMusicCollection> => {
   const text = await res.text();
   const data: RootMusicCollection = parse(text);
   return data;
+};
+
+const isMusicNameMap = (value: unknown): value is MusicNameMap => {
+  if (typeof value !== "object" || value === null || Array.isArray(value)) {
+    return false;
+  }
+  return Object.values(value).every((name) => typeof name === "string");
+};
+
+const getMusicNames = async (locale: string): Promise<MusicNameMap> => {
+  if (locale === "zh-CN") return {};
+
+  const urlTemplate = process.env.NEXT_PUBLIC_FETCH_MUSIC_NAMES_URL;
+  if (!urlTemplate || !urlTemplate.includes("{locale}")) {
+    throw new Error(
+      "NEXT_PUBLIC_FETCH_MUSIC_NAMES_URL must include the {locale} placeholder.",
+    );
+  }
+
+  const url = urlTemplate.replace("{locale}", locale);
+  try {
+    const res = await fetch(url, {
+      next: {
+        revalidate: 86_400,
+        tags: ["music-names", `music-names-${locale}`],
+      },
+    });
+    if (!res.ok) throw new Error(`Failed to fetch ${url}: ${res.status}`);
+
+    const names: unknown = await res.json();
+    if (!isMusicNameMap(names)) {
+      throw new Error(`Invalid music names data: ${url}`);
+    }
+    return names;
+  } catch (error) {
+    console.error(`Failed to load ${locale} music names; using Chinese.`, error);
+    return {};
+  }
+};
+
+const localizeMusicCollection = (
+  musicCollection: RootMusicCollection,
+  names: MusicNameMap,
+): RootMusicCollection => {
+  const localizedMusicCollection = structuredClone(musicCollection);
+
+  const visit = (collection: MusicCollection) => {
+    collection.displayName = names[collection.uuid] ?? collection.name;
+    for (const item of collection.data) {
+      if (isMusicCollection(item)) {
+        visit(item);
+      } else {
+        item.displayName = names[item.uuid] ?? item.name;
+      }
+    }
+  };
+
+  visit(localizedMusicCollection);
+  return localizedMusicCollection;
 };
 
 const sortMusicCollection = <Collection extends MusicCollection>(
@@ -216,6 +291,7 @@ export function flatMusicColletion(
   musicColletion: MusicCollection,
   ifSelect: (music: Music) => boolean,
   prefix: string = "",
+  displayPrefix: string = "",
 ): SimpleMusic[] {
   const result: SimpleMusic[] = [];
   if (isMusicList(musicColletion.data)) {
@@ -225,6 +301,7 @@ export function flatMusicColletion(
           sid: music.sid,
           amount: music.amount,
           name: `${prefix}${separator}${music.idx}. ${music.name}`,
+          displayName: `${displayPrefix}${separator}${music.idx}. ${music.displayName}`,
           uuid: music.uuid,
         });
       }
@@ -237,6 +314,7 @@ export function flatMusicColletion(
           collection,
           ifSelect,
           `${prefix}${prefix === "" ? "" : separator}${collection.name}`,
+          `${displayPrefix}${displayPrefix === "" ? "" : separator}${collection.displayName}`,
         ),
       );
     }

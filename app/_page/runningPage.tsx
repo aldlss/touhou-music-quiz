@@ -47,7 +47,7 @@ import {
 import { isSupportOggOpus } from "../clientConstant";
 import { importOggOpusDecoder } from "../dynamicImport";
 import { binarySearch } from "../alg";
-import { getDisplayMusicNameFromRouteName } from "../nameTools";
+import { DisplayMusicName } from "../nameTools";
 
 export interface IRunningPageProps {
   setPageState: Function;
@@ -518,14 +518,17 @@ export function RunningPage(props: IRunningPageProps) {
             setAnsweredSid(selectSid);
             setNowQuizCount(nowQuizCount + 1);
             setAnswerRecords((draft) => {
+              const playerAnswer = binarySearch(selectedMusicList, (mid) => {
+                return selectSid - mid.sid;
+              });
               draft.push({
                 correctAnswerSid: correctSid,
                 correctAnswerName: nowQuiz.musicInfo.name,
+                correctAnswerDisplayName: nowQuiz.musicInfo.displayName,
                 playerAnswerSid: selectSid,
-                playerAnswerName:
-                  binarySearch(selectedMusicList, (mid) => {
-                    return selectSid - mid.sid;
-                  })?.name ?? "未知",
+                playerAnswerName: playerAnswer?.name ?? "未知",
+                playerAnswerDisplayName:
+                  playerAnswer?.displayName ?? "未知",
               });
             });
             if (selectSid === correctSid) {
@@ -563,8 +566,13 @@ const ResultDialog = memo(function ResultDialog({
   const result = selectedSid === nowQuizInfo.sid;
   const description1 = <>{`正确答案${result ? "就" : ""}是`}</>;
   const description2 = useMemo(() => {
-    return getDisplayMusicNameFromRouteName(nowQuizInfo.name);
-  }, [nowQuizInfo.name]);
+    return (
+      <DisplayMusicName
+        name={nowQuizInfo.name}
+        displayName={nowQuizInfo.displayName}
+      />
+    );
+  }, [nowQuizInfo.displayName, nowQuizInfo.name]);
   return (
     <ContainerDialog
       show={show}

@@ -12,7 +12,7 @@ import {
 } from "../clientComponent";
 import { type AnswerRecord } from "../types";
 import {
-  getDisplayMusicNameFromRouteName,
+  DisplayMusicName,
   getMusicPureNameFromRouteName,
 } from "../nameTools";
 
@@ -63,8 +63,10 @@ export function ResultSummaryDialog(props: IResultSummaryDialogProps) {
             const {
               playerAnswerSid,
               playerAnswerName,
+              playerAnswerDisplayName,
               correctAnswerSid,
               correctAnswerName,
+              correctAnswerDisplayName,
             } = answerAndResult;
             const isCorrect = playerAnswerSid === correctAnswerSid;
             return (
@@ -76,14 +78,16 @@ export function ResultSummaryDialog(props: IResultSummaryDialogProps) {
                 <DisclosureButton className={`w-full bg-dialog-item p-y-1`}>
                   <AListItem
                     no={`${idx + 1}`}
-                    yourAnswer={getMusicPureNameFromRouteName(playerAnswerName)}
+                    yourAnswer={getMusicPureNameFromRouteName(
+                      playerAnswerDisplayName,
+                    )}
                     yourAnswerClassName={`${
                       isCorrect
                         ? "text-accepted dark:text-accepted-dark"
                         : "text-wrong-answer dark-text-wrong-answer-dark"
                     }`}
                     correctAnswer={getMusicPureNameFromRouteName(
-                      correctAnswerName,
+                      correctAnswerDisplayName,
                     )}
                     containerClassName="text-p"
                   />
@@ -93,10 +97,16 @@ export function ResultSummaryDialog(props: IResultSummaryDialogProps) {
                   className="data-enter:data-closed:scale-y-0 data-enter:data-closed:opacity-0 transform-origin-top whitespace-pre-wrap p-x-2 p-y-1 transition"
                 >
                   你的答案：
-                  {getDisplayMusicNameFromRouteName(playerAnswerName)}
+                  <DisplayMusicName
+                    name={playerAnswerName}
+                    displayName={playerAnswerDisplayName}
+                  />
                   {"\n"}
                   正确答案：
-                  {getDisplayMusicNameFromRouteName(correctAnswerName)}
+                  <DisplayMusicName
+                    name={correctAnswerName}
+                    displayName={correctAnswerDisplayName}
+                  />
                 </DisclosurePanel>
               </Disclosure>
             );

@@ -15,11 +15,14 @@
 `API_CLEAN_PASSWORD`: 清除 nextjs 数据缓存时的密码，如 `awpgijseopighjewsihougblns`
 
 `NEXT_PUBLIC_FETCH_DATA_URL`: 获取曲子划分数据时的 URL，如 `https://raw.githubusercontent.com/xxx/yyy/zzz.yaml`
+
+`NEXT_PUBLIC_FETCH_MUSIC_NAMES_URL`: 曲库名称 JSON 的完整 URL 模板，必须包含 `{locale}`，例如 `https://example.com/names/{locale}.json`。正式环境和开发环境可分别指向对应的名称文件。
+
 `NEXT_PUBLIC_FETCH_MUSIC_URL_PREFIX`: 获取音乐文件时的 URL 前缀，如 `https://raw.githubusercontent.com/xxx/yyy/zzz/`（主要是为了方便更改）
 
 + 会获取 `NEXT_PUBLIC_FETCH_MUSIC_URL_PREFIX/` 下的音乐文件
 
-+ 关于 `NEXT_PUBLIC_FETCH_DATA_URL` 和 `NEXT_PUBLIC_FETCH_MUSIC_URL_PREFIX`，可以参考 [开发思路](./develop.md) 中的说明。
++ 关于 `NEXT_PUBLIC_FETCH_DATA_URL`、`NEXT_PUBLIC_FETCH_MUSIC_NAMES_URL` 和 `NEXT_PUBLIC_FETCH_MUSIC_URL_PREFIX`，可以参考 [开发思路](./develop.md) 中的说明。
 
 ## 注意事项
 

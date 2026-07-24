@@ -26,7 +26,7 @@ export default async function Home({
   const { locale } = await params;
   setRequestLocale(locale);
   checkEnv();
-  const musicCollection = await getSortedDefaultMusicCollection();
+  const musicCollection = await getSortedDefaultMusicCollection(locale);
   return (
     <TouhouMusicQuizContainer>
       <QuizMain key={locale} musicCollection={musicCollection} />
