@@ -5,9 +5,5 @@
     "start": "スタート",
     "changeLanguage": "言語を切り替える",
     "changeTheme": "テーマを切り替える"
-  },
-  "MusicName": {
-    "singlePathPrefix": "{collection}の",
-    "doublePathPrefix": "{parent}の{collection}の"
   }
 }

@@ -4,10 +4,10 @@ import {
   ErrorType,
   Music,
   MusicCollection,
+  QuizMusic,
   RootMusicCollection,
-  SimpleMusic,
 } from "./types";
-import { fetchMusicUrlPrefix, separator } from "./constant";
+import { fetchMusicUrlPrefix } from "./constant";
 
 type MusicNameMap = Record<string, string>;
 
@@ -124,12 +124,13 @@ const localizeMusicCollection = (
   const localizedMusicCollection = structuredClone(musicCollection);
 
   const visit = (collection: MusicCollection) => {
-    collection.displayName = names[collection.uuid] ?? collection.name;
+    collection.name = names[collection.uuid] ?? collection.name;
     for (const item of collection.data) {
       if (isMusicCollection(item)) {
         visit(item);
       } else {
-        item.displayName = names[item.uuid] ?? item.name;
+        item.wikiName = item.name;
+        item.name = names[item.uuid] ?? item.name;
       }
     }
   };
@@ -287,75 +288,40 @@ export function filterMusicCollection(
   return temp;
 }
 
-export function flatMusicColletion(
-  musicColletion: MusicCollection,
-  ifSelect: (music: Music) => boolean,
-  prefix: string = "",
-  displayPrefix: string = "",
-): SimpleMusic[] {
-  const result: SimpleMusic[] = [];
-  if (isMusicList(musicColletion.data)) {
-    musicColletion.data.forEach((music) => {
-      if (ifSelect(music)) {
-        result.push({
-          sid: music.sid,
-          amount: music.amount,
-          name: `${prefix}${separator}${music.idx}. ${music.name}`,
-          displayName: `${displayPrefix}${separator}${music.idx}. ${music.displayName}`,
-          uuid: music.uuid,
-        });
-      }
-    });
+export function flattenMusicCollection(
+  musicCollection: MusicCollection,
+  collectionPath: string[] = [],
+): QuizMusic[] {
+  const result: QuizMusic[] = [];
+  if (isMusicList(musicCollection.data)) {
+    for (const music of musicCollection.data) {
+      result.push({
+        sid: music.sid,
+        amount: music.amount,
+        name: music.name,
+        wikiName: music.wikiName,
+        collectionPath,
+        uuid: music.uuid,
+      });
+    }
   } else {
     // 这样做会造成顶层 musicColletion 的 name 是写不进去的，但是正符合要求
-    for (let collection of musicColletion.data) {
+    for (const collection of musicCollection.data) {
       result.push(
-        ...flatMusicColletion(
-          collection,
-          ifSelect,
-          `${prefix}${prefix === "" ? "" : separator}${collection.name}`,
-          `${displayPrefix}${displayPrefix === "" ? "" : separator}${collection.displayName}`,
-        ),
+        ...flattenMusicCollection(collection, [
+          ...collectionPath,
+          collection.name,
+        ]),
       );
     }
   }
   return result;
 }
 
-export async function digestMusicName(str: string): Promise<string> {
-  const res = await crypto.subtle.digest(
-    "SHA-1",
-    new TextEncoder().encode(str),
-  );
-  return Array.from(new Uint8Array(res))
-    .map((b) => b.toString(16).padStart(2, "0"))
-    .join("");
-}
-
 export function checkIsSupportOggOpus() {
   const audio = document.createElement("audio");
   return audio.canPlayType("audio/ogg; codecs=opus") !== "";
 }
-
-/**
- * 根据曲子名称获取曲子
- * @param originName 带路径原始曲子名称
- * @returns 返回曲子的 ArrayBuffer
- * @deprecated 改动了曲子获取方式，现使用 `fetchMusicByUuid`
- */
-export const fetchMusic = async (originName: string) => {
-  const digestName = await digestMusicName(originName);
-  const response = await fetch(`${fetchMusicUrlPrefix}${digestName}.ogg`, {
-    headers: { Accept: "audio/ogg" },
-    next: { tags: ["music"] },
-  });
-  if (!response.ok) {
-    throw Error(ErrorType.NetworkError, {
-      cause: `${response.status} ${response.statusText}`,
-    });
-  }
-  return await response.arrayBuffer();
-};
 
 /**
  * 根据曲子的 uuid 获取曲子

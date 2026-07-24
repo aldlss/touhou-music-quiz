@@ -5,9 +5,5 @@
     "start": "开始",
     "changeLanguage": "切换语言",
     "changeTheme": "切换主题"
-  },
-  "MusicName": {
-    "singlePathPrefix": "{collection}中的",
-    "doublePathPrefix": "{parent}中{collection}中的"
   }
 }

@@ -81,7 +81,7 @@ const H1TabList = memo(function H1TabList({
       {categoryCollection.data.map((category) => (
         <H1TabListItem
           key={category.uuid}
-          categoryName={category.displayName}
+          categoryName={category.name}
           itemSid={category.sid}
           slectedChild={category.selected !== 0}
           onClickTab={onClickTab}
@@ -243,7 +243,7 @@ const H2TabList = memo(function H2TabList({
       {albumCollection.data.map((album) => (
         <H2TabListItem
           key={album.uuid}
-          albumName={album.displayName}
+          albumName={album.name}
           slectedChild={album.selected !== 0}
           itemSid={album.sid}
           onClickTab={onClickTab}
@@ -442,7 +442,7 @@ const AlbumMusicListItem = memo(function AlbumMusicListItem({
           onClickMusic(music.sid, e);
         }}
       >
-        {music.displayName}
+        {music.name}
       </Switch>
     </li>
   );
@@ -461,7 +461,7 @@ function SubAlbumCollectionList({
   return subAlbumList.map((subAlbum) => (
     <Fragment key={subAlbum.uuid}>
       <div className="p-1 text-p">
-        {subAlbum.displayName}
+        {subAlbum.name}
       </div>
       {isMusicList(subAlbum.data) ? (
         <AlbumMusicList musicList={subAlbum.data} onClickMusic={onClickMusic} />

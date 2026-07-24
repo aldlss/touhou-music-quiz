@@ -1,27 +1,27 @@
 export type Music = {
   idx: number;
   name: string;
-  displayName: string;
+  wikiName: string;
   amount: number;
   sid: number;
   selected: boolean;
   uuid: string;
 };
 
-export type SimpleMusic = {
+export type QuizMusic = {
   name: string;
-  displayName: string;
+  wikiName: string;
+  collectionPath: string[];
   amount: number;
   sid: number;
   uuid: string;
 };
 
-export type Quiz = { musicInfo: SimpleMusic; music: AudioBuffer };
+export type Quiz = { musicInfo: QuizMusic; music: AudioBuffer };
 
 export type MusicCollection = {
   idx: number;
   name: string;
-  displayName: string;
   uuid: string;
   sid: number;
   data: MusicCollection[] | Music[];
@@ -54,10 +54,6 @@ export enum ErrorType {
 }
 
 export type AnswerRecord = {
-  playerAnswerSid: number;
-  playerAnswerName: string;
-  playerAnswerDisplayName: string;
-  correctAnswerSid: number;
-  correctAnswerName: string;
-  correctAnswerDisplayName: string;
+  playerAnswer: QuizMusic;
+  correctAnswer: QuizMusic;
 };

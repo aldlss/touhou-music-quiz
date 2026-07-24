@@ -1,6 +1,5 @@
 import { RankType } from "./types";
 
-export const separator = "//";
 export const voidFunc = () => {};
 export const difficultyColorAndText = {
   [RankType.easy]: ["text-easy-mode", "Easy"],

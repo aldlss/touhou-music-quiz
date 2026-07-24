@@ -26,7 +26,7 @@ import { PlayFillSvg } from "../svg";
 import {
   filterMusicCollection,
   setMusicCollectionSelected,
-  flatMusicColletion,
+  flattenMusicCollection,
   selectMusicCollectionBySid,
   fetchMusicByUuid,
 } from "../tools";
@@ -37,7 +37,7 @@ import {
 } from "../_tools/localStorage";
 import {
   RankType,
-  type SimpleMusic,
+  type QuizMusic,
   ErrorType,
   type Quiz,
   PageType,
@@ -46,7 +46,6 @@ import {
 } from "../types";
 import { isSupportOggOpus } from "../clientConstant";
 import { importOggOpusDecoder } from "../dynamicImport";
-import { binarySearch } from "../alg";
 import { DisplayMusicName } from "../nameTools";
 
 export interface IRunningPageProps {
@@ -86,10 +85,14 @@ export function RunningPage(props: IRunningPageProps) {
     return quizMusicCollection;
   });
   const selectedMusicList = useMemo(() => {
-    return flatMusicColletion(quizMusicCollection, () => true);
+    return flattenMusicCollection(quizMusicCollection);
     // 这个依赖就是这个，因为对于 quizMusicCollection 这个数据，只需要提取出来里面的 Music 就可以了
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [musicCollectionState]);
+  const selectedMusicBySid = useMemo(
+    () => new Map(selectedMusicList.map((music) => [music.sid, music])),
+    [selectedMusicList],
+  );
   const musicListOnClickMusic = useCallback(
     (sid: number) => {
       if (selectSid !== sid) {
@@ -131,7 +134,7 @@ export function RunningPage(props: IRunningPageProps) {
   }, []);
 
   const getMusicPiece = async (
-    music: SimpleMusic,
+    music: QuizMusic,
     duration: number,
     audioContext: AudioContext,
   ) => {
@@ -342,8 +345,8 @@ export function RunningPage(props: IRunningPageProps) {
     // stop 用于在每个同步阶段开始时判断是否要停止
     let stop = false;
     const audioContext = getAudioContext();
-    const previouseQuizSids: number[] = [];
-    const previouseQuizSidSet = new Set<number>();
+    const previousQuizUuids: string[] = [];
+    const previousQuizUuidSet = new Set<string>();
     // 这个是考虑到如果选的曲子太少，那么重复是不可避免的
     const localPreviousQuizSetCapacity = Math.min(
       previousQuizSetCapacity,
@@ -356,7 +359,7 @@ export function RunningPage(props: IRunningPageProps) {
           quizNeeded.current.release();
           return;
         }
-        let randomMusic: SimpleMusic;
+        let randomMusic: QuizMusic;
         do {
           // 单选的话这样比水池抽样大概快很多吧
           randomMusic =
@@ -366,13 +369,12 @@ export function RunningPage(props: IRunningPageProps) {
           // 如果选出来的音乐不够长或者和之前几个重复，那么就再选一次，虽然运气不好的话会有巨大性能问题，但是应该不会吧（
         } while (
           randomMusic.amount < musicDuration ||
-          previouseQuizSidSet.has(randomMusic.sid)
+          previousQuizUuidSet.has(randomMusic.uuid)
         );
-        // 更新 previouseQuizSid 队列和 set
-        previouseQuizSidSet.add(randomMusic.sid);
-        previouseQuizSids.push(randomMusic.sid);
-        if (previouseQuizSids.length > localPreviousQuizSetCapacity) {
-          previouseQuizSidSet.delete(previouseQuizSids.shift()!);
+        previousQuizUuidSet.add(randomMusic.uuid);
+        previousQuizUuids.push(randomMusic.uuid);
+        if (previousQuizUuids.length > localPreviousQuizSetCapacity) {
+          previousQuizUuidSet.delete(previousQuizUuids.shift()!);
         }
         let resolve!: (value: Quiz | PromiseLike<Quiz>) => void,
           reject!: (reason?: any) => void;
@@ -468,7 +470,7 @@ export function RunningPage(props: IRunningPageProps) {
         {!!nowQuiz && (
           <ResultDialog
             show={showResultDialog}
-            selectedSid={answeredSid}
+            selectedUuid={selectedMusicBySid.get(answeredSid)?.uuid}
             onClose={resultDialogOnClose}
             afterClose={afterResultDialogClose}
             nowQuizInfo={nowQuiz.musicInfo}
@@ -513,25 +515,22 @@ export function RunningPage(props: IRunningPageProps) {
             if (nowQuiz === null) {
               return;
             }
-            const correctSid = nowQuiz.musicInfo.sid;
+            const playerAnswer = selectedMusicBySid.get(selectSid);
+            if (!playerAnswer) {
+              throw new Error(`未找到 sid 为 ${selectSid} 的玩家答案。`);
+            }
+            const correctAnswer = nowQuiz.musicInfo;
+            const isCorrect = playerAnswer.uuid === correctAnswer.uuid;
             setShowResultDialog(true);
             setAnsweredSid(selectSid);
             setNowQuizCount(nowQuizCount + 1);
             setAnswerRecords((draft) => {
-              const playerAnswer = binarySearch(selectedMusicList, (mid) => {
-                return selectSid - mid.sid;
-              });
               draft.push({
-                correctAnswerSid: correctSid,
-                correctAnswerName: nowQuiz.musicInfo.name,
-                correctAnswerDisplayName: nowQuiz.musicInfo.displayName,
-                playerAnswerSid: selectSid,
-                playerAnswerName: playerAnswer?.name ?? "未知",
-                playerAnswerDisplayName:
-                  playerAnswer?.displayName ?? "未知",
+                playerAnswer,
+                correctAnswer,
               });
             });
-            if (selectSid === correctSid) {
+            if (isCorrect) {
               setRightAnswerCount(rightAnswerCount + 1);
             } else {
               // 意思是错了要多听（
@@ -551,28 +550,23 @@ const ResultDialog = memo(function ResultDialog({
   onClose,
   afterClose,
   nowQuizInfo,
-  selectedSid,
+  selectedUuid,
   autoClose,
   autoCloseTime,
 }: {
   show: boolean;
   onClose: () => void;
   afterClose: () => void;
-  nowQuizInfo: SimpleMusic;
-  selectedSid: number;
+  nowQuizInfo: QuizMusic;
+  selectedUuid: string | undefined;
   autoClose: boolean;
   autoCloseTime: number | (() => number);
 }) {
-  const result = selectedSid === nowQuizInfo.sid;
+  const result = selectedUuid === nowQuizInfo.uuid;
   const description1 = <>{`正确答案${result ? "就" : ""}是`}</>;
   const description2 = useMemo(() => {
-    return (
-      <DisplayMusicName
-        name={nowQuizInfo.name}
-        displayName={nowQuizInfo.displayName}
-      />
-    );
-  }, [nowQuizInfo.displayName, nowQuizInfo.name]);
+    return <DisplayMusicName music={nowQuizInfo} />;
+  }, [nowQuizInfo]);
   return (
     <ContainerDialog
       show={show}

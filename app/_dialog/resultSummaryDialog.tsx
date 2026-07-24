@@ -11,10 +11,7 @@ import {
   ContainerDialog,
 } from "../clientComponent";
 import { type AnswerRecord } from "../types";
-import {
-  DisplayMusicName,
-  getMusicPureNameFromRouteName,
-} from "../nameTools";
+import { DisplayMusicName } from "../nameTools";
 
 interface IResultSummaryDialogProps extends IContainerDialogPropsBase {
   answerAndResults: AnswerRecord[];
@@ -60,15 +57,8 @@ export function ResultSummaryDialog(props: IResultSummaryDialogProps) {
         />
         <ol className="flex flex-col gap-1">
           {answerAndResults.map((answerAndResult, idx) => {
-            const {
-              playerAnswerSid,
-              playerAnswerName,
-              playerAnswerDisplayName,
-              correctAnswerSid,
-              correctAnswerName,
-              correctAnswerDisplayName,
-            } = answerAndResult;
-            const isCorrect = playerAnswerSid === correctAnswerSid;
+            const { playerAnswer, correctAnswer } = answerAndResult;
+            const isCorrect = playerAnswer.uuid === correctAnswer.uuid;
             return (
               <Disclosure
                 key={idx}
@@ -78,17 +68,13 @@ export function ResultSummaryDialog(props: IResultSummaryDialogProps) {
                 <DisclosureButton className={`w-full bg-dialog-item p-y-1`}>
                   <AListItem
                     no={`${idx + 1}`}
-                    yourAnswer={getMusicPureNameFromRouteName(
-                      playerAnswerDisplayName,
-                    )}
+                    yourAnswer={playerAnswer.name}
                     yourAnswerClassName={`${
                       isCorrect
                         ? "text-accepted dark:text-accepted-dark"
                         : "text-wrong-answer dark-text-wrong-answer-dark"
                     }`}
-                    correctAnswer={getMusicPureNameFromRouteName(
-                      correctAnswerDisplayName,
-                    )}
+                    correctAnswer={correctAnswer.name}
                     containerClassName="text-p"
                   />
                 </DisclosureButton>
@@ -97,16 +83,10 @@ export function ResultSummaryDialog(props: IResultSummaryDialogProps) {
                   className="data-enter:data-closed:scale-y-0 data-enter:data-closed:opacity-0 transform-origin-top whitespace-pre-wrap p-x-2 p-y-1 transition"
                 >
                   你的答案：
-                  <DisplayMusicName
-                    name={playerAnswerName}
-                    displayName={playerAnswerDisplayName}
-                  />
+                  <DisplayMusicName music={playerAnswer} />
                   {"\n"}
                   正确答案：
-                  <DisplayMusicName
-                    name={correctAnswerName}
-                    displayName={correctAnswerDisplayName}
-                  />
+                  <DisplayMusicName music={correctAnswer} />
                 </DisclosurePanel>
               </Disclosure>
             );
