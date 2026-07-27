@@ -135,7 +135,7 @@ const H1TabListInner = memo(function H1TabListInner({
 }) {
   return (
     <Tab
-      className="h-full w-full bg-tab-h1 p-1 text-center text-p simple-hover-active transition hover:text-purple data-selected:hover:text-common-color"
+      className="h-full w-full break-words bg-tab-h1 p-1 text-center text-p hyphens-auto simple-hover-active transition hover:text-purple data-selected:hover:text-common-color"
       onClick={(e) => {
         onClickTab(itemSid, e);
       }}

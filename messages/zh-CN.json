@@ -1,9 +1,84 @@
 {
+  "Metadata": {
+    "applicationName": "东方原曲认知测验无尽版",
+    "defaultTitle": "东方原曲认知测验无尽版 | 随机音乐片段听曲答题",
+    "keywords": "东方Project, 东方原曲, 东方音乐, 东方音乐测验, 东方听歌识曲, 东方原曲认知测验, Touhou, Touhou music, Touhou music quiz",
+    "description": "东方 Project 原曲认知测验无尽版。随机播放乐曲片段，可自由选择测试曲目范围和 10s、5s、1s、0.5s 片段时长的难度，无题量限制，适合熟悉和挑战东方原曲，成为东方原曲领域大神。"
+  },
+  "Common": {
+    "cancel": "取消",
+    "confirm": "确认",
+    "close": "关闭",
+    "retry": "重试",
+    "loading": "少女祈祷中...",
+    "error": "少女出错了！",
+    "confirmOperation": "确认要{operation}吗？"
+  },
   "StartPage": {
     "title": "东方原曲认知测验",
     "edition": "无尽版",
     "start": "开始",
     "changeLanguage": "切换语言",
-    "changeTheme": "切换主题"
+    "changeTheme": "切换主题",
+    "browserWarning": "如果你看到了这行字\n而且界面显得很扁的话\n那么为了保证体验\n很可能您需要升级或更换浏览器",
+    "footer": "测验片段为随机选取，结果不具有参考价值，仅供娱乐。详细介绍可参看 <bilibili>Bilibili</bilibili> 视频，若有问题可在评论区或者 <github>Github</github> 页面进行反馈。",
+    "showInformation": "显示关于信息",
+    "about": "关于",
+    "program": "【程序】",
+    "design": "【设计】",
+    "musicSource": "【曲子资源及信息来源】",
+    "iconSource": "【图标来源】",
+    "musicLists": "【筛曲名单】",
+    "byCategory": "按类目",
+    "byName": "按名称",
+    "specialThanks": "【特别感谢】"
+  },
+  "SelectPage": {
+    "title": "选择乐曲",
+    "help": "帮助",
+    "next": "下一步",
+    "helpTitle": "选择原曲说明",
+    "helpDescription": "主要是用于提高自由度的，简单来说就是可以选取用于进行测验的曲子的范围。\n对于某一类目，在选取状态后再次点击可以 全选/全不选 该类目下的所有曲子。\n默认已选取 Windows 作品 下的所有曲子。",
+    "understood": "我知道了",
+    "back": "返回",
+    "difficultyTitle": "难度选择",
+    "easyTitle": "妖精级",
+    "easyDescription": "用于熟悉曲子的难度(10s)\n再求精进是为人的基本",
+    "normalTitle": "河童级",
+    "normalDescription": "用于享受测验的难度(5s)\n幸福源于对自己充满信心",
+    "hardTitle": "天狗级",
+    "hardDescription": "让人拿出真本事的难度(1s)\n有必要好好研究一下其中的段落",
+    "lunaticTitle": "鬼神级",
+    "lunaticDescription": "逗你玩的难度(0.5s)\n一边喝酒一边听好了"
+  },
+  "RunningPage": {
+    "end": "结束",
+    "endQuizTitle": "结束测验",
+    "endQuiz": "结束测验",
+    "fetchMusicError": "获取音乐资源失败：{error}",
+    "decodeResultMissing": "解码结果缺失",
+    "playerAnswerNotFound": "未找到 sid 为 {sid} 的玩家答案。",
+    "submitAnswer": "确定",
+    "closeResult": "关闭答题结果",
+    "correctTitle": "答对了",
+    "wrongTitle": "答错了",
+    "correctResult": "正确答案就是<answer></answer>。",
+    "wrongResult": "正确答案是<answer></answer>。",
+    "closeHint": "点击框外立即关闭",
+    "playMusic": "播放音乐",
+    "volume": "音量"
+  },
+  "EndPage": {
+    "congratulations": "喜报",
+    "resultSummary": "<summary>在东方原曲认知测验无尽版<br></br><difficulty></difficulty> 难度获得</summary><score></score><outcome>的好成绩</outcome>",
+    "celebration": "可喜可贺，可喜可贺",
+    "restart": "重来"
+  },
+  "ResultSummary": {
+    "correctAnswer": "正确答案",
+    "yourAnswer": "你的答案",
+    "yourAnswerDetail": "你的答案：<answer></answer>",
+    "correctAnswerDetail": "正确答案：<answer></answer>",
+    "title": "结果总结"
   }
 }

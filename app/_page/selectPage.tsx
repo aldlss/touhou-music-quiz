@@ -17,6 +17,7 @@ import {
 } from "../_tools/localStorage";
 import { MusicCollection, PageType, RankType } from "../types";
 import { CommonSecondaryButton } from "../serverComponent";
+import { useTranslations } from "next-intl";
 
 export interface ISelectPageProps {
   setPageState: Function;
@@ -27,6 +28,7 @@ export interface ISelectPageProps {
 }
 
 export function SelectPage(props: ISelectPageProps) {
+  const t = useTranslations("SelectPage");
   const {
     setPageState,
     musicCollectionState,
@@ -95,10 +97,10 @@ export function SelectPage(props: ISelectPageProps) {
         aria-hidden={!showMusicSelect}
       >
         <header className="relative w-full">
-          <h1 className="text-center text-h1">选择乐曲</h1>
+          <h1 className="text-center text-h1">{t("title")}</h1>
           <button
             type="button"
-            aria-label="help"
+            aria-label={t("help")}
             className="absolute right-0 top-0"
             onClick={() => {
               setShowHelpDialog(true);
@@ -120,7 +122,7 @@ export function SelectPage(props: ISelectPageProps) {
             setShowTimeSelect(true);
           }}
         >
-          下一步
+          {t("next")}
         </button>
       </section>
       <DurationSelectPage
@@ -147,20 +149,19 @@ const SelectHelpDialog = memo(function SelectHelpDialog({
   show: boolean;
   onClose: () => void;
 }) {
+  const t = useTranslations("SelectPage");
+
   return (
     <ContainerDialog show={show} onClose={onClose} appear={true}>
       <DialogPanel className="flex flex-col gap-2 p-4">
-        <DialogTitle className="text-center text-h2">选择原曲说明</DialogTitle>
-        <Description className="text-p">
-          主要是用于提高自由度的，简单来说就是可以选取用于进行测验的曲子的范围。
-          <br />
-          对于某一类目，在选取状态后再次点击可以 全选/全不选
-          该类目下的所有曲子。
-          <br />
-          默认已选取 Windows 作品 下的所有曲子。
+        <DialogTitle className="text-center text-h2">
+          {t("helpTitle")}
+        </DialogTitle>
+        <Description className="whitespace-pre-line text-p">
+          {t("helpDescription")}
         </Description>
         <CommonSecondaryButton onClick={onClose}>
-          我知道了
+          {t("understood")}
         </CommonSecondaryButton>
       </DialogPanel>
     </ContainerDialog>
@@ -184,6 +185,8 @@ const DurationSelectPage = memo(function DurationSelectPage({
   afterEnter?: () => void;
   beforeLeave?: () => void;
 }) {
+  const t = useTranslations("SelectPage");
+
   function makeDurationSelectDivProps(
     title: string,
     onClick: () => void,
@@ -206,27 +209,27 @@ const DurationSelectPage = memo(function DurationSelectPage({
   }
   const durationSelectDivProps = [
     makeDurationSelectDivProps(
-      "妖精级",
+      t("easyTitle"),
       onDurationSelectClick(10, RankType.easy),
-      "用于熟悉曲子的难度(10s)\n再求精进是为人的基本",
+      t("easyDescription"),
       "bg-easy-mode",
     ),
     makeDurationSelectDivProps(
-      "河童级",
+      t("normalTitle"),
       onDurationSelectClick(5, RankType.normal),
-      "用于享受测验的难度(5s)\n幸福源于对自己充满信心",
+      t("normalDescription"),
       "bg-normal-mode",
     ),
     makeDurationSelectDivProps(
-      "天狗级",
+      t("hardTitle"),
       onDurationSelectClick(1, RankType.hard),
-      "让人拿出真本事的难度(1s)\n有必要好好研究一下其中的段落",
+      t("hardDescription"),
       "bg-hard-mode",
     ),
     makeDurationSelectDivProps(
-      "鬼神级",
+      t("lunaticTitle"),
       onDurationSelectClick(0.5, RankType.lunatic),
-      "逗你玩的难度(0.5s)\n一边喝酒一边听好了",
+      t("lunaticDescription"),
       "bg-lunatic-mode",
     ),
   ];
@@ -245,7 +248,7 @@ const DurationSelectPage = memo(function DurationSelectPage({
       <header className="relative">
         <button
           type="button"
-          aria-label="back"
+          aria-label={t("back")}
           className="absolute left-0 top-0 w-fit p-1"
           onClick={() => {
             closePage();
@@ -253,7 +256,9 @@ const DurationSelectPage = memo(function DurationSelectPage({
         >
           <ArrowRightSSvg className="h-8 w-8" />
         </button>
-        <h1 className="m-x-auto w-fit text-h1">难度选择</h1>
+        <h1 className="m-x-auto w-fit text-h1">
+          {t("difficultyTitle")}
+        </h1>
       </header>
       <div className="flex flex-1 flex-col justify-between gap-3 overflow-y-auto after:content-[''] before:content-['']">
         {durationSelectDivProps.map(

@@ -24,12 +24,14 @@ import { RunningPage } from "./_page/runningPage";
 import { EndPage } from "./_page/endPage";
 import { ResultSummaryDialog } from "./_dialog/resultSummaryDialog";
 import { useStore } from "zustand";
+import { useTranslations } from "next-intl";
 
 export function QuizMain({
   musicCollection,
 }: {
   musicCollection: MusicCollection;
 }) {
+  const common = useTranslations("Common");
   const [pageState, setPageState] = useState(PageType.start);
   const [musicCollectionState, setMusicCollectionState] =
     useImmer(musicCollection);
@@ -64,7 +66,7 @@ export function QuizMain({
               switchThemeAppearance={switchThemeAppearance}
             />
           ),
-          [PageType.loading]: <div>loading</div>,
+          [PageType.loading]: <div>{common("loading")}</div>,
           [PageType.selecting]: (
             <SelectPage
               key={PageType.selecting}
@@ -212,33 +214,39 @@ export const ConfirmDialog = memo(function ConfirmDialog({
   onCancel,
   onConfirm,
   operation,
+  title = operation,
   onClose = onCancel,
 }: {
   show: boolean;
   onCancel: () => void;
   onConfirm: () => void;
   operation: string;
+  title?: string;
   onClose?: () => void;
 }) {
+  const t = useTranslations("Common");
+
   return (
     <ContainerDialog show={show} onClose={onClose}>
       <DialogPanel className="flex flex-col gap-2 p-4">
-        <DialogTitle className="text-center text-h2">{operation}</DialogTitle>
-        <Description className="text-p">确认要{operation}吗？</Description>
+        <DialogTitle className="text-center text-h2">{title}</DialogTitle>
+        <Description className="text-p">
+          {t("confirmOperation", { operation })}
+        </Description>
         <div className="flex flex-row justify-evenly gap-2 p-x-4">
           <button
             type="button"
             className="max-w-40% flex-1 secondary-button p-1 text-h3"
             onClick={onCancel}
           >
-            取消
+            {t("cancel")}
           </button>
           <button
             type="button"
             className="main-button max-w-40% flex-1 p-1 text-h3"
             onClick={onConfirm}
           >
-            确认
+            {t("confirm")}
           </button>
         </div>
       </DialogPanel>

@@ -6,6 +6,7 @@ import {
   SetLocalStorageValue,
 } from "../_tools/localStorage";
 import { RankType, PageType } from "../types";
+import { useTranslations } from "next-intl";
 
 export interface IEndPageProps {
   setPageState: Function;
@@ -16,6 +17,8 @@ export interface IEndPageProps {
 }
 
 export function EndPage(props: IEndPageProps) {
+  const t = useTranslations("EndPage");
+  const common = useTranslations("Common");
   const {
     setPageState,
     nowQuizCount,
@@ -33,7 +36,7 @@ export function EndPage(props: IEndPageProps) {
     <div className="h-full bg-container">
       <main className="h-full w-full flex flex-col animate-fade-in-up-fast items-center justify-center gap-1">
         <h1 className="text-h1 text-pure-red font-extrabold dark:text-red">
-          喜报
+          {t("congratulations")}
         </h1>
         {editNickName ? (
           <>
@@ -57,36 +60,41 @@ export function EndPage(props: IEndPageProps) {
                 SetLocalStorageValue(LocalStorageKey.Nickname, nickname);
               }}
             >
-              确认
+              {common("confirm")}
             </button>
           </>
         ) : (
           <h2 className="text-h2 font-bold">{nickname}</h2>
         )}
-        <h3 className="text-center text-h3">
-          在东方原曲认知测验无尽版
-          <br />
-          <span className={difficultyColor}>{difficultyText}</span>
-          &nbsp;难度获得
-        </h3>
-        <h3 className="text-h2 text-rose font-600">
-          <button
-            className="tertiary-button p-x-1"
-            onClick={invokeResultSummaryDialog}
-          >
-            {`${rightAnswerCount}/${nowQuizCount}`}
-          </button>
-        </h3>
-        <h3 className="text-h3">的好成绩</h3>
-        <h2 className="text-h2">可喜可贺，可喜可贺</h2>
+        {t.rich("resultSummary", {
+          summary: (chunks) => (
+            <h3 className="text-center text-h3">{chunks}</h3>
+          ),
+          br: () => <br />,
+          difficulty: () => (
+            <span className={difficultyColor}>{difficultyText}</span>
+          ),
+          score: () => (
+            <h3 className="text-h2 text-rose font-600">
+              <button
+                className="tertiary-button p-x-1"
+                onClick={invokeResultSummaryDialog}
+              >
+                {`${rightAnswerCount}/${nowQuizCount}`}
+              </button>
+            </h3>
+          ),
+          outcome: (chunks) => <h3 className="text-h3">{chunks}</h3>,
+        })}
+        <h2 className="text-h2">{t("celebration")}</h2>
         <button
           type="button"
-          className="main-button p-y-2"
+          className="main-button p-2"
           onClick={() => {
             setPageState(PageType.start);
           }}
         >
-          重来
+          {t("restart")}
         </button>
       </main>
     </div>

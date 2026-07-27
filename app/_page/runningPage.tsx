@@ -47,6 +47,7 @@ import {
 import { isSupportOggOpus } from "../clientConstant";
 import { importOggOpusDecoder } from "../dynamicImport";
 import { DisplayMusicName } from "../nameTools";
+import { useTranslations } from "next-intl";
 
 export interface IRunningPageProps {
   setPageState: Function;
@@ -62,6 +63,7 @@ export interface IRunningPageProps {
 }
 
 export function RunningPage(props: IRunningPageProps) {
+  const t = useTranslations("RunningPage");
   const {
     setPageState,
     musicCollectionState,
@@ -133,11 +135,12 @@ export function RunningPage(props: IRunningPageProps) {
     };
   }, []);
 
-  const getMusicPiece = async (
-    music: QuizMusic,
-    duration: number,
-    audioContext: AudioContext,
-  ) => {
+  const getMusicPiece = useCallback(
+    async (
+      music: QuizMusic,
+      duration: number,
+      audioContext: AudioContext,
+    ) => {
     // 选出要获取的段落
     // 这里加 0.099 的原因是解码出来的期望是 1s 的音频文件似乎会少 0.0065 秒，因此多加回来
     // 因为计划最多限制到小数点后一位的精度，因此考虑加 0.099 是比较无脑方便的，后面是会剪切的，别急
@@ -159,7 +162,7 @@ export function RunningPage(props: IRunningPageProps) {
       responses = await Promise.all(promises);
     } catch (e) {
       throw Error(ErrorType.NetworkError, {
-        cause: `获取音乐资源失败 ${e}`,
+        cause: t("fetchMusicError", { error: String(e) }),
       });
     }
 
@@ -214,7 +217,7 @@ export function RunningPage(props: IRunningPageProps) {
     }
     if (decodeBuffer.length !== needFetchAmount) {
       throw Error(ErrorType.UnknownError, {
-        cause: "解码结果缺失",
+        cause: t("decodeResultMissing"),
       });
     }
 
@@ -236,8 +239,10 @@ export function RunningPage(props: IRunningPageProps) {
     }
     const sumBuffer = await offlineAudioContext.startRendering();
 
-    return sumBuffer;
-  };
+      return sumBuffer;
+    },
+    [t],
+  );
 
   const quizesLimit = useMemo(() => {
     var temp = Number(process.env.NEXT_PUBLIC_QUIZ_BUFFER_SIZE);
@@ -409,7 +414,7 @@ export function RunningPage(props: IRunningPageProps) {
       quizAvailabledCurrent.drain();
       stop = true;
     };
-  }, [getAudioContext, musicDuration, selectedMusicList]);
+  }, [getAudioContext, getMusicPiece, musicDuration, selectedMusicList]);
 
   const musicPlayerRef = useRef<MusicPlayerHandle | null>(null);
 
@@ -439,7 +444,7 @@ export function RunningPage(props: IRunningPageProps) {
     setShowEndGameDialog(false);
   }, []);
 
-  const [difficultyTextColor, h1Text] = difficultyColorAndText[rank];
+  const [difficultyTextColor, difficultyText] = difficultyColorAndText[rank];
   return (
     <div className="h-full bg-container">
       <main className="relative h-full w-full flex flex-col animate-fade-in-up-fast">
@@ -455,7 +460,7 @@ export function RunningPage(props: IRunningPageProps) {
             {`/${nowQuizCount}`}
           </button>
           <h1 className={`flex-1 text-center text-h2 ${difficultyTextColor}`}>
-            {h1Text}
+            {difficultyText}
           </h1>
           <button
             className="absolute right-0 top-0 m-1 min-w-fit w-20% secondary-button p-x-2 p-y-1 text-h3"
@@ -464,7 +469,7 @@ export function RunningPage(props: IRunningPageProps) {
               setShowEndGameDialog(true);
             }}
           >
-            结束
+            {t("end")}
           </button>
         </header>
         {!!nowQuiz && (
@@ -480,7 +485,8 @@ export function RunningPage(props: IRunningPageProps) {
         )}
         <ConfirmDialog
           show={showEndGameDialog}
-          operation="结束测验"
+          title={t("endQuizTitle")}
+          operation={t("endQuiz")}
           onConfirm={confirmDialogOnConfirm}
           onCancel={confirmDialogOnCancel}
         />
@@ -517,7 +523,9 @@ export function RunningPage(props: IRunningPageProps) {
             }
             const playerAnswer = selectedMusicBySid.get(selectSid);
             if (!playerAnswer) {
-              throw new Error(`未找到 sid 为 ${selectSid} 的玩家答案。`);
+              throw Error(ErrorType.InvalidStateError, {
+                cause: t("playerAnswerNotFound", { sid: selectSid }),
+              });
             }
             const correctAnswer = nowQuiz.musicInfo;
             const isCorrect = playerAnswer.uuid === correctAnswer.uuid;
@@ -538,7 +546,7 @@ export function RunningPage(props: IRunningPageProps) {
             }
           }}
         >
-          确定
+          {t("submitAnswer")}
         </button>
       </main>
     </div>
@@ -562,11 +570,9 @@ const ResultDialog = memo(function ResultDialog({
   autoClose: boolean;
   autoCloseTime: number | (() => number);
 }) {
+  const t = useTranslations("RunningPage");
   const result = selectedUuid === nowQuizInfo.uuid;
-  const description1 = <>{`正确答案${result ? "就" : ""}是`}</>;
-  const description2 = useMemo(() => {
-    return <DisplayMusicName music={nowQuizInfo} />;
-  }, [nowQuizInfo]);
+  const resultMessage = result ? "correctResult" : "wrongResult";
   return (
     <ContainerDialog
       show={show}
@@ -579,18 +585,19 @@ const ResultDialog = memo(function ResultDialog({
         <button
           data-autofocus
           type="button"
-          aria-label="close"
+          aria-label={t("closeResult")}
           className="h-0 w-0"
           onClick={onClose}
         />
         <DialogTitle className="text-center text-h2">
-          答{result ? "对" : "错"}了
+          {result ? t("correctTitle") : t("wrongTitle")}
         </DialogTitle>
         <Description className="text-p">
-          {description1}
-          {description2}
+          {t.rich(resultMessage, {
+            answer: () => <DisplayMusicName music={nowQuizInfo} />,
+          })}
         </Description>
-        <p className="self-center text-p text-gray">点击框外立即关闭</p>
+        <p className="self-center text-p text-gray">{t("closeHint")}</p>
       </DialogPanel>
     </ContainerDialog>
   );
@@ -611,6 +618,7 @@ const MusicPlayer = memo(function MusicPlayer({
   getAudioContext: () => AudioContext;
   musicDuration: number;
 }) {
+  const t = useTranslations("RunningPage");
   const startTime = useRef(0);
   const volumeNode = useRef<GainNode | null>(null);
   // 从 localStorage 里面读取之前设置的音量，没有的话就用（可能）默认的音量
@@ -669,7 +677,7 @@ const MusicPlayer = memo(function MusicPlayer({
     <div className="h-full w-full flex flex-row justify-evenly p-1">
       <button
         type="button"
-        aria-label="play music"
+        aria-label={t("playMusic")}
         className="aspect-square h-full max-h-10vh max-w-10vh common-button rounded-3xl bg-sky-3 simple-hover-active dark:bg-sky-6"
         onClick={() => {
           playMusic();
@@ -678,6 +686,7 @@ const MusicPlayer = memo(function MusicPlayer({
         <PlayFillSvg className="h-full w-full fill-white p-2" />
       </button>
       <input
+        aria-label={t("volume")}
         className="max-w-50% min-w-30%"
         type="range"
         min={0}

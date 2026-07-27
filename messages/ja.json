@@ -1,9 +1,84 @@
 {
+  "Metadata": {
+    "applicationName": "東方原曲クイズ エンドレス版",
+    "defaultTitle": "東方原曲クイズ エンドレス版 | ランダムな楽曲の一部を聴いて曲名を当てよう",
+    "keywords": "東方Project, 東方原曲, 東方音楽, 東方クイズ, 東方曲当て, 東方原曲クイズ, Touhou, Touhou music, Touhou music quiz",
+    "description": "東方Projectの原曲に関する知識を試せる、問題数無制限のクイズです。出題範囲を自由に選び、ランダムに再生される10秒・5秒・1秒・0.5秒の一部分を聴いて曲名を当てます。"
+  },
+  "Common": {
+    "cancel": "キャンセル",
+    "confirm": "決定",
+    "close": "閉じる",
+    "retry": "再試行",
+    "loading": "少女祈祷中…",
+    "error": "エラーが発生しました！",
+    "confirmOperation": "本当に{operation}しますか？"
+  },
   "StartPage": {
     "title": "東方原曲クイズ",
     "edition": "エンドレス版",
     "start": "スタート",
     "changeLanguage": "言語を切り替える",
-    "changeTheme": "テーマを切り替える"
+    "changeTheme": "テーマを切り替える",
+    "browserWarning": "この文字が見えていて\n画面がつぶれて表示される場合は、\nブラウザを更新するか\n別のブラウザをお試しください。",
+    "footer": "出題箇所はランダムに選ばれるため、結果は参考になるものではありません。あくまで娯楽としてお楽しみください。詳しくは <bilibili>Bilibili</bilibili> の動画をご覧ください。問題がありましたら、コメント欄または <github>GitHub</github> でご報告ください。",
+    "showInformation": "このクイズについての情報を表示",
+    "about": "このクイズについて",
+    "program": "【プログラム】",
+    "design": "【デザイン】",
+    "musicSource": "【楽曲・情報の出典】",
+    "iconSource": "【アイコンの出典】",
+    "musicLists": "【選曲リスト】",
+    "byCategory": "カテゴリ別",
+    "byName": "曲名別",
+    "specialThanks": "【スペシャルサンクス】"
+  },
+  "SelectPage": {
+    "title": "楽曲選択",
+    "help": "選曲ヘルプを表示",
+    "next": "次へ",
+    "helpTitle": "楽曲の選び方",
+    "helpDescription": "クイズに出題する楽曲の範囲を自由に選べます。\n選択中のカテゴリをもう一度押すと、そのカテゴリ内の曲をすべて選択／解除できます。\n初期状態ではWindows版ゲームの全曲が選択されています。",
+    "understood": "わかりました",
+    "back": "戻る",
+    "difficultyTitle": "難易度選択",
+    "easyTitle": "妖精級",
+    "easyDescription": "曲に慣れる為の難易度です（10秒）\nステップアップは人間の基本",
+    "normalTitle": "河童級",
+    "normalDescription": "クイズを楽しむ為の難易度です（5秒）\n自分に自信を持つと幸せ",
+    "hardTitle": "天狗級",
+    "hardDescription": "本気を出してくる難易度です（1秒）\nしっかりとパターンを見極める必要があります",
+    "lunaticTitle": "鬼神級",
+    "lunaticDescription": "巫山戯た難易度です（0.5秒）\nお酒を呑みながらどうぞ"
+  },
+  "RunningPage": {
+    "end": "終了",
+    "endQuizTitle": "クイズを終了",
+    "endQuiz": "クイズを終了",
+    "fetchMusicError": "音楽リソースの取得に失敗しました：{error}",
+    "decodeResultMissing": "デコードされた音声の一部が見つかりません。",
+    "playerAnswerNotFound": "sid {sid} に対応する回答が見つかりません。",
+    "submitAnswer": "回答する",
+    "closeResult": "回答結果のダイアログを閉じる",
+    "correctTitle": "正解",
+    "wrongTitle": "不正解",
+    "correctResult": "その通り！正解は<answer></answer>です。",
+    "wrongResult": "正解は<answer></answer>です。",
+    "closeHint": "ダイアログの外側をクリックすると、すぐに閉じます",
+    "playMusic": "曲を再生",
+    "volume": "音量"
+  },
+  "EndPage": {
+    "congratulations": "朗報",
+    "resultSummary": "<summary>東方原曲クイズ エンドレス版の<br></br>難易度「<difficulty></difficulty>」で</summary><score></score><outcome>という好成績を収めました</outcome>",
+    "celebration": "めでたし、めでたし",
+    "restart": "もう一度挑戦"
+  },
+  "ResultSummary": {
+    "correctAnswer": "正解",
+    "yourAnswer": "回答",
+    "yourAnswerDetail": "回答：<answer></answer>",
+    "correctAnswerDetail": "正解：<answer></answer>",
+    "title": "結果一覧"
   }
 }

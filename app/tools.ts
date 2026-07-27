@@ -12,8 +12,10 @@ import { fetchMusicUrlPrefix } from "./constant";
 type MusicNameMap = Record<string, string>;
 
 export const getSortedDefaultMusicCollection = cache(async (locale: string) => {
-  const musicCollection = await getMusicCollection();
-  const musicNames = await getMusicNames(locale);
+  const [musicCollection, musicNames] = await Promise.all([
+    getMusicCollection(),
+    getMusicNames(locale),
+  ]);
   const localizedMusicCollection = localizeMusicCollection(
     musicCollection,
     musicNames,
@@ -159,7 +161,9 @@ const setDefalutSetting = (
   setMusicCollectionSelected(musicCollection, false);
   generateSid(musicCollection);
   if (!musicCollection.defaultSelectedCollectionUuid) {
-    throw new Error("曲库数据缺少 defaultSelectedCollectionUuid。");
+    throw new Error(
+      "Music collection data is missing defaultSelectedCollectionUuid.",
+    );
   }
   const defaultSelectedCollection = findMusicCollectionByUuid(
     musicCollection,
@@ -167,7 +171,7 @@ const setDefalutSetting = (
   );
   if (!defaultSelectedCollection) {
     throw new Error(
-      `默认选中分类 ${musicCollection.defaultSelectedCollectionUuid} 不在曲库中。`,
+      `Default selected collection ${musicCollection.defaultSelectedCollectionUuid} was not found in the music collection.`,
     );
   }
   selectMusicCollectionBySid(defaultSelectedCollection.sid, musicCollection);

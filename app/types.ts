@@ -51,6 +51,7 @@ export enum ErrorType {
   NetworkError = "NetworkError",
   DecodeError = "DecodeError",
   UnknownError = "UnknownError",
+  InvalidStateError = "InvalidStateError",
 }
 
 export type AnswerRecord = {

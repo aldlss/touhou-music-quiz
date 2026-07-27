@@ -5,15 +5,18 @@ import { BilibiliFillSvg, GithubFillSvg, InformationLineSvg } from "../svg";
 import { DialogPanel, DialogTitle } from "@headlessui/react";
 import Link from "next/link";
 import { CommonSecondaryButton } from "../serverComponent";
+import { useTranslations } from "next-intl";
 
 export function InfoDialog() {
   const [isShow, setIsShow] = useState(false);
+  const t = useTranslations("StartPage");
+  const common = useTranslations("Common");
 
   return (
     <div>
       <button
         type="button"
-        aria-label="show infomation dialog"
+        aria-label={t("showInformation")}
         onClick={() => {
           setIsShow(true);
         }}
@@ -27,9 +30,11 @@ export function InfoDialog() {
         }}
       >
         <DialogPanel className="p-4">
-          <DialogTitle className="text-center text-h2">关于</DialogTitle>
+          <DialogTitle className="text-center text-h2">
+            {t("about")}
+          </DialogTitle>
           <p className="whitespace-pre-wrap p-2 text-center text-p">
-            {`【程序】\naldlss\n【设计】\naldlss\n【曲子资源及信息来源】\n`}
+            {`${t("program")}\naldlss\n${t("design")}\naldlss\n${t("musicSource")}\n`}
             <Link
               href="https://thwiki.cc"
               target="_blank"
@@ -37,7 +42,7 @@ export function InfoDialog() {
             >
               THBWiki
             </Link>
-            {`\n【图标来源】\n`}
+            {`\n${t("iconSource")}\n`}
             <Link
               href="https://remixicon.com/"
               target="_blank"
@@ -45,15 +50,15 @@ export function InfoDialog() {
             >
               Remix Icon
             </Link>
-            {`\n【筛曲名单】\n`}
+            {`\n${t("musicLists")}\n`}
             <Link href="/docs/selected" target="_blank" className="text-link">
-              按类目
+              {t("byCategory")}
             </Link>
             {`   `}
             <Link href="/docs/same-name" target="_blank" className="text-link">
-              按名称
+              {t("byName")}
             </Link>
-            {`\n【特别感谢】\nLizBaka / Ghost_ABB / 椿梦栀结 / 锵群的米娜 \n And You.`}
+            {`\n${t("specialThanks")}\nLizBaka / Ghost_ABB / 椿梦栀结 / 锵群的米娜 \n And You.`}
           </p>
           <address className="flex justify-center gap-2">
             <Link
@@ -75,7 +80,7 @@ export function InfoDialog() {
                 setIsShow(false);
               }}
             >
-              关闭
+              {common("close")}
             </CommonSecondaryButton>
           </div>
         </DialogPanel>

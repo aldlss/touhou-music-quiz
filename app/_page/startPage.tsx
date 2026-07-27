@@ -29,14 +29,8 @@ export function StartPage(props: IStartPageProps) {
         </Link>
         <InfoDialog />
       </div>
-      <p className="absolute m-t-20 aspect-9999/1 min-h-0 overflow-y-hidden">
-        如果你看到了这行字
-        <br />
-        而且界面显得很扁的话
-        <br />
-        那么为了保证体验
-        <br />
-        很可能您需要升级或更换浏览器
+      <p className="absolute m-t-20 aspect-9999/1 min-h-0 overflow-y-hidden whitespace-pre-line">
+        {t("browserWarning")}
       </p>
       <div className="flex flex-col items-center gap-6">
         <h1 className="text-center text-h1">
@@ -68,23 +62,26 @@ export function StartPage(props: IStartPageProps) {
         </div>
       </div>
       <div className="p-2 text-small">
-        测验片段为随机选取，结果不具有参考价值，仅供娱乐。详细介绍可参看{" "}
-        <Link
-          href="https://www.bilibili.com/video/BV1Nz42167QC/"
-          target="_blank"
-          className="text-link"
-        >
-          Bilibili
-        </Link>{" "}
-        视频，若有问题可在评论区或者{" "}
-        <Link
-          href="https://github.com/aldlss/touhou-music-quiz"
-          target="_blank"
-          className="text-link"
-        >
-          Github
-        </Link>{" "}
-        页面进行反馈。
+        {t.rich("footer", {
+          bilibili: (chunks) => (
+            <Link
+              href="https://www.bilibili.com/video/BV1Nz42167QC/"
+              target="_blank"
+              className="text-link"
+            >
+              {chunks}
+            </Link>
+          ),
+          github: (chunks) => (
+            <Link
+              href="https://github.com/aldlss/touhou-music-quiz"
+              target="_blank"
+              className="text-link"
+            >
+              {chunks}
+            </Link>
+          ),
+        })}
       </div>
     </main>
   );

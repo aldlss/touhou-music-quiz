@@ -1,6 +1,7 @@
 import { Suspense, memo } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { Loader3FillSvg } from "./svg";
+import { useTranslations } from "next-intl";
 
 export function AdaptiveMainContain({
   children,
@@ -20,17 +21,19 @@ export function TouhouMusicQuizContainer({
   children: React.JSX.Element;
 }) {
   return (
-    <main className="h-screen max-h-screen min-h-408px min-w-272px w-full flex items-center justify-center">
+    <main className="h-screen max-h-screen min-h-480px min-w-320px w-full flex items-center justify-center">
       <AdaptiveMainContain>{children}</AdaptiveMainContain>
     </main>
   );
 }
 
 export const LoadingPage = memo(function LoadingPage() {
+  const t = useTranslations("Common");
+
   return (
     <div className="h-full flex flex-row items-center justify-center">
       <Loader3FillSvg className="w-8 animate-spin" />
-      <h1 className="text-center text-h3">少女加载中...</h1>
+      <h1 className="text-center text-h3">{t("loading")}</h1>
     </div>
   );
 });
@@ -44,6 +47,8 @@ export function AsyncBoundary({
   onRetry?: () => void;
   resetKeys?: any[];
 }) {
+  const t = useTranslations("Common");
+
   return (
     <Suspense fallback={<LoadingPage />}>
       <ErrorBoundary
@@ -56,7 +61,7 @@ export function AsyncBoundary({
           return (
             <div className="h-full flex flex-col items-center justify-center">
               <div className="text-center">
-                <h1 className="inline text-p">少女出错了！</h1>
+                <h1 className="inline text-p">{t("error")}</h1>
                 <pre className="inline">{errorMessage}</pre>
               </div>
               <button
@@ -66,7 +71,7 @@ export function AsyncBoundary({
                   resetErrorBoundary();
                 }}
               >
-                重试
+                {t("retry")}
               </button>
             </div>
           );

@@ -1,9 +1,84 @@
 {
+  "Metadata": {
+    "applicationName": "Touhou Music Quiz — Endless Edition",
+    "defaultTitle": "Touhou Music Quiz — Endless Edition | Guess the Track from a Random Clip",
+    "keywords": "Touhou Project, Touhou music, Touhou original music, Touhou music quiz, Touhou song quiz, Touhou track quiz, name that tune, Touhou Music Cognitive Test",
+    "description": "An endless quiz that tests your knowledge of Touhou Project music. Choose the tracks you want to be quizzed on, then identify them from random 10-, 5-, 1-, or 0.5-second clips. There is no limit to the number of questions."
+  },
+  "Common": {
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "close": "Close",
+    "retry": "Retry",
+    "loading": "Girls are now praying...",
+    "error": "Something went wrong!",
+    "confirmOperation": "Are you sure you want to {operation}?"
+  },
   "StartPage": {
-    "title": "Touhou Original Music Quiz",
+    "title": "Touhou Music Quiz",
     "edition": "Endless Edition",
     "start": "Start",
     "changeLanguage": "Change language",
-    "changeTheme": "Change theme"
+    "changeTheme": "Change theme",
+    "browserWarning": "If you can read this\nand the page looks squashed,\nyou may need to update\nor switch your browser.",
+    "footer": "Quiz clips are selected at random, so the results are for entertainment only. See the <bilibili>Bilibili</bilibili> video for a detailed introduction. If you run into any problems, leave a comment there or report them on <github>GitHub</github>.",
+    "showInformation": "Show information about this quiz",
+    "about": "About",
+    "program": "【Programming】",
+    "design": "【Design】",
+    "musicSource": "【Music and Metadata Sources】",
+    "iconSource": "【Icon Source】",
+    "musicLists": "【Track Selection Lists】",
+    "byCategory": "By Category",
+    "byName": "By Name",
+    "specialThanks": "【Special Thanks】"
+  },
+  "SelectPage": {
+    "title": "Select Tracks",
+    "help": "Show selection help",
+    "next": "Next",
+    "helpTitle": "Selecting Tracks",
+    "helpDescription": "Choose which tracks may appear in the quiz.\nClick a selected category again to select or deselect all tracks in that category.\nAll tracks from the Windows Games are selected by default.",
+    "understood": "Got it",
+    "back": "Back",
+    "difficultyTitle": "Select Difficulty",
+    "easyTitle": "Fairy Class",
+    "easyDescription": "A difficulty level for getting used to the tracks (10s)\nStepping it up is human basics",
+    "normalTitle": "Kappa Class",
+    "normalDescription": "A difficulty level for having fun (5s)\nHaving faith in yourself will bring you happiness",
+    "hardTitle": "Tengu Class",
+    "hardDescription": "A difficulty level that takes you seriously (1s)\nYou'll need to work hard to discern the patterns",
+    "lunaticTitle": "Kishin Class",
+    "lunaticDescription": "This difficulty level is a joke (0.5s)\nFeel free to listen while drinking"
+  },
+  "RunningPage": {
+    "end": "End",
+    "endQuizTitle": "End the Quiz",
+    "endQuiz": "end the quiz",
+    "fetchMusicError": "Failed to fetch music resources: {error}",
+    "decodeResultMissing": "Decoded audio segments are missing.",
+    "playerAnswerNotFound": "Player answer not found for sid {sid}.",
+    "submitAnswer": "Submit",
+    "closeResult": "Close result dialog",
+    "correctTitle": "Correct",
+    "wrongTitle": "Incorrect",
+    "correctResult": "Correct! The answer is <answer></answer>.",
+    "wrongResult": "The correct answer is <answer></answer>.",
+    "closeHint": "Click outside this dialog to close it immediately",
+    "playMusic": "Play music",
+    "volume": "Volume"
+  },
+  "EndPage": {
+    "congratulations": "Great News",
+    "resultSummary": "<summary>In Touhou Music Quiz — Endless Edition,<br></br>you achieved an impressive score of </summary><score></score><outcome> on <difficulty></difficulty> difficulty</outcome>",
+    "celebration": "Well done, well done",
+    "restart": "Play Again"
+  },
+  "ResultSummary": {
+    "correctAnswer": "Correct Answer",
+    "yourAnswer": "Your Answer",
+    "yourAnswerDetail": "Your answer: <answer></answer>",
+    "correctAnswerDetail": "Correct answer: <answer></answer>",
+    "title": "Results"
   }
 }
