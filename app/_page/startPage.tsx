@@ -56,8 +56,8 @@ export function StartPage(props: IStartPageProps) {
             className="icon-button"
             onClick={switchThemeAppearance}
           >
-            <SunLineSvg className="block dark:hidden" />
-            <MoonLineSvg className="hidden dark:block" />
+            <SunLineSvg className="block h-8 w-8 dark:hidden" />
+            <MoonLineSvg className="hidden h-8 w-8 dark:block" />
           </button>
         </div>
       </div>

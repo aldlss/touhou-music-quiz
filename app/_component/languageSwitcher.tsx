@@ -18,7 +18,7 @@ export function LanguageSwitcher({ label }: { label: string }) {
   return (
     <Menu as="div" className="relative">
       <MenuButton type="button" aria-label={label} className="icon-button">
-        <Translate2LineSvg />
+        <Translate2LineSvg className="h-8 w-8" />
       </MenuButton>
       <MenuItems
         transition
