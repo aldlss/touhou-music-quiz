@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
 import { QuizMain } from "../clientComponent";
 import { TouhouMusicQuizContainer } from "../serverComponent";
-import { checkEnv, getSortedDefaultMusicCollection } from "../tools";
+import {
+  checkEnv,
+  getSortedDefaultMusicCollection,
+} from "../_server/musicData";
 import { routing } from "@/i18n/routing";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { SITE_URL } from "../constant";

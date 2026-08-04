@@ -6,10 +6,10 @@ import {
 } from "@headlessui/react";
 import { useState, useCallback, memo } from "react";
 import { Updater } from "use-immer";
-import { ContainerDialog } from "../clientComponent";
+import { ContainerDialog } from "../_dialog/commonDialogs";
 import { MusicList } from "../musicListComponent";
 import { ArrowRightSSvg, QuestionLineSvg } from "../svg";
-import { selectMusicCollectionBySid } from "../tools";
+import { selectMusicCollectionBySid } from "../_tools/musicCollection";
 import {
   GetLocalStorageValue,
   LocalStorageKey,

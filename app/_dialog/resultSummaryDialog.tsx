@@ -9,7 +9,7 @@ import { memo } from "react";
 import {
   type IContainerDialogPropsBase,
   ContainerDialog,
-} from "../clientComponent";
+} from "./commonDialogs";
 import { type AnswerRecord } from "../types";
 import { DisplayMusicName } from "../nameTools";
 import { useTranslations } from "next-intl";

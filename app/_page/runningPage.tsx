@@ -14,7 +14,7 @@ import React, {
 } from "react";
 import { type Updater, useImmer } from "use-immer";
 import { SemaType, ControlledPromise } from "../class";
-import { ConfirmDialog, ContainerDialog } from "../clientComponent";
+import { ConfirmDialog, ContainerDialog } from "../_dialog/commonDialogs";
 import { AsyncBoundary } from "../serverComponent";
 import {
   difficultyColorAndText,
@@ -28,8 +28,11 @@ import {
   setMusicCollectionSelected,
   flattenMusicCollection,
   selectMusicCollectionBySid,
+} from "../_tools/musicCollection";
+import {
   fetchMusicByUuid,
-} from "../tools";
+  isSupportOggOpus,
+} from "../_tools/audio.client";
 import {
   GetLocalStorageValue,
   LocalStorageKey,
@@ -44,7 +47,6 @@ import {
   type MusicCollection,
   type AnswerRecord,
 } from "../types";
-import { isSupportOggOpus } from "../clientConstant";
 import { importOggOpusDecoder } from "../dynamicImport";
 import { DisplayMusicName } from "../nameTools";
 import { useTranslations } from "next-intl";

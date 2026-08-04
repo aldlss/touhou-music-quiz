@@ -1,18 +1,20 @@
 "use client";
 
 import { initThemeStore } from "../_store/themeStore";
-import { InitClientConstant } from "../clientConstant";
+import { initAudioCapability } from "./audio.client";
 import {
   GetLocalStorageValue,
   LocalStorageKey,
   ClearLocalStorage,
   SetLocalStorageValue,
+  initLocalStorage,
 } from "./localStorage";
 import { isClientSide } from "./environment";
 
 function initClient() {
   // 设置客户端的一些基本信息
-  InitClientConstant();
+  initLocalStorage();
+  initAudioCapability();
   window.AudioContext =
     window.AudioContext || (window as any).webkitAudioContext;
   window.OfflineAudioContext =

@@ -3,7 +3,7 @@ import { Analytics } from "@vercel/analytics/react";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { RootDocument } from "./_component/rootDocument";
-import { ClientInitializer } from "./_tools/ClientInitializer";
+import { ClientInitializer } from "./_tools/clientInitializer";
 import { SITE_URL } from "./constant";
 
 const inter = Inter({ subsets: ["latin"] });

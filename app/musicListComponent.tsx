@@ -17,7 +17,7 @@ import React, {
   useTransition,
 } from "react";
 import { voidFunc } from "./constant";
-import { isMusicList } from "./tools";
+import { isMusicList } from "./_tools/musicCollection";
 
 export const MusicList = memo(function MusicList({
   musicCollection,

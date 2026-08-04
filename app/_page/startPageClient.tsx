@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { ContainerDialog } from "../clientComponent";
+import { ContainerDialog } from "../_dialog/commonDialogs";
 import { BilibiliFillSvg, GithubFillSvg, InformationLineSvg } from "../svg";
 import { DialogPanel, DialogTitle } from "@headlessui/react";
 import Link from "next/link";

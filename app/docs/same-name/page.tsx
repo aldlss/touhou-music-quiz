@@ -1,6 +1,5 @@
 import { MarkdownPage } from "@/app/_component/markdown";
-import { fetchBase } from "@/app/constant";
-import { fetchDocsText } from "@/app/tools";
+import { fetchDocsText } from "@/app/_server/docs";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -13,8 +12,6 @@ export const metadata: Metadata = {
 };
 
 export default async function SameNamePage() {
-  const musicSelected = await fetchDocsText(
-    `${fetchBase}/sameNameMusicSelectedMap.md`,
-  );
+  const musicSelected = await fetchDocsText("sameNameMusicSelectedMap.md");
   return <MarkdownPage title="按名称分类的选曲名单" markdown={musicSelected} />;
 }

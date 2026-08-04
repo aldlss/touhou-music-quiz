@@ -1,4 +1,6 @@
-import { localStorageAvailable } from "../clientConstant";
+import "client-only";
+
+let localStorageAvailable = false;
 
 export enum LocalStorageKey {
   /** 用于测试 local storage 是否可用 */
@@ -15,7 +17,11 @@ export enum LocalStorageKey {
   THM_FirstVisit = "thm_first_visit",
 }
 
-export function CheckLocalStorageAvailable(): boolean {
+export function initLocalStorage() {
+  localStorageAvailable = checkLocalStorageAvailable();
+}
+
+function checkLocalStorageAvailable(): boolean {
   try {
     const storage = window.localStorage;
     const x = LocalStorageKey.StorageTest;
