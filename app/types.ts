@@ -17,7 +17,11 @@ export type QuizMusic = {
   uuid: string;
 };
 
-export type Quiz = { musicInfo: QuizMusic; music: AudioBuffer };
+export type Quiz = {
+  musicInfo: QuizMusic;
+  music: AudioBuffer;
+  startTime: number;
+};
 
 export type MusicCollection = {
   idx: number;

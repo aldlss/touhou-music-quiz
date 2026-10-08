@@ -29,10 +29,8 @@ import {
   flattenMusicCollection,
   selectMusicCollectionBySid,
 } from "../_tools/musicCollection";
-import {
-  fetchMusicByUuid,
-  isSupportOggOpus,
-} from "../_tools/audio.client";
+import { isSupportOggOpus } from "../_tools/audio.client";
+import { selectMusicWindow } from "../_tools/audioWindowSelection.client";
 import {
   GetLocalStorageValue,
   LocalStorageKey,
@@ -125,123 +123,47 @@ export function RunningPage(props: IRunningPageProps) {
 
   const decoderRef = useRef<OggOpusDecoderWebWorker | null>(null);
   useEffect(() => {
+    let disposed = false;
+    // 浏览器不能直接解码 OGG Opus 时提前准备 Worker，避免首题临时加载。
     if (!isSupportOggOpus) {
-      importOggOpusDecoder().then((module) => {
-        decoderRef.current =
-          decoderRef.current ?? new module.OggOpusDecoderWebWorker();
-      });
+      void importOggOpusDecoder()
+        .then((module) => {
+          if (!disposed) {
+            decoderRef.current =
+              decoderRef.current ?? new module.OggOpusDecoderWebWorker();
+          }
+        })
+        .catch(() => undefined);
     }
     return () => {
-      decoderRef.current?.free();
+      disposed = true;
+      const decoder = decoderRef.current;
       decoderRef.current = null;
+      if (decoder !== null) void decoder.free();
     };
   }, []);
 
+  // 页面只负责题目队列；随机选段、静音检测、获取和解码都收在独立方法里。
   const getMusicPiece = useCallback(
-    async (
+    (
       music: QuizMusic,
       duration: number,
       audioContext: AudioContext,
+      signal: AbortSignal,
     ) => {
-    // 选出要获取的段落
-    // 这里加 0.099 的原因是解码出来的期望是 1s 的音频文件似乎会少 0.0065 秒，因此多加回来
-    // 因为计划最多限制到小数点后一位的精度，因此考虑加 0.099 是比较无脑方便的，后面是会剪切的，别急
-    const needFetchAmount = Math.ceil(duration + 0.099);
-    const startIdx = Math.floor(
-      // random() 不包括 1，放心用了
-      Math.random() * (music.amount - needFetchAmount + 1),
-    );
-
-    // 异步并发获取段落
-    const promises = [];
-
-    for (let i = 0; i < needFetchAmount; i++) {
-      promises.push(fetchMusicByUuid(music.uuid, startIdx + i));
-    }
-
-    let responses: ArrayBuffer[] = [];
-    try {
-      responses = await Promise.all(promises);
-    } catch (e) {
-      throw Error(ErrorType.NetworkError, {
-        cause: t("fetchMusicError", { error: String(e) }),
+      return selectMusicWindow({
+        musicUuid: music.uuid,
+        totalChunkCount: music.amount,
+        duration,
+        audioContext,
+        decoderRef,
+        signal,
+        errorMessages: {
+          fetchMusicError: (error) =>
+            t("fetchMusicError", { error: String(error) }),
+          decodeResultMissing: t("decodeResultMissing"),
+        },
       });
-    }
-
-    let decodeBuffer: AudioBuffer[] = [];
-    async function decodeAudioDataWithOggOpus() {
-      if (decoderRef.current === null) {
-        const { OggOpusDecoderWebWorker } = await importOggOpusDecoder();
-        decoderRef.current =
-          decoderRef.current ?? new OggOpusDecoderWebWorker();
-      }
-      const decoder = decoderRef.current;
-      await decoder.ready;
-      try {
-        for (const buffer of responses) {
-          // TODO: 按照文档说应该是可以不用直接在这里 await 的，但是不这样会出问题
-          const data = await decoder.decodeFile(new Uint8Array(buffer));
-          const temp = audioContext.createBuffer(
-            data.channelData.length,
-            data.samplesDecoded,
-            data.sampleRate,
-          );
-          for (
-            let channelIndex = 0;
-            channelIndex < data.channelData.length;
-            channelIndex++
-          ) {
-            temp
-              .getChannelData(channelIndex)
-              .set(data.channelData[channelIndex]);
-          }
-          decodeBuffer.push(temp);
-        }
-      } catch (e) {
-        throw Error(ErrorType.DecodeError, { cause: e });
-      }
-    }
-    // 不能浏览器解码的就用 ogg opus web worker 解码
-    if (decoderRef.current) {
-      // web worker 解码
-      await decodeAudioDataWithOggOpus();
-    } else {
-      // 用浏览器 API 解码
-      try {
-        const res = await Promise.all(
-          responses.map((buffer) => audioContext.decodeAudioData(buffer)),
-        );
-        decodeBuffer = res;
-      } catch (e) {
-        // 算是一个 fallback 吧？
-        await decodeAudioDataWithOggOpus();
-      }
-    }
-    if (decodeBuffer.length !== needFetchAmount) {
-      throw Error(ErrorType.UnknownError, {
-        cause: t("decodeResultMissing"),
-      });
-    }
-
-    // 合并音频
-    const lenghtSum = decodeBuffer.reduce((sum, item) => sum + item.length, 0);
-    const offlineAudioContext = new OfflineAudioContext(
-      decodeBuffer[0].numberOfChannels,
-      lenghtSum,
-      decodeBuffer[0].sampleRate,
-    );
-    // 这里用这个方法，至少省去了猛拷 buffer 的时间，还转成了异步，我感觉可以
-    let startTimeOffset = 0;
-    for (const buffer of decodeBuffer) {
-      const source = offlineAudioContext.createBufferSource();
-      source.buffer = buffer;
-      source.connect(offlineAudioContext.destination);
-      source.start(startTimeOffset);
-      startTimeOffset += buffer.duration;
-    }
-    const sumBuffer = await offlineAudioContext.startRendering();
-
-      return sumBuffer;
     },
     [t],
   );
@@ -351,6 +273,7 @@ export function RunningPage(props: IRunningPageProps) {
   useEffect(() => {
     // stop 用于在每个同步阶段开始时判断是否要停止
     let stop = false;
+    const abortController = new AbortController();
     const audioContext = getAudioContext();
     const previousQuizUuids: string[] = [];
     const previousQuizUuidSet = new Set<string>();
@@ -373,11 +296,8 @@ export function RunningPage(props: IRunningPageProps) {
             selectedMusicList[
               Math.floor(Math.random() * selectedMusicList.length)
             ];
-          // 如果选出来的音乐不够长或者和之前几个重复，那么就再选一次，虽然运气不好的话会有巨大性能问题，但是应该不会吧（
-        } while (
-          randomMusic.amount < musicDuration ||
-          previousQuizUuidSet.has(randomMusic.uuid)
-        );
+          // 如果和之前几个重复，那么就再选一次，虽然运气不好的话会有巨大性能问题，但是应该不会吧（
+        } while (previousQuizUuidSet.has(randomMusic.uuid));
         previousQuizUuidSet.add(randomMusic.uuid);
         previousQuizUuids.push(randomMusic.uuid);
         if (previousQuizUuids.length > localPreviousQuizSetCapacity) {
@@ -394,15 +314,17 @@ export function RunningPage(props: IRunningPageProps) {
           }),
         );
         try {
-          const randomAudioBuffer = await getMusicPiece(
+          const selectedWindow = await getMusicPiece(
             randomMusic,
             musicDuration,
             audioContext,
+            abortController.signal,
           );
           if (stop) return;
           resolve({
-            music: randomAudioBuffer,
+            music: selectedWindow.audioBuffer,
             musicInfo: randomMusic,
+            startTime: selectedWindow.startTime,
           });
         } catch (e) {
           if (stop) return;
@@ -413,8 +335,9 @@ export function RunningPage(props: IRunningPageProps) {
     addQuizes();
     const quizAvailabledCurrent = quizAvailabled.current;
     return () => {
-      quizAvailabledCurrent.drain();
       stop = true;
+      abortController.abort();
+      quizAvailabledCurrent.drain();
     };
   }, [getAudioContext, getMusicPiece, musicDuration, selectedMusicList]);
 
@@ -507,6 +430,7 @@ export function RunningPage(props: IRunningPageProps) {
               getAudioContext={getAudioContext}
               ref={musicPlayerRef}
               musicDuration={musicDuration}
+              startTime={nowQuiz.startTime}
             />
           )}
         </div>
@@ -614,14 +538,15 @@ const MusicPlayer = memo(function MusicPlayer({
   audioBuffer,
   getAudioContext,
   musicDuration,
+  startTime,
 }: {
   ref: RefObject<MusicPlayerHandle | null>;
   audioBuffer: AudioBuffer;
   getAudioContext: () => AudioContext;
   musicDuration: number;
+  startTime: number;
 }) {
   const t = useTranslations("RunningPage");
-  const startTime = useRef(0);
   const volumeNode = useRef<GainNode | null>(null);
   // 从 localStorage 里面读取之前设置的音量，没有的话就用（可能）默认的音量
   const getVolumeNode = useCallback(() => {
@@ -651,8 +576,9 @@ const MusicPlayer = memo(function MusicPlayer({
     audioSource.current.buffer = audioBuffer;
     audioSource.current.connect(getVolumeNode());
     getVolumeNode().connect(audioContext.destination);
-    audioSource.current.start(0, startTime.current, musicDuration);
-  }, [audioBuffer, getAudioContext, getVolumeNode, musicDuration]);
+    // startTime 已在选段阶段确定，这里不能再次随机，否则重播内容会变化。
+    audioSource.current.start(0, startTime, musicDuration);
+  }, [audioBuffer, getAudioContext, getVolumeNode, musicDuration, startTime]);
   // 用于在外部调用播放音乐的，改进为使用该 hook，更加贴合点
   useImperativeHandle(
     ref,
@@ -663,18 +589,12 @@ const MusicPlayer = memo(function MusicPlayer({
   );
 
   useEffect(() => {
-    // 既然有片段，那么在片段里面也随机一下，max 是兜底
-    startTime.current = Math.max(
-      Math.random() * (audioBuffer.duration - musicDuration),
-      0,
-    );
-
     playMusic();
     return () => {
       // 防止切换了还在响
       audioSource.current?.stop();
     };
-  }, [audioBuffer.duration, musicDuration, playMusic]);
+  }, [playMusic]);
   return (
     <div className="h-full w-full flex flex-row justify-evenly p-1">
       <button

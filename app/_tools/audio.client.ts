@@ -24,12 +24,18 @@ function checkIsSupportOggOpus() {
  * 根据曲子的 uuid 获取曲子
  * @param uuid 曲子的 uuid
  * @param idx 曲子片段的索引
+ * @param signal 用于取消请求的信号
  * @returns 返回曲子的 ArrayBuffer
  */
-export const fetchMusicByUuid = async (uuid: string, idx: number) => {
+export const fetchMusicByUuid = async (
+  uuid: string,
+  idx: number,
+  signal?: AbortSignal,
+) => {
   const fileName = `${uuid[0]}/${uuid}/${idx}.ogg`;
   const response = await fetch(`${fetchMusicUrlPrefix}${fileName}`, {
     headers: { Accept: "audio/ogg" },
+    signal,
   });
   if (!response.ok) {
     throw Error(ErrorType.NetworkError, {
