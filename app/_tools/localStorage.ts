@@ -1,6 +1,8 @@
 import "client-only";
+import { isClientSide } from "./environment";
 
 let localStorageAvailable = false;
+const memoryStorage = new Map<LocalStorageKey, string>();
 
 export enum LocalStorageKey {
   /** 用于测试 local storage 是否可用 */
@@ -28,16 +30,21 @@ function checkLocalStorageAvailable(): boolean {
     storage.setItem(x, x);
     storage.removeItem(x);
     return true;
-  } catch (e) {
+  } catch {
     return false;
   }
 }
 
+/** 保存成功返回 true；浏览器存储不可用时仅保存在内存，刷新后丢失。 */
 export function SetLocalStorageValue(key: LocalStorageKey, value: string) {
-  if (!localStorageAvailable) {
+  if (!isClientSide()) {
     return false;
   }
-  window.localStorage.setItem(key, value);
+  if (localStorageAvailable) {
+    window.localStorage.setItem(key, value);
+  } else {
+    memoryStorage.set(key, value);
+  }
   return true;
 }
 
@@ -50,8 +57,8 @@ export function GetLocalStorageValue(key: LocalStorageKey): string | null;
 /**
  * 获取 localStorage 中的值
  * @param key localStorage 键
- * @param defaultValue 默认值，如果 localStorage 中不存在该键，会设置该键的值为 `defaultValue`
- * @param writeDefaultValue 是否在 localStorage 中不存在该键时设置默认值，默认为 `true`
+ * @param defaultValue 默认值，如果存储中不存在该键，会设置该键的值为 `defaultValue`
+ * @param writeDefaultValue 是否在存储中不存在该键时设置默认值，默认为 `true`
  * @return localStorage 中的值，如果不存在则返回 `defaultValue`
  */
 export function GetLocalStorageValue(
@@ -64,27 +71,24 @@ export function GetLocalStorageValue(
   defaultValue?: string,
   writeDefaultValue = true,
 ) {
-  if (!localStorageAvailable) {
+  if (!isClientSide()) {
     return defaultValue ?? null;
   }
-  const value = window.localStorage.getItem(key);
-  if (defaultValue === undefined) {
-    return value ?? null;
-  } else {
-    if (value === null) {
-      if (writeDefaultValue) {
-        SetLocalStorageValue(key, defaultValue);
-      }
-      return defaultValue;
-    } else {
-      return value;
-    }
+  const value = localStorageAvailable
+    ? window.localStorage.getItem(key)
+    : memoryStorage.get(key) ?? null;
+  if (value !== null) return value;
+  if (defaultValue === undefined) return null;
+  if (writeDefaultValue) {
+    SetLocalStorageValue(key, defaultValue);
   }
+  return defaultValue;
 }
 
 export function ClearLocalStorage() {
-  if (!localStorageAvailable) {
-    return;
+  if (!isClientSide()) return;
+  memoryStorage.clear();
+  if (localStorageAvailable) {
+    window.localStorage.clear();
   }
-  window.localStorage.clear();
 }
