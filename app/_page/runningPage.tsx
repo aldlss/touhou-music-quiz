@@ -620,12 +620,9 @@ const MusicPlayer = memo(function MusicPlayer({
         )}
         onChange={(e) => {
           getVolumeNode().gain.value = Number(e.target.value);
-        }}
-        // 考虑在设定之后再保存，感觉大概可以避免频繁的保存
-        onPointerUp={() => {
           SetLocalStorageValue(
             LocalStorageKey.THM_Volume,
-            getVolumeNode().gain.value.toString(),
+            e.target.value,
           );
         }}
       />
