@@ -15,5 +15,9 @@ export default function DocsLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return <main className="p-1">{children}</main>;
+  return (
+    <main lang="zh-CN" className="p-1">
+      {children}
+    </main>
+  );
 }

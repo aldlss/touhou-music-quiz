@@ -22,7 +22,6 @@ export function StartPage(props: IStartPageProps) {
       <div className="flex flex-row justify-between">
         <Link
           href="/docs/version"
-          target="_blank"
           className="p-2 text-right text-p text-gray hover:text-link"
         >
           {packageInfo.version}

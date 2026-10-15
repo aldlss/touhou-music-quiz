@@ -51,11 +51,11 @@ export function InfoDialog() {
               Remix Icon
             </Link>
             {`\n${t("musicLists")}\n`}
-            <Link href="/docs/selected" target="_blank" className="text-link">
+            <Link href="/docs/selected" className="text-link">
               {t("byCategory")}
             </Link>
             {`   `}
-            <Link href="/docs/same-name" target="_blank" className="text-link">
+            <Link href="/docs/same-name" className="text-link">
               {t("byName")}
             </Link>
             {`\n${t("specialThanks")}\nLizBaka / Ghost_ABB / 椿梦栀结 / 锵群的米娜 \n And You.`}
