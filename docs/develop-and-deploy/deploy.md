@@ -27,3 +27,32 @@
 ## 注意事项
 
 由于实现的原因，需要在安全上下文中部署该网页。
+
+## 清理缓存
+
+`GET /clean-all` 用于清理当前部署的服务端缓存。`clean_password` 参数必须与该部署环境中的 `API_CLEAN_PASSWORD` 一致。
+
+带 `tag` 参数时，使对应的数据缓存立即过期。例如，清理曲库数据：
+
+```text
+/clean-all?clean_password=<密码>&tag=music-collection
+```
+
+项目使用的数据 tag：
+
+| tag | 缓存内容 |
+| --- | --- |
+| `music-collection` | 曲库元数据 |
+| `music-names` | 所有语言的曲库名称 |
+| `music-names-en`、`music-names-ja` | 对应语言的曲库名称 |
+| `docs` | 文档内容 |
+
+不带 `tag` 参数时，使根布局下的页面缓存失效，覆盖各语言页面和文档页：
+
+```text
+/clean-all?clean_password=<密码>
+```
+
+需要同时更新数据和页面缓存时，先清理相关 tag，再发起不带 `tag` 的请求。缓存会在下次访问时重新生成，已经打开的页面需要重新加载。
+
+成功时返回 `revalidated: true`，以及本次处理的 `tag` 或 `path`。密码错误时返回 HTTP 401；部署环境未配置 `API_CLEAN_PASSWORD` 时返回 HTTP 503。
