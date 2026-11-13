@@ -31,6 +31,7 @@ import {
 } from "../_tools/musicCollection";
 import { isSupportOggOpus } from "../_tools/audio.client";
 import { selectMusicWindow } from "../_tools/audioWindowSelection.client";
+import { createMusicPicker } from "../_tools/musicSelection";
 import {
   GetLocalStorageValue,
   LocalStorageKey,
@@ -275,12 +276,9 @@ export function RunningPage(props: IRunningPageProps) {
     let stop = false;
     const abortController = new AbortController();
     const audioContext = getAudioContext();
-    const previousQuizUuids: string[] = [];
-    const previousQuizUuidSet = new Set<string>();
-    // 这个是考虑到如果选的曲子太少，那么重复是不可避免的
-    const localPreviousQuizSetCapacity = Math.min(
+    const pickMusic = createMusicPicker(
+      selectedMusicList,
       previousQuizSetCapacity,
-      Math.max(0, selectedMusicList.length - 3),
     );
     async function addQuizes() {
       while (await quizNeeded.current.acquire()) {
@@ -289,20 +287,7 @@ export function RunningPage(props: IRunningPageProps) {
           quizNeeded.current.release();
           return;
         }
-        let randomMusic: QuizMusic;
-        do {
-          // 单选的话这样比水池抽样大概快很多吧
-          randomMusic =
-            selectedMusicList[
-              Math.floor(Math.random() * selectedMusicList.length)
-            ];
-          // 如果和之前几个重复，那么就再选一次，虽然运气不好的话会有巨大性能问题，但是应该不会吧（
-        } while (previousQuizUuidSet.has(randomMusic.uuid));
-        previousQuizUuidSet.add(randomMusic.uuid);
-        previousQuizUuids.push(randomMusic.uuid);
-        if (previousQuizUuids.length > localPreviousQuizSetCapacity) {
-          previousQuizUuidSet.delete(previousQuizUuids.shift()!);
-        }
+        const randomMusic = pickMusic();
         let resolve!: (value: Quiz | PromiseLike<Quiz>) => void,
           reject!: (reason?: any) => void;
         // 多套一层的原因大概是 Promise 比较方便传递异常
